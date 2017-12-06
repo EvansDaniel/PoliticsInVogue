@@ -1,0 +1,72 @@
+@import "../../utils/vars.less";
+@import "../../utils/mixins.less";
+
+@navBarHeight: 51px;
+@navBarBorderBottom: #f9f9f9;
+
+.NavBar {
+  .flex();
+  justify-content: center;
+  align-items: center;
+  color: #999;
+  font-family: Lato, sans-serif;
+  width: 100%;
+  font-size: 10px;
+  text-transform: uppercase;
+  background-color: white;
+  height: @navBarHeight;
+  border-bottom: 1px solid @navBarBorderBottom;
+
+  .inner-content {
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .dropdown {
+      overflow: hidden;
+
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+
+        a {
+          float: none;
+          color: black;
+          padding: 12px 16px;
+          text-decoration: none;
+          display: block;
+          text-align: left;
+
+          &:hover {
+            background-color: #ddd;
+          }
+        }
+      }
+    }
+
+    .dropdown-content a:hover {
+      background-color: #ddd;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    .icons {
+      color: black;
+    }
+
+    & > * {
+      margin-left: @large;
+      margin-right: @large;
+      height: @navBarHeight;
+      letter-spacing: 2px;
+      display: inline;
+    }
+  }
+}
