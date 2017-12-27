@@ -1,3 +1,26 @@
+.ovo-font-family(@fontSize, @letterSpacing) {
+  font-family: Ovo, serif;
+  font-weight: 400;
+  font-size: @fontSize;
+  text-transform: uppercase;
+  letter-spacing: @letterSpacing;
+}
+
+.default-box-shadow() {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.add-quotes(@ending: "") {
+  @quote: "\"";
+  &:before {
+    content: @quote;
+  }
+  &:after {
+    content: "@{ending}@{quote}";
+  }
+}
+
+
 .horizontal-gradient (@startColor: #eee, @endColor: white) {
   background-color: @startColor;
   background-image: -webkit-gradient(linear, left top, right top, from(@startColor), to(@endColor));

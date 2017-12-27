@@ -1,6 +1,82 @@
-@import "../../utils/vars.less";
-@import "../../utils/mixins.less";
+@import "../../shared/vars.less";
+@import "../../shared/mixins.less";
 
 .Home {
 
+  .awesome-banner {
+    /*
+    background-image: url('../../res/bbc_news.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 550px;
+    */
+    p {
+      margin: 0;
+      top: 150px;
+      left: 150px;
+      position: relative;
+      color: black;
+      font-size: 32px;
+    }
+  }
+
+  .article-carousel {
+    margin-bottom: @xxlarge;
+
+    .carousel-image {
+      .flex();
+      background-image: url("https://1.bp.blogspot.com/-GdYQArpi-xU/WX-YFSG7BEI/AAAAAAAAH7M/vhajqhWGQNEzLlnkt1ocUWJLaI1H9R1tgCLcBGAs/s1600/coffeedate.jpg");
+      background-repeat: no-repeat;
+      background-size: cover;
+      height: 400px;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+
+      .article-info {
+        .flex();
+        flex-direction: column;
+        width: 35%;
+        color: black;
+        background-color: rgba(255,255,255,0.6);
+        padding: @xxlarge;
+        text-align: center;
+
+        .title {
+          .ovo-font-family(@fontSize: 25px, @letterSpacing: 1.5px);
+          margin-bottom: @medium;
+        }
+
+        .excerpt {
+          font-family: Crimson Text, serif;
+          font-weight: 400;
+          font-size: 14px;
+          font-style: italic;
+          .add-quotes("...");
+        }
+      }
+    }
+
+    // Prev button
+    .slider-decorator-0 {
+
+    }
+
+    // Next button
+    .slider-decorator-1 {
+      button {
+        content: '';
+      }
+    }
+
+    // Dots on bottom of carousel
+    .slider-decorator-2 {
+      display: none;
+    }
+  }
+
+  .recent-articles {
+    padding-left: 15%;
+    padding-right: 15%;
+  }
 }

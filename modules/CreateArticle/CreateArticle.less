@@ -1,0 +1,74 @@
+@import "../../shared/mixins.less";
+@import "../../shared/vars.less";
+
+@outsidePadding: @xxlarge + @medium;
+
+.button-control-default(@backgroundColor) {
+
+}
+
+.CreateArticle {
+  padding: @medium @outsidePadding 0 @outsidePadding;
+
+  & > input {
+    text-indent: @xsmall;
+    .border-radius(2px);
+    height: @large + @xsmall;
+    width: 100%;
+    text-align: center;
+    outline: none;
+    border: none;
+    margin-bottom: @medium;
+    border-bottom: 1px solid rgba(200,200,200,.8);
+
+    &:focus {
+      border-bottom: 1px solid @favoriteColor;
+    }
+  }
+
+  .editor-controls {
+    margin-bottom: @medium;
+
+    & > button {
+      height: 22px;
+      border: none;
+      color: white;
+      .border-radius(@radius: 2px);
+      margin-right: @medium;
+      cursor: pointer;
+      .default-box-shadow();
+    }
+
+    .view-button {
+      background-color: dodgerblue;
+    }
+
+    .upload-image-button {
+      background-color: dodgerblue;
+    }
+
+    .save-as-draft-button {
+      background-color: dodgerblue;
+    }
+
+    .saving-actions {
+      display: inline-block;
+      vertical-align: bottom;
+    }
+  }
+
+  .editing {
+    width: 100%;
+    padding-right: @outsidePadding;
+
+    .editor {
+      .default-box-shadow();
+    }
+  }
+
+  .preview {
+    width: 100%;
+    background-color: white;
+    color: black;
+  }
+}

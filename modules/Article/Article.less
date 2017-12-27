@@ -1,0 +1,106 @@
+@import "../../shared/mixins.less";
+@import "../../shared/vars.less";
+
+@articleBodyPadding: 4.5rem;
+
+.Article {
+  padding-left: @articleBodyPadding;
+  padding-right: @articleBodyPadding;
+
+  .ArticleContent {
+    color: @black;
+    .article-top {
+      .flex();
+      margin-top: @large;
+
+      .article-info {
+        font-family: Lato, serif;
+        color: @primaryFontColor;
+        padding-right: @medium;
+
+        & > div {
+          line-height: @em + @emMedium;
+        }
+
+        .title {
+          //.ovo-font-family(@fontSize: 25px, @letterSpacing: 2px);
+          margin-top: @xlarge;
+          text-align: left;
+          font-size: 28px;
+          margin-bottom: @small;
+          letter-spacing: @emSmall;
+        }
+
+        .category {
+          text-transform: uppercase;
+          display: inline-block;
+          color: @black;
+
+          a {
+            text-decoration: none;
+            &:hover {
+              color: @favoriteColor !important;
+            }
+            &:visited {
+              color: inherit;
+            }
+          }
+
+          &:after {
+            content: " |  ";
+          }
+        }
+
+        .time-to-read {
+          margin-left: @xxsmall;
+          display: inline-block;
+          color: @primaryColor;
+          text-transform: uppercase;
+        }
+
+        .author-info {
+          font-size: @emLarge + @emSmall;
+          color: #33475b;
+          letter-spacing: @emSmall/2;
+
+          .date-published {
+            //.ovo-font-family(@fontSize: 13px, @letterSpacing: 2px);
+            text-align: left;
+            text-transform: capitalize;
+            margin-bottom: @xxsmall;
+          }
+
+          .name {
+            color: @favoriteColor;
+          }
+        }
+      }
+
+      .main-image {
+        img {
+          .border-radius(@radius: 8px);
+        }
+      }
+    }
+
+    .lower-article {
+      .flex();
+      padding-top: @medium;
+
+      .social-media-block {
+        position: sticky;
+        top: 50px;
+      }
+
+      .body {
+        font-family: Lato, serif;
+        color: #33475b;
+        font-size: 1.1em;
+        line-height: 1.45em;
+        letter-spacing: .01em;
+        padding: 0 150px;
+      }
+
+    }
+  }
+}
