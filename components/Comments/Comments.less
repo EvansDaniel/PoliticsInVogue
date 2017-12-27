@@ -1,5 +1,34 @@
 @import "../../shared/mixins.less";
 @import "../../shared/vars.less";
 
+@selectedTabBackgroundColor: rgba(128, 145, 145, .15);
+
 .Comments {
+
+  .tabs {
+    .flex();
+    border-bottom: 1px solid @favoriteColor;
+
+    .fb {
+      background-color: @selectedTabBackgroundColor;
+    }
+
+    .tab {
+      .flex();
+      padding: @small;
+      cursor: pointer;
+
+      .icon {
+        padding-right: @small;
+      }
+
+      .name {
+        line-height: 2em;
+      }
+    }
+  }
+
+  .comment-section {
+    height: 350px;
+  }
 }

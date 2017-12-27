@@ -20,6 +20,7 @@
   text-transform: uppercase;
   background-color: rgb(242, 245, 248);
   height: @navBarHeight;
+  z-index: @levelOne;
   //border-bottom: 1px solid rgb(203, 214, 226);
   // thing to change
 
@@ -63,13 +64,15 @@
       ul {
         display: none;
         position: absolute;
+        top: @navBarHeight;
         list-style-type: none;
-        width: 100%;
         background-color: white;
         padding-left: 0;
-        margin: 0;
-        margin-top: @xxsmall;
+        margin: @xxsmall 0 0;
         border: 1px solid #cbd6e2;
+        overflow-y: scroll;
+        max-height: 225px;
+        width: 150px;
 
         // Just submenu a tags
         a {
@@ -96,8 +99,7 @@
           padding-left: @small;
 
           &:hover {
-            color: white;
-            background-color: @favoriteColor;
+            color: @favoriteColor;
           }
         }
 

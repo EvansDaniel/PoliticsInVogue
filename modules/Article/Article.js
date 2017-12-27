@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './Article.less';
-import renderHTML from 'react-render-html';
-import SocialMediaBlock from "../../components/SocialMediaBlock/SocialMediaBlock";
+import ArticleContent from "../../components/ArticleContent/ArticleContent";
+import Comments from "../../components/Comments/Comments";
 const API = require('../../shared/api-v1');
 
 class Article extends Component {
@@ -9,6 +9,7 @@ class Article extends Component {
         super(props);
         this.state = {
             loading: true,
+            articleMeterWidth: 0,
         };
     }
 
@@ -46,40 +47,5 @@ class Article extends Component {
         );
     }
 }
-
-const ArticleContent = (props) => {
-    let articleData = props.articleData;
-    return (
-        <div className="ArticleContent">
-            <div className="article-top">
-                <div className="article-info">
-                    <div className="category"><a href="">Category</a></div>
-                    <div className="time-to-read">12 min read</div>
-                    <div className="title">
-                        {articleData.title}
-                    </div>
-                    <div className="author-info">
-                        <div className="date-published">Date Published: {articleData.datePublished}</div>
-                        <div className="author">Written by: <span className="name">Sophie Clark</span></div>
-                    </div>
-                </div>
-                <div className="main-image">
-                    <img src="https://blog.hubspot.com/hubfs/00-Blog_Thinkstock_Images/How_to_Write_a_Blog_Post.jpg?t=1514169488746"/>
-                </div>
-            </div>
-            {/*<div className="social-media-block">
-             <SocialMediaBlock/>
-             </div>*/}
-            <div className="lower-article">
-                <div className="social-media-block">
-                    <SocialMediaBlock/>
-                </div>
-                <div className="body">
-                    {renderHTML(articleData.body)}
-                </div>
-            </div>
-        </div>
-    );
-};
 
 export default Article;

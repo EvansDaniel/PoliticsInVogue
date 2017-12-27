@@ -9,8 +9,11 @@
 
 .CreateArticle {
   padding: @medium @outsidePadding 0 @outsidePadding;
+  font-family: Lato, serif;
+  color: @primaryColor;
 
   & > input {
+    font-size: @em + @emMedium;
     text-indent: @xsmall;
     .border-radius(2px);
     height: @large + @xsmall;
@@ -19,7 +22,12 @@
     outline: none;
     border: none;
     margin-bottom: @medium;
-    border-bottom: 1px solid rgba(200,200,200,.8);
+    position: relative;
+    //border-bottom: 1px solid rgba(200,200,200,.8);
+
+    &::placeholder {
+      font-family: Lato, serif;
+    }
 
     &:focus {
       border-bottom: 1px solid @favoriteColor;
@@ -30,30 +38,50 @@
     margin-bottom: @medium;
 
     & > button {
-      height: 22px;
+      display: inline-flex;
+      height: 25px;
       border: none;
-      color: white;
+      outline: none;
+      color: @primaryColor;
       .border-radius(@radius: 2px);
       margin-right: @medium;
       cursor: pointer;
       .default-box-shadow();
+      position: relative;
+      transition: bottom .33s;
+      bottom: 0;
+
+      &:hover {
+        bottom: 3px;
+      }
+
+      img {
+        height: 18px;
+        margin: @xxsmall;
+      }
+
+      span {
+        position: relative;
+        top: @xxsmall;
+      }
     }
 
     .view-button {
-      background-color: dodgerblue;
+      background-color: white;
     }
 
     .upload-image-button {
-      background-color: dodgerblue;
+      background-color: white;
     }
 
     .save-as-draft-button {
-      background-color: dodgerblue;
+      background-color: white;
     }
 
     .saving-actions {
       display: inline-block;
       vertical-align: bottom;
+
     }
   }
 

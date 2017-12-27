@@ -5,6 +5,8 @@ import $ from 'jquery';
 import Article from '../../modules/Article/Article';
 import _ from 'lodash';
 import {waitBeforeCall} from '../../shared/utils';
+import previewIcon from '../../../src/img/preview.svg';
+import publishIcon from '../../../src/img/publish.svg';
 
 
 class CreateArticle extends Component {
@@ -116,7 +118,8 @@ class CreateArticle extends Component {
                 />
                 <div className="editor-controls">
                     <button onClick={this.changeView} className="view-button">
-                        {this.state.buttonViewText}
+                        <img src={previewIcon} alt=""/>
+                        <span>{this.state.buttonViewText}</span>
                     </button>
 
                     {/*<button onClick={this.changeView} className="upload-image-button">
@@ -124,7 +127,8 @@ class CreateArticle extends Component {
                     </button>*/}
 
                     <button onClick={this.publishArticle} className="save-as-draft-button">
-                        Publish article
+                        <img src={publishIcon}/>
+                        <span>Publish article</span>
                     </button>
                     <div className="saving-actions">
                         {this.state.savingAction}
