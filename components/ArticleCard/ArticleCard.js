@@ -7,13 +7,21 @@ class ArticleCard extends Component {
     }
 
     render() {
-        const imgUrl = 'https://3.bp.blogspot.com/-payJOzdVdME/WjD1Nyg5znI/AAAAAAAAXTE/FZ3My_xkbtc1u5DsX8u3nFm8TDAA6UY_ACLcBGAs/s1600/cindy%2Bkimberly3.jpg';
-        const backgroundImgStyle = {
-            'background-image': `url('${imgUrl}')`
+        const style = {
+            'background-image': `url('${this.props.url}')`,
         };
         return (
-            <div className="ArticleCard" style={backgroundImgStyle}>
-
+            <div className={`ArticleCard ${this.props.className}`} style={style}>
+                <a href="">
+                    <div className="article-info">
+                        <div>
+                        <div>
+                        <div className="article-name">Why do I turn into a child when I'm home for Christmas</div>
+                        <div className="article-date">25 Dec 2017</div>
+                        </div>
+                        </div>
+                    </div>
+                </a>
             </div>
         );
     }

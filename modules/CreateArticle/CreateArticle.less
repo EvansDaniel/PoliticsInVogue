@@ -3,10 +3,6 @@
 
 @outsidePadding: @xxlarge + @medium;
 
-.button-control-default(@backgroundColor) {
-
-}
-
 .CreateArticle {
   padding: @medium @outsidePadding 0 @outsidePadding;
   font-family: Lato, serif;
@@ -23,7 +19,7 @@
     border: none;
     margin-bottom: @medium;
     position: relative;
-    //border-bottom: 1px solid rgba(200,200,200,.8);
+    border-bottom: 1px solid rgba(200,200,200,.8);
 
     &::placeholder {
       font-family: Lato, serif;
@@ -47,13 +43,7 @@
       margin-right: @medium;
       cursor: pointer;
       .default-box-shadow();
-      position: relative;
-      transition: bottom .33s;
-      bottom: 0;
-
-      &:hover {
-        bottom: 3px;
-      }
+      .bottom-transition(@height: 3px, @time: .2s);
 
       img {
         height: 18px;

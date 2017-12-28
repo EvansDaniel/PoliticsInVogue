@@ -5,6 +5,7 @@ import SocialMediaBlock from "../SocialMediaBlock/SocialMediaBlock";
 import renderHTML from 'react-render-html';
 import $ from 'jquery';
 import Comments from "../Comments/Comments";
+import ArticleBlock from "../ArticleBlock/ArticleBlock";
 
 class ArticleContent extends Component {
     constructor(props) {
@@ -26,11 +27,11 @@ class ArticleContent extends Component {
     changeArticleMeterWidth() {
         const articleBody = $('.article-body'),
             articleMeter = $('.article-meter');
-        if(!articleBody || !articleMeter) {
+        if(!articleBody.length || !articleMeter.length) {
             return;
         }
         const bodyOffset = articleBody.offset(),
-            meterOffset = meterLoc.offset();
+            meterOffset = articleMeter.offset();
         if(!bodyOffset || !meterOffset) {
             return;
         }
@@ -68,26 +69,29 @@ class ArticleContent extends Component {
                             </div>
                         </div>
                         <div className="main-image">
-                            <img
-                                src="https://blog.hubspot.com/hubfs/00-Blog_Thinkstock_Images/How_to_Write_a_Blog_Post.jpg?t=1514169488746"/>
+                            <img src="https://blog.hubspot.com/hubfs/00-Blog_Thinkstock_Images/How_to_Write_a_Blog_Post.jpg?t=1514169488746"/>
                         </div>
                     </div>
-                    {/*<div className="social-media-block">
-                     <SocialMediaBlock/>
-                     </div>*/}
                     <div className="lower-article">
                         <div className="article-main">
-                            <div className="social-media-block">
-                                <SocialMediaBlock/>
+                            <div className="suggested-articles">
+                                <ArticleBlock/>
+                                <ArticleBlock/>
+                                <ArticleBlock/>
+                                <ArticleBlock/>
                             </div>
                             <div className="article-body">
                                 {renderHTML(articleData.body)}
                             </div>
-                            {/*TODO: suggested articles section*/}
+                            <div className="social-media-block">
+                                <SocialMediaBlock/>
+                            </div>
                         </div>
+                        {/*
                         <div className="comment-section">
                             <Comments/>
                         </div>
+                        */}
                     </div>
                 </div>
             </div>

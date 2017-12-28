@@ -6,6 +6,16 @@
   letter-spacing: @letterSpacing;
 }
 
+.bottom-transition(@height: 5px, @time: .33s, @type: ease-in-out) {
+  position: relative;
+  bottom: 0;
+  transition: bottom @time @type;
+
+  &:hover {
+    bottom: @height;
+  }
+}
+
 .default-box-shadow() {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }

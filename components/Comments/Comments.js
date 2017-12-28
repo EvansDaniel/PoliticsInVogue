@@ -40,7 +40,7 @@ class Comments extends Component {
                     }
                 </div>
                 <div className="create-comment">
-                    <FacebookCommentSection/>
+                    <div className="fb-comments" data-href="http://www.fashionslave.co.uk/search/label/sex%20%26%20love?max-results=6" data-width="100%" data-numposts="10"></div>
                 </div>
             </div>
         );
@@ -48,7 +48,6 @@ class Comments extends Component {
 }
 
 const FacebookCommentSection = (props) => {
-    console.log(window.location.href);
     return (
         <div class="fb-comments" data-href="http://www.fashionslave.co.uk/search/label/sex%20%26%20love?max-results=6" data-width="100%" data-numposts="10"></div>
     );

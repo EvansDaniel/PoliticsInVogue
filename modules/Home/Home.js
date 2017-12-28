@@ -3,6 +3,7 @@ import "./Home.less";
 import ArticleCard from "../../components/ArticleCard/ArticleCard";
 import $ from 'jquery';
 import renderHTML from 'react-render-html';
+import ArticleCards from "../../components/ArticleCards/ArticleCards";
 let Carousel = require('nuka-carousel');
 
 class Home extends Component {
@@ -28,12 +29,7 @@ class Home extends Component {
                     */
                 }
                 <div className="recent-articles">
-                    <ArticleCard/>
-                    <ArticleCard/>
-                    <ArticleCard/>
-                    <ArticleCard/>
-                    <ArticleCard/>
-                    <ArticleCard/>
+                    <ArticleCards/>
                 </div>
                 <div className="footer">
 

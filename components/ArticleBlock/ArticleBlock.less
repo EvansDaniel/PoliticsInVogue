@@ -1,0 +1,29 @@
+@import "../../shared/mixins.less";
+@import "../../shared/vars.less";
+
+.ArticleBlock {
+  .flex();
+  height: 100px;
+  width: 200px;
+  border-bottom: 1px solid @dimmedColor;
+
+  @media @tabletOrSmaller {
+    width: 160px;
+  }
+
+  .img-block {
+    img {
+      height: 50%;
+      @media @tabletOrSmaller {
+        height: 40%;
+      }
+    }
+  }
+
+  .excerpt {
+    padding-left: @small;
+    font-size: 14px;
+    line-height: 19px;
+    .truncate(@fontSize: 14px, @linesToShow: 6, @lineHeight: 1em)
+  }
+}

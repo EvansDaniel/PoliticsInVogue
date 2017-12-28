@@ -11,12 +11,6 @@
   div {
     cursor: pointer;
     padding: 0 @small @large 0;
-    transition: bottom .33s;
-    bottom: 0;
-
-    &:hover {
-      position: relative;
-      bottom: 5px;
-    }
+    .bottom-transition();
   }
 }

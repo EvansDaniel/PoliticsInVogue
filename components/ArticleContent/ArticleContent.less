@@ -26,9 +26,18 @@
     padding-left: @articleBodyPadding;
     padding-right: @articleBodyPadding;
 
+    @media @tabletOrSmaller {
+      padding-left: @large;
+      padding-right: @large;
+    }
+
     .article-top {
       .flex();
       margin-top: @large;
+
+      @media @smartphones {
+        flex-direction: column;
+      }
 
       .article-info {
         font-family: Lato, serif;
@@ -37,6 +46,10 @@
 
         & > div {
           line-height: @em + @emMedium;
+
+          @media @smartphones {
+            line-height: @em + @emSmall*2;
+          }
         }
 
         .title {
@@ -46,6 +59,10 @@
           font-size: 28px;
           margin-bottom: @small;
           letter-spacing: @emSmall;
+
+          @media @smartphones {
+            margin-top: @small;
+          }
         }
 
         .category {
@@ -100,25 +117,60 @@
           width: 100%;
           height: 100%;
         }
+
+        @media @smartphones {
+          margin-top: @large;
+        }
       }
     }
 
     .article-main {
       .flex();
-      padding-top: @medium;
+      padding-top: @xlarge;
 
-      .social-media-block {
+      .suggested-articles {
+        border-right: 1px solid @favoriteColor;
+        padding: 0 @em*2.5 0 @emMedium;
         position: sticky;
-        top: 50px;
+        top: 0;
+
+        @media @tabletOrSmaller {
+          padding: 0 @em 0 @emMedium;
+        }
+
+        @media @smartphones {
+          display: none;
+        }
+
+        & > * {
+          margin-bottom: @em * 2;
+        }
       }
 
       .article-body {
         font-family: Lato, serif;
         color: #33475b;
-        font-size: 1.1em;
+        font-size: 1em;
         line-height: 1.45em;
         letter-spacing: .01em;
-        padding: 0 300px 0 200px;
+        //padding: 0 300px 0 200px;
+        padding-left: 5%;
+        padding-right: 15%;
+
+        @media @tabletOrSmaller {
+          padding-left: 2.5%;
+          padding-right: 5%;
+        }
+      }
+
+      .social-media-block {
+        position: sticky;
+        top: 50px;
+        right: 100px;
+
+        @media @tabletOrSmaller {
+          right: 0;
+        }
       }
     }
 
