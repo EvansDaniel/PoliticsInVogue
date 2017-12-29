@@ -1,0 +1,32 @@
+{
+  "name": "blog",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "classnames": "^2.2.5",
+    "draft-js": "^0.10.4",
+    "jquery": "^3.2.1",
+    "load-script": "^1.0.0",
+    "lodash": "^4.17.4",
+    "nuka-carousel": "^3.0.0",
+    "query-string": "^5.0.1",
+    "react": "^16.1.1",
+    "react-ckeditor-component": "^1.0.7",
+    "react-dom": "^16.1.1",
+    "react-render-html": "^0.6.0",
+    "react-router": "^4.2.0",
+    "react-router-dom": "^4.2.2",
+    "react-scripts": "1.0.17"
+  },
+  "proxy": "http://localhost:3001/",
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "less": "^2.7.3",
+    "less-loader": "^4.0.5"
+  }
+}

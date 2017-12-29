@@ -1,0 +1,18 @@
+{
+  "name": "LocalLocker",
+  "version": "0.0.0",
+  "description": "App for LocalLocker storage company",
+  "main": "server.js",
+  "author": "Daniel Evans and Tariro Kandemiri",
+  "dependencies": {
+    "body-parser": "^1.4.3",
+    "express": "^4.13.4",
+    "lodash": "^4.17.4",
+    "method-override": "^2.1.3",
+    "mongoose": "4.11.13",
+    "morgan": "^1.1.1"
+  },
+  "devDependencies": {
+    "lodash": "^4.17.4"
+  }
+}
