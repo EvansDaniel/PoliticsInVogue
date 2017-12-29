@@ -1,8 +1,10 @@
 @import "../../shared/mixins.less";
 @import "../../shared/vars.less";
 
+@transitionTime: .33s;
+
 .ArticleCard {
-  //.bottom-transition();
+  .bottom-transition(@time: @transitionTime);
   background: url(https://3.bp.blogspot.com/-payJOzdVdME/WjD1Nyg5znI/AAAAAAAAXTE/FZ3My_xkbtc1u5DsX8u3nFm8TDAA6UY_ACLcBGAs/s1600/cindy%2Bkimberly3.jpg) no-repeat center;
   background-size: cover;
   background-position: 50% !important;
@@ -24,13 +26,15 @@
 
     .article-info {
       text-transform: uppercase;
-      color: @black;
+      color: @realBlack;
       width: 100%;
       height: 100%;
       position: relative;
       top: 0;
       left: 0;
       opacity: 0;
+      transition-property: opacity,background-color;
+      transition-duration: @transitionTime;
 
       & > div {
         display: table;
@@ -38,9 +42,8 @@
         height: 100%;
 
         & > div {
-          width: 100%;
-          height: 100%;
           display: table-cell;
+          // Actually aligns middle
           vertical-align: middle;
           text-align: center;
 

@@ -58,7 +58,7 @@ class ArticleContent extends Component {
                 <div className="article">
                     <div className="article-top">
                         <div className="article-info">
-                            <div className="category"><a href="">Category</a></div>
+                            <div className="category"><Link to="/">Category</Link></div>
                             <div className="time-to-read">12 min read</div>
                             <div className="title">
                                 {articleData.title}

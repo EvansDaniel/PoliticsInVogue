@@ -5,8 +5,10 @@ import Home from './modules/Home/Home'
 import About from './modules/About/About'
 import NavBar from "./components/NavBar/NavBar";
 import Article from "./modules/Article/Article";
+import Category from "./modules/Category/Category";
 import CreateArticle from "./modules/CreateArticle/CreateArticle";
 import 'react-responsive-carousel/lib/styles/carousel.min.css'
+import Footer from "./components/Footer/Footer";
 
 window.Fetch = window.fetch;
 window.fetch = function (url, init) {
@@ -31,27 +33,30 @@ class App extends Component {
             <BrowserRouter>
                 <Switch>
                     <Route exact path="/"
-                           component={withNavBar(Home)}/>
+                           component={withTemplate(Home)}/>
                     <Route exact path="/about"
-                           component={withNavBar(About)}/>
+                           component={withTemplate(About)}/>
                     <Route path="/:year/:month/:title"
-                           component={withNavBar(Article)}/>
+                           component={withTemplate(Article)}/>
+                    <Route path="/:category"
+                           component={withTemplate(Category)}/>
                     <Route path="/article/create"
-                           component={withNavBar(CreateArticle)}/>
+                           component={withTemplate(CreateArticle)}/>
                 </Switch>
             </BrowserRouter>
         );
     }
 }
 
-const withNavBar = (ModuleComponent) => {
+const withTemplate = (ModuleComponent) => {
     return class extends React.Component {
         render() {
             return (
                 [
                     <NavBar key="nav"/>,
                     <ModuleComponent key="component"
-                                     {...this.props} />
+                                     {...this.props} />,
+                    <Footer/>
                 ]
             )
         }

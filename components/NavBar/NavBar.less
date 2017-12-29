@@ -70,6 +70,8 @@
         display: none;
         position: absolute;
         top: @navBarHeight;
+        right: 0;
+        left: 0;
         list-style-type: none;
         background-color: white;
         padding-left: 0;
@@ -78,6 +80,7 @@
         overflow-y: scroll;
         max-height: 225px;
         width: 150px;
+        .border-radius(@radius: 2px);
 
         // Just submenu a tags
         a {
@@ -104,12 +107,13 @@
           padding-left: @small;
 
           &:hover {
-            color: @favoriteColor;
+            //color: @favoriteColor;
+            background-color: @lightFavoriteColor;
           }
         }
 
         .fa-envelope-o {
-          color: black;
+          color: @navColor;
 
           &:hover {
             color: @favoriteColor;

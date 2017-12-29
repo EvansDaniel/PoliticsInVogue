@@ -41,16 +41,26 @@ class NavBar extends Component {
 }
 
 const SubMenu = (props) => {
-  var categories = props.categories;
   //TODO: Will need to add category href to <a> tag
+  let categories = props.categories;
+  for(let i  = 0; i < categories.length; i++) {
+      categories[i]['href'] = categories[i].category
+                // replace all non-alphanumeric characters
+                // that isn't space
+                .replace(/[^a-zA-Z\d\s:]/g, '')
+                // replace space with "-"
+                .replace(new RegExp(" ", 'g'), '-')
+                .toLowerCase();
+
+  }
   return (
       <ul>
           {categories.map((category) =>
-              <a key={category.id}>
+              <Link key={category.id} to={`/${category.href}`}>
                   <li>
                       {category.category}
                   </li>
-              </a>)
+              </Link>)
           }
       </ul>
   )

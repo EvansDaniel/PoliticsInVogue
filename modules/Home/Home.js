@@ -31,9 +31,6 @@ class Home extends Component {
                 <div className="recent-articles">
                     <ArticleCards/>
                 </div>
-                <div className="footer">
-
-                </div>
             </div>
         );
     }

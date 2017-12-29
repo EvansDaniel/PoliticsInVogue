@@ -1,0 +1,82 @@
+@import "../../shared/mixins.less";
+@import "../../shared/vars.less";
+
+.AlternatingArticleBlock {
+
+  .SideBySideArticleBlock {
+    // TODO: not sure about the border stuff
+    //border-bottom: 1px solid @favoriteColor;
+
+    .category-wrapper {
+      .article-flip {
+        .flex();
+        align-items: center;
+
+        &.reverse {
+          flex-direction: row-reverse;
+          .article-image {
+            //border-left: 1px solid @favoriteColor;
+            //border-right: none;
+          }
+        }
+
+        .article-info {
+          text-align: center;
+          text-transform: uppercase;
+          color: @realBlack;
+          width: 50%;
+
+          & > div {
+            margin-bottom: @medium;
+          }
+
+          .title {
+            .ovo-font-family(@fontSize: @em + @emSmall*2, @letterSpacing: 4px);
+            line-height: @em + @emLarge;
+          }
+
+          .date {
+            .ovo-font-family(@fontSize: @em, @letterSpacing: 4px);
+          }
+
+          .excerpt {
+            padding-left: 10%;
+            padding-right: 10%;
+            font-size: @em;
+            font-family: Crimson Text, serif;
+            text-transform: none;
+            &:after {
+              content: '...';
+            }
+          }
+
+          .read-article {
+            .ovo-font-family(@fontSize: 12px, @letterSpacing: 4px);
+            background-color: #f1f1f1;
+            outline: none;
+            border: none;
+            font-size: @emMedium*2;
+            padding: 10px 25px;
+            cursor: pointer;
+            box-shadow: none;
+            transition: box-shadow .33s;
+            margin-top: @small;
+
+            &:hover {
+              .default-box-shadow();
+            }
+          }
+        }
+
+        .article-image {
+          background-image: url(https://2.bp.blogspot.com/-AuLlxJCRk3M/WkE3m_0uD6I/AAAAAAAAbWU/24a0ToPfPVY-kiaFvQQxm6HvesO0nNAJgCLcBGAs/s1600/xmas2.jpg);
+          width: 50%;
+          height: 500px;
+          background-size: cover;
+          background-position: 50%;
+          //border-right: 1px solid @favoriteColor;
+        }
+      }
+    }
+  }
+}
