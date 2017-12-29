@@ -26,25 +26,18 @@ class ArticleContent extends Component {
 
     changeArticleMeterWidth() {
         const articleBody = $('.article-body'),
-            articleMeter = $('.article-meter');
-        if(!articleBody.length || !articleMeter.length) {
-            return;
-        }
-        const bodyOffset = articleBody.offset(),
-            meterOffset = articleMeter.offset();
-        if(!bodyOffset || !meterOffset) {
-            return;
-        }
-        const bodyTop = bodyOffset.top,
-            meterLoc = meterOffset.top - bodyTop,
-            bodyBottom = bodyOffset.top + articleBody.height()
-                - bodyTop - window.innerHeight;
+            bodyOffset = articleBody.offset();
 
+        if(!bodyOffset) {
+            return;
+        }
+        const meterLoc = $(window).scrollTop(),
+            bodyBottom = bodyOffset.top + articleBody.height()
+                - window.innerHeight;
         let newWidth = meterLoc / bodyBottom * 100;
         if (newWidth < 0) {
             newWidth = 0;
         }
-
         this.setState({
             articleMeterWidth: `${newWidth}%`
         });
