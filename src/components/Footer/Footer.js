@@ -23,8 +23,10 @@ class Footer extends Component {
                     <div className="column">
                         <div className="title">About <div className="underline"></div></div>
                         <div className="list">
-                            <div>Icons by ...</div>
                             <div>Created by Daniel Evans</div>
+                            <div>
+                                Icons by <a href="https://www.flaticon.com/authors/rami-mcmin">Dave G</a>, <a href="https://www.flaticon.com/authors/linh-pham">Linh P</a>, <a href="https://www.flaticon.com/authors/rami-mcmin">Rami M</a>, and <a href="http://www.freepik.com">FreePik</a>
+                            </div>
                         </div>
                     </div>
                     <div className="column">
