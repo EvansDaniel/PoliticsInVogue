@@ -10,7 +10,7 @@ let API_URLS_SHORTS = {
 let API_URLS = {};
 
 for(let key in API_URLS_SHORTS) {
-    const isProd = process.env.NODE_ENV === 'production';
+    const isProd = process.env.NODE_ENV !== 'production';
     if(API_URLS_SHORTS.hasOwnProperty(key)) {
         if(isProd) {
             API_URLS[key] = `${API_DOMAIN}/${API_VERSION}/${API_URLS_SHORTS[key]}`

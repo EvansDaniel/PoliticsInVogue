@@ -7,11 +7,14 @@ const express = require('express'),
     morgan = require('morgan'),
     bodyParser = require('body-parser'),
     methodOverride = require('method-override'),
-    path = require('path');
+    path = require('path'),
+    Corser = require('corser');
 
 // configuration ===============================================================
 mongoose.connect(database.localUrl, {useMongoClient: true});
 
+// Adds Access-Control-Allow-Origin headers
+// https://github.com/agrueneberg/Corser
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({'extended': 'true'}));
 app.use(bodyParser.json()); // parse application/json

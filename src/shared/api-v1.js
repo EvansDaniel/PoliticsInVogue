@@ -1,7 +1,7 @@
 // @flow
 const API_URLS = require('./api-urls');
 const queryString = require('query-string');
-
+const axios = require('axios');
 let post = (url, options) => {
     return fetch(url, {
             method: 'POST',
@@ -18,8 +18,22 @@ module.exports = {
     getArticle: function (callback: (response: {}) => void, queryParams?: {}) {
         // TODO: check for the necessary query params
         let articleUrl = buildApiUrl(API_URLS.article);
-        alert(articleUrl);
-        window.fetch(articleUrl)
+        console.log(articleUrl);
+        axios({
+            url: 'http://api.politicsinvogue.com/v1/article',
+            method: 'GET',
+            crossDomain: true,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        }).then((response) => {
+            console.log(response);
+            callback(response)
+        })
+            .catch(error => {
+                console.log('request failed', error);
+            });
+        /*window.fetch(articleUrl)
             .then(response => response.json())
             .then((response) => {
                 console.log(response);
@@ -27,7 +41,7 @@ module.exports = {
             })
             .catch(error => {
                 console.log('request failed', error);
-            });
+            });*/
     },
 
     createArticle: function(callback: (response: {}) => void, options: {}) {
