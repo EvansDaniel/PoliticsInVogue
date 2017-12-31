@@ -6,6 +6,7 @@
   "author": "Daniel Evans",
   "dependencies": {
     "body-parser": "^1.4.3",
+    "corser": "^2.0.1",
     "express": "^4.13.4",
     "lodash": "^4.17.4",
     "method-override": "^2.1.3",

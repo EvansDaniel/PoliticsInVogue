@@ -1,10 +1,14 @@
 const CONST = require('./constants'),
     API_URLS = require('../src/shared/api-urls');
 const ArticleUtils = require('./api_utils/ArticleUtils');
-
+const Corser = require('corser');
 
 
 module.exports = function (app) {
+
+    // Adds Access-Control-Allow-Origin headers
+    // https://github.com/agrueneberg/Corser
+    app.use(Corser.create());
 
     // API ROUTES -----------------------------------------------------------------
     ////////////////////////////////////////////////////////////////////////////////
