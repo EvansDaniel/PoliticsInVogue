@@ -1,5 +1,5 @@
-const API_BASE = '/api',
-    API_VERSION = 'v1';
+const API_BASE = '',
+    API_VERSION = '/v1';
 
 let API_URLS_SHORTS = {
     article: 'article',
