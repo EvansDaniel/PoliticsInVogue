@@ -27,12 +27,11 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "upload:static": "aws s3 sync build/ s3://politicsinvogue.com",
+    "upload:static": "npm run build && aws s3 sync build/ s3://politicsinvogue.com",
     "upload:server": "ssh -i ~/.ssh/evansdaniel2000_personal_server.pem ubuntu@ec2-34-238-254-185.compute-1.amazonaws.com 'source ~/.bashrc && source ~/.nvm/nvm.sh && cd a-really-awesome-blog/server && git pull && npm install && forever restart server.js'",
-    "build:upload": "concurrently \"npm run build && npm run upload:static\" \"npm upload:server\""
+    "build:upload": "concurrently 'npm run upload:static' 'npm run upload:server'"
   },
   "devDependencies": {
-    "concurrently": "^3.5.1",
     "flow-bin": "^0.62.0",
     "less": "^2.7.3",
     "less-loader": "^4.0.5"
