@@ -18,6 +18,7 @@
     transition: width .35s;
     position: sticky;
     top: @navBarHeight;
+    z-index: @levelOne;
     // Temporary
     max-width: 100%;
   }
@@ -26,7 +27,7 @@
     padding-left: @articleBodyPadding;
     padding-right: @articleBodyPadding;
 
-    @media @tabletOrSmaller {
+    @media @laptopOrSmaller {
       padding-left: @large;
       padding-right: @large;
     }
@@ -152,7 +153,6 @@
         font-size: 1em;
         line-height: 1.45em;
         letter-spacing: .01em;
-        //padding: 0 300px 0 200px;
         padding-left: 5%;
         padding-right: 15%;
 

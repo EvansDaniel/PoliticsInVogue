@@ -1,0 +1,31 @@
+@import "../../shared/mixins.less";
+@import "../../shared/vars.less";
+
+.SocialShare {
+  cursor: pointer;
+  padding: 0 @small @large 0;
+
+  &.float {
+    .bottom-transition();
+  }
+
+  &.none {
+    transition: none;
+  }
+
+  &.grow {
+    &:hover {
+      img {
+        height: 35px;
+      }
+    }
+
+    img {
+      transition: height .33s;
+    }
+  }
+
+  img {
+    height: 30px;
+  }
+}

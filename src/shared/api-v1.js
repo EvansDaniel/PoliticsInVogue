@@ -1,7 +1,8 @@
+// @flow
 const API_URLS = require('./api-urls');
 const queryString = require('query-string');
 
-let post = function (url, options) {
+let post = (url, options) => {
     return fetch(url, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
@@ -9,11 +10,14 @@ let post = function (url, options) {
         });
 };
 
+const buildApiUrl = (baseUrl, queryParams) => {
+    return [baseUrl,queryString.stringify(queryParams)].join('?');
+};
+
 module.exports = {
-    getArticle: function (queryParams, callback) {
+    getArticle: function (callback: (response: {}) => void, queryParams?: {}) {
         // TODO: check for the necessary query params
-        let articleUrl = API_URLS.article + '?'
-                + queryString.stringify(queryParams);
+        let articleUrl = buildApiUrl(API_URLS.article);
 
         window.fetch(articleUrl)
             .then(response => response.json())
@@ -26,7 +30,7 @@ module.exports = {
             });
     },
 
-    createArticle: function (options, callback) {
+    createArticle: function(callback: (response: {}) => void, options: {}) {
         let createArticleUrl = API_URLS.createArticle;
         post(createArticleUrl, options);
     }

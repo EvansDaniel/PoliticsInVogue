@@ -1,10 +1,7 @@
 import React, {Component} from "react";
 import "./Footer.less";
 import {Link} from 'react-router-dom';
-import fbIcon from "../../../src/img/facebook-app-symbol.svg";
-import pinIcon from "../../../src/img/pinterest.svg";
-import linkedinIcon from "../../../src/img/linkedin-logo.svg";
-import twitterIcon from "../../../src/img/twitter.svg";
+import SocialShare from "../SocialShare/SocialShare";
 
 class Footer extends Component {
     constructor(props) {
@@ -50,20 +47,34 @@ class Footer extends Component {
                     <div className="column social-media">
                         <div className="title">Share on Social Media <div className="underline"></div></div>
                         <div className="social-media-list">
-                            <div>
-                                <div><img src={fbIcon}/></div>
-                                <div><img src={twitterIcon}/></div>
-                            </div>
-                            <div>
-                                <div><img src={pinIcon}/></div>
-                                <div><img src={linkedinIcon}/></div>
-                            </div>
+                            <SocialMediaList/>
                         </div>
                     </div>
                 </div>
             </div>
         );
     }
+
+}
+
+const SocialMediaList = (props) => {
+    const socialMediaList = [
+        ['facebook', 'twitter'],
+        ['pinterest','linkedin'],
+    ];
+    return (
+        socialMediaList.map(function (socialMedia) {
+            return (
+                <div>
+                    {Array.from(new Array(socialMedia.length),(val,index)=>index).map((index) => {
+                        return (
+                            <SocialShare type={socialMedia[index]} transitionType='grow'/>
+                        )
+                    })}
+                </div>
+            )
+        })
+    )
 }
 
 export default Footer;

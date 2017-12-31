@@ -12,17 +12,23 @@
   }
 
   .img-block {
+    max-width: 40%;
     img {
       height: 50%;
       @media @tabletOrSmaller {
         height: 40%;
       }
     }
+
+    div {
+      margin-top: 5px;
+      font-size: @emLarge + @emSmall;
+    }
   }
 
   .excerpt {
     padding-left: @small;
-    font-size: 14px;
+    font-size: 12px;
     line-height: 19px;
     .truncate(@fontSize: 14px, @linesToShow: 6, @lineHeight: 1em)
   }

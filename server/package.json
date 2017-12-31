@@ -1,9 +1,9 @@
 {
-  "name": "LocalLocker",
+  "name": "Sophie's blog",
   "version": "0.0.0",
-  "description": "App for LocalLocker storage company",
+  "description": "Blog for Sophie Clark",
   "main": "server.js",
-  "author": "Daniel Evans and Tariro Kandemiri",
+  "author": "Daniel Evans",
   "dependencies": {
     "body-parser": "^1.4.3",
     "express": "^4.13.4",

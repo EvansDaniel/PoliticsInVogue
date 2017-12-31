@@ -9,10 +9,12 @@
     "load-script": "^1.0.0",
     "lodash": "^4.17.4",
     "nuka-carousel": "^3.0.0",
+    "prop-types": "^15.6.0",
     "query-string": "^5.0.1",
     "react": "^16.1.1",
     "react-ckeditor-component": "^1.0.7",
     "react-dom": "^16.1.1",
+    "react-prop-types": "^0.4.0",
     "react-render-html": "^0.6.0",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
@@ -23,9 +25,13 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "flow": "flow 2> /dev/null | grep ':'",
+    "upload": "aws s3 sync build/ s3://politicsinvogue.com",
+    "build:upload": "npm run build && npm run upload"
   },
   "devDependencies": {
+    "flow-bin": "^0.62.0",
     "less": "^2.7.3",
     "less-loader": "^4.0.5"
   }

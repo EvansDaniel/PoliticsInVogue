@@ -5,7 +5,7 @@ import pinIcon from '../../../src/img/pinterest.svg';
 import linkedinIcon from '../../../src/img/linkedin-logo.svg';
 import twitterIcon from '../../../src/img/twitter.svg';
 import emailIcon from '../../../src/img/email.svg';
-import renderHTML from 'react-render-html';
+const CONSTANTS = require('../../shared/constants');
 
 class Comments extends Component {
     constructor(props) {
@@ -13,8 +13,33 @@ class Comments extends Component {
     }
 
     componentDidMount() {
+        window.fbAsyncInit = function () {
+            window.FB.init({
+                appId: CONSTANTS.FB_APP_ID,
+                autoLogAppEvents: true,
+                xfbml: true,
+                version: 'v2.11'
+            });
+        };
 
+        (function (d, s, id) {
+            let js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) {
+                return;
+            }
+            js = d.createElement(s);
+            js.id = id;
+            js.src = "https://connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+
+        console.log('did mount');
     }
+
+    /*componentDidUpdate() {
+        console.log('did update');
+        window.FB.XFBML.parse();
+    }*/
 
     render() {
         const tabs = [
@@ -25,32 +50,13 @@ class Comments extends Component {
         const iconHeight = 25;
         return (
             <div className="Comments">
-                <div className="tabs">
-                    {
-                        tabs.map(function (tab) {
-                           return (
-                               <div className={`tab ${tab.className}`}>
-                                   <img src={tab.icon}
-                                        className="icon"
-                                        height={iconHeight} alt=""/>
-                                   <div className="name">{tab.name}</div>
-                               </div>
-                           );
-                        })
-                    }
-                </div>
                 <div className="create-comment">
-                    <div className="fb-comments" data-href="http://www.fashionslave.co.uk/search/label/sex%20%26%20love?max-results=6" data-width="100%" data-numposts="10"></div>
+                    <div className="fb-comments" data-href="https://www.google.com" data-width="100%">
+                    </div>
                 </div>
             </div>
         );
     }
 }
-
-const FacebookCommentSection = (props) => {
-    return (
-        <div class="fb-comments" data-href="http://www.fashionslave.co.uk/search/label/sex%20%26%20love?max-results=6" data-width="100%" data-numposts="10"></div>
-    );
-};
 
 export default Comments;

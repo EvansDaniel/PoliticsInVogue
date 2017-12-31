@@ -6,6 +6,7 @@ import renderHTML from 'react-render-html';
 import $ from 'jquery';
 import Comments from "../Comments/Comments";
 import ArticleBlock from "../ArticleBlock/ArticleBlock";
+import PropTypes from 'prop-types';
 
 class ArticleContent extends Component {
     constructor(props) {
@@ -45,14 +46,15 @@ class ArticleContent extends Component {
 
     render() {
         let articleData = this.props.articleData;
+        // TODO: test the article with really long and short article length
         return (
             <div className="ArticleContent">
                 <div className="article-meter" style={{width: this.state.articleMeterWidth}}></div>
                 <div className="article">
                     <div className="article-top">
                         <div className="article-info">
-                            <div className="category"><Link to="/">Category</Link></div>
-                            <div className="time-to-read">12 min read</div>
+                            <div className="category"><Link to="/">{articleData.categoryName}</Link></div>
+                            <div className="time-to-read">{articleData.timeToReadInMin} min read</div>
                             <div className="title">
                                 {articleData.title}
                             </div>
@@ -62,7 +64,7 @@ class ArticleContent extends Component {
                             </div>
                         </div>
                         <div className="main-image">
-                            <img src="https://blog.hubspot.com/hubfs/00-Blog_Thinkstock_Images/How_to_Write_a_Blog_Post.jpg?t=1514169488746"/>
+                            <img src={articleData.mainImage}/>
                         </div>
                     </div>
                     <div className="lower-article">
@@ -77,19 +79,21 @@ class ArticleContent extends Component {
                                 {renderHTML(articleData.body)}
                             </div>
                             <div className="social-media-block">
-                                <SocialMediaBlock/>
+                                <SocialMediaBlock articleData={articleData}/>
                             </div>
                         </div>
-                        {/*
                         <div className="comment-section">
                             <Comments/>
                         </div>
-                        */}
                     </div>
                 </div>
             </div>
         );
     }
 }
+
+ArticleContent.proptypes = {
+    articleData: PropTypes.object.isRequired
+};
 
 export default ArticleContent;
