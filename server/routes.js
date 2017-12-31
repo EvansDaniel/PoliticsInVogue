@@ -1,6 +1,5 @@
 const CONST = require('./constants'),
-    API_URLS = require('../src/shared/api-urls'),
-    _ = require('lodash');
+    API_URLS = require('../src/shared/api-urls');
 const ArticleUtils = require('./api_utils/ArticleUtils');
 
 
