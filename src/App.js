@@ -10,22 +10,9 @@ import CreateArticle from "./modules/CreateArticle/CreateArticle";
 import 'react-responsive-carousel/lib/styles/carousel.min.css'
 import Footer from "./components/Footer/Footer";
 
-window.Fetch = window.fetch;
-window.fetch = function (url, init) {
-    console.log('URL:','\n',url, '\n', 'INIT:','\n', init);
-    return window.Fetch(url, init);
-};
-
 class App extends Component {
     componentDidMount() {
-        /*fetch('/api/v1/storageListing')
-         .then(response => response.json())
-         .then((response) => {
-         console.log(response);
-         })
-         .catch(error => {
-         console.log('request failed', error);
-         });*/
+
     }
 
     render() {

@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "axios": "^0.17.1",
     "classnames": "^2.2.5",
     "draft-js": "^0.10.4",
     "jquery": "^3.2.1",
@@ -28,7 +29,7 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "upload:static": "npm run build && aws s3 sync build/ s3://politicsinvogue.com",
-    "upload:server": "ssh -i ~/.ssh/evansdaniel2000_personal_server.pem ubuntu@ec2-34-238-254-185.compute-1.amazonaws.com 'source ~/.bashrc && source ~/.nvm/nvm.sh && cd a-really-awesome-blog/server && git pull && npm install && forever restart server.js'",
+    "upload:server": "ssh -i ~/.ssh/evansdaniel2000_personal_server.pem ubuntu@ec2-34-238-254-185.compute-1.amazonaws.com 'source ~/.bashrc && source ~/.nvm/nvm.sh && cd a-really-awesome-blog/server && rm -rf package-lock.json && git pull && npm install && forever restart server.js'",
     "build:upload": "concurrently 'npm run upload:static' 'npm run upload:server'"
   },
   "devDependencies": {
