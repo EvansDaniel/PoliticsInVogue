@@ -18,7 +18,7 @@ module.exports = {
     getArticle: function (callback: (response: {}) => void, queryParams?: {}) {
         // TODO: check for the necessary query params
         let articleUrl = buildApiUrl(API_URLS.article);
-
+        alert(articleUrl);
         window.fetch(articleUrl)
             .then(response => response.json())
             .then((response) => {
