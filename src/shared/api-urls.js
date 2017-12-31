@@ -1,5 +1,3 @@
-let _ = require('lodash');
-
 const API_BASE = '/api',
     API_VERSION = 'v1';
 
@@ -10,8 +8,10 @@ let API_URLS_SHORTS = {
 
 let API_URLS = {};
 
-_.forOwn(API_URLS_SHORTS, function(val, key) {
-    API_URLS[key] = `${API_BASE}/${API_VERSION}/${val}`
-});
+for(let key in API_URLS_SHORTS) {
+    if(API_URLS_SHORTS.hasOwnProperty(key)) {
+        API_URLS[key] = `${API_BASE}/${API_VERSION}/${API_URLS_SHORTS[key]}`
+    }
+}
 
 module.exports = API_URLS;
