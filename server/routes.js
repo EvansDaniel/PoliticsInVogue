@@ -2,14 +2,14 @@ const CONST = require('./constants'),
     API_URLS = require('../src/shared/api-urls');
 const ArticleUtils = require('./api_utils/ArticleUtils');
 const cors = require('cors');
-const CORS_ORIGIN_ALLOWED = ['http://localhost:3000', 'politicsinvogue.com'];
+const CORS_ORIGINS_ALLOWED = ['http://localhost:3000', 'http://politicsinvogue.com'];
 
 module.exports = function (app) {
 
     // https://github.com/expressjs/cors#configuring-cors
     // Manual version: https://gist.github.com/cuppster/2344435
     app.use(cors({
-        origin: CORS_ORIGIN_ALLOWED,
+        origin: CORS_ORIGINS_ALLOWED,
         optionsSuccessStatus: 200,
     }));
 
