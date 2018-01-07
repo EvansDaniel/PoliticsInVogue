@@ -10,7 +10,19 @@ const express = require('express'),
     path = require('path');
 
 // configuration ===============================================================
+// TODO: check for prod. Connect to prodUrl
 mongoose.connect(database.localUrl, {useMongoClient: true});
+/*
+let Cat = mongoose.model('Cat', { name: String });
+
+let kitty = new Cat({ name: 'Zildjian' });
+kitty.save(function (err) {
+    if (err) {
+        console.log(err);
+    } else {
+        console.log('meow');
+    }
+});*/
 
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({'extended': 'true'}));

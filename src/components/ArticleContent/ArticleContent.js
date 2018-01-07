@@ -39,9 +39,9 @@ class ArticleContent extends Component {
         if (newWidth < 0) {
             newWidth = 0;
         }
-        this.setState({
-            articleMeterWidth: `${newWidth}%`
-        });
+
+        console.log(newWidth);
+        this.articleMeter.style.width = newWidth+"%";
     }
 
     render() {
@@ -49,7 +49,7 @@ class ArticleContent extends Component {
         // TODO: test the article with really long and short article length
         return (
             <div className="ArticleContent">
-                <div className="article-meter" style={{width: this.state.articleMeterWidth}}></div>
+                <div className="article-meter" ref={(ref) => {this.articleMeter = ref}}></div>
                 <div className="article">
                     <div className="article-top">
                         <div className="article-info">

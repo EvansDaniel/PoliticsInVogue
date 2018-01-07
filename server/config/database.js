@@ -1,4 +1,6 @@
+const dbName = 'sophies-blog';
+
 module.exports = {
-    remoteUrl : '', // For database once hosted in prod
-    localUrl: 'mongodb://localhost/LocalStorage'
+    prodUrl : '', // For database once hosted in prod
+    localUrl: `mongodb://localhost/${dbName}`
 };
