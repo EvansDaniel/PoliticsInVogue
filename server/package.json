@@ -5,6 +5,7 @@
   "main": "server.js",
   "author": "Daniel Evans",
   "dependencies": {
+    "bcrypt": "^1.0.3",
     "body-parser": "^1.4.3",
     "cors": "^2.8.4",
     "express": "^4.13.4",

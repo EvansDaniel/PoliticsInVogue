@@ -23,7 +23,6 @@ for(let key in API_URLS_SHORTS) {
 
         // add server API url
         API_URLS[key + API_URL_NAME_SUFFIX] = `/${API_VERSION}/${API_URLS_SHORTS[key]}`;
-        console.log(API_URLS[key], API_URLS[key + API_URL_NAME_SUFFIX]);
     }
 }
 

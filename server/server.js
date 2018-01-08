@@ -8,55 +8,20 @@ const express = require('express'),
     morgan = require('morgan'),
     bodyParser = require('body-parser'),
     methodOverride = require('method-override'),
-    path = require('path');
+    path = require('path'),
+    passport = require('passport'),
+    PassportConfig = require('./config/passport'),
+    cors = require('cors');
 
 // configuration ===============================================================
 // TODO: check for prod. Connect to prodUrl
 mongoose.connect(database.localUrl, {useMongoClient: true});
-/*
- let Cat = mongoose.model('Cat', { name: String });
 
- let kitty = new Cat({ name: 'Zildjian' });
- kitty.save(function (err) {
- if (err) {
- console.log(err);
- } else {
- console.log('meow');
- }
- });*/
-
-let passport = require('passport')
-    , LocalStrategy = require('passport-local').Strategy;
-
-passport.use(new LocalStrategy({
-        usernameField: 'email',
-    },
-    function (username, password, done) {
-        return done(null, {'username': 'username'});
-        /*User.findOne({ username: username }, function(err, user) {
-         if (err) { return done(err); }
-         if (!user) {
-         return done(null, false, { message: 'Incorrect username.' });
-         }
-         if (!user.validPassword(password)) {
-         return done(null, false, { message: 'Incorrect password.' });
-         }
-         return done(null, user);
-         });*/
-    }
-));
-
-passport.serializeUser(function (user, done) {
-    done(null, user);
-});
-
-passport.deserializeUser(function (user, done) {
-    done(null, user);
-});
-
+// TODO: provide resave and saveUninitialized option
 app.use(session({secret: "cats"}));
 app.use(passport.initialize());
 app.use(passport.session());
+PassportConfig();
 
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({'extended': 'true'}));
@@ -64,32 +29,20 @@ app.use(bodyParser.json()); // parse application/json
 app.use(bodyParser.json({type: 'application/vnd.api+json'}));
 app.use(methodOverride('X-HTTP-Method-Override'));
 
-app.post('/login',
-    passport.authenticate('local'),
-    function (req, res) {
-        console.log(req.body);
-        console.log(req.session);
-        res.json({
-            'json': 'json'
-        })
-    });
-
-const isAuthenticated = function (req, res, next) {
-    if (req.isAuthenticated()) return next();
-    return res.json({
-        message: 'User not authenticated'
-    })
-};
-
-app.get('/temp', isAuthenticated, function (req, res, next) {
-    console.log(req.session);
-    return res.json({
-        'user': req.user
-    });
-});
-
 // routes ======================================================================
 require('./routes.js')(app);
+
+const CORS_ORIGINS_ALLOWED = [
+    'http://localhost:3000',
+    'http://politicsinvogue.com'
+];
+// https://github.com/expressjs/cors#configuring-cors
+// Manual version: https://gist.github.com/cuppster/2344435
+app.use(cors({
+    origin: CORS_ORIGINS_ALLOWED,
+    // Some old browsers choke on 204
+    optionsSuccessStatus: 200,
+}));
 
 app.listen(port);
 console.log("App listening on port " + port);
