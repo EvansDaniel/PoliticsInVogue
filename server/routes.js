@@ -2,6 +2,7 @@ const CONST = require('./constants'),
     API_URLS = require('../src/shared/api-urls');
 const ArticleUtils = require('./api_utils/ArticleUtils');
 const User = require('./models/User');
+const ArticleBootstrap = require('./bootstrap/ArticleBootstrap');
 const passport = require('passport');
 
 
@@ -39,13 +40,18 @@ const debuggingHelper = function (req, res, next, userFunc) {
 module.exports = function (app) {
     signUpIfNotSignedUp();
 
+    ArticleBootstrap(app);
+
+    // TODO: remove comments in func
     const isAuthenticated = function (req, res, next) {
-        if (req.isAuthenticated()) return next();
+        return next();
+        /*if (req.isAuthenticated()) return next();
         return res.json({
             authenticated: false
-        })
+        })*/
     };
-    // TODO: remember to add application/x-www-form-urlencoded to post headers
+
+    // TODO: remember to use Content-Type application/json
     app.post('/login',
         passport.authenticate('local'),
         function (req, res, next) {
@@ -73,11 +79,30 @@ module.exports = function (app) {
         });
     });
 
-    app.get(API_URLS.createArticleApi, isAuthenticated, function (req, res, next) {
+    app.get(API_URLS.createArticleApi, isAuthenticated,
+        function (req, res, next) {
         debuggingHelper(req,res,next, function (req,res,next) {
             return res.json({
                 'user': req.user
             });
         });
     });
+
+    /*app.post(API_URLS.createArticleApi, isAuthenticated,
+        function (req, res, next) {
+        debuggingHelper(req, res, next, function (req, res, next) {
+            // TODO: remember to use Content-Type application/json
+            ArticleDataService.create(req.body.data, function (err) {
+                if(err) {
+                    return res.json({
+                        status: false
+                    });
+                } else {
+                    return res.json({
+                       status: true
+                    });
+                }
+            });
+        });
+    });*/
 };

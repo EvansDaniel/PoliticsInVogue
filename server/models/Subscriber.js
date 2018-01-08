@@ -9,7 +9,7 @@ const SubscriberSchema = new Schema({
         trim: true
     },
     lastEmail: Date,
-    // TODO: this should be something better
+    // TODO: look up enums in mongoose
     emailFrequency: Number
 }, {
     timestamps: true

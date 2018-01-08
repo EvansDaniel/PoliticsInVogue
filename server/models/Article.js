@@ -6,6 +6,10 @@ const ArticleSchema = new Schema({
         type: String,
         trim: true
     },
+    normalizedTitle: {
+        type: String,
+        trim: true
+    },
     author: {
         type: String,
         default: 'Sophie Clark',
@@ -13,8 +17,6 @@ const ArticleSchema = new Schema({
     },
     body:   String,
     // comments: [{ body: String, date: Date }],
-    // Date.now is not called???
-    date: { type: Date, default: Date.now },
     hidden: Boolean,
     disableComments: Boolean,
     draft: Boolean,
@@ -29,3 +31,5 @@ const ArticleSchema = new Schema({
 }, {
     timestamps: true
 });
+
+module.exports = mongoose.model('Article', ArticleSchema);

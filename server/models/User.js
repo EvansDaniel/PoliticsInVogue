@@ -16,6 +16,8 @@ const UserSchema = new Schema({
     timestamps: true
 });
 
+// TODO: add something similar for update
+// http://mongoosejs.com/docs/api.html#model_Model.update
 UserSchema.pre('save', function (next) {
     const user = this;
 
