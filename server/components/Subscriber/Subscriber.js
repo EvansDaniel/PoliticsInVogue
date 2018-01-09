@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const Mongoose = require('mongoose');
+const Schema = Mongoose.Schema;
 
 const SubscriberSchema = new Schema({
     email: {
@@ -14,3 +14,8 @@ const SubscriberSchema = new Schema({
 }, {
     timestamps: true
 });
+
+const Subscriber = Mongoose.model('Subscriber', SubscriberSchema);
+
+module.exports = Subscriber;
+

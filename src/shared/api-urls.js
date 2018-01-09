@@ -6,6 +6,7 @@ const API_BASE = '',
 let API_URLS_SHORTS = {
     article: 'article',
     createArticle: 'article/create',
+    login: 'login',
 };
 
 let API_URLS = {};

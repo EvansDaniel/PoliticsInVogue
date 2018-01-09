@@ -1,9 +1,8 @@
-const passport = require('passport')
-    , LocalStrategy = require('passport-local').Strategy,
-    User = require('../models/User');
+const passport = require('passport'),
+    LocalStrategy = require('passport-local').Strategy
 
 // https://stackoverflow.com/questions/15711127/express-passport-node-js-error-handling
-const PassportConfig = function() {
+const PassportConfig = function(User) {
     console.log('Passport config');
     passport.use(new LocalStrategy({
             usernameField: 'email',

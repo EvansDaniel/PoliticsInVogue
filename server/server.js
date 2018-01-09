@@ -21,7 +21,7 @@ mongoose.connect(database.localUrl, {useMongoClient: true});
 app.use(session({secret: "cats"}));
 app.use(passport.initialize());
 app.use(passport.session());
-PassportConfig();
+// PassportConfig();
 
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({'extended': 'true'}));
@@ -30,7 +30,7 @@ app.use(bodyParser.json({type: 'application/vnd.api+json'}));
 app.use(methodOverride('X-HTTP-Method-Override'));
 
 // routes ======================================================================
-require('./routes.js')(app);
+require('./bootstrap.js')(app);
 
 const CORS_ORIGINS_ALLOWED = [
     'http://localhost:3000',

@@ -1,4 +1,4 @@
-const Article = require('../models/Article');
+const serviceUtils = require('../../utils/service-utils');
 
 const ArticleDataService = function (Article) {
     // TODO: find a good place to put this
@@ -24,9 +24,9 @@ const ArticleDataService = function (Article) {
             // Model.update(conditions, doc, [options], [callback])
             Article.update({ _id: articleData._id }, articleData,
                 function (err, raw) {
-                console.log('Mongo raw', raw);
-                errorLogger(err, cb);
-            });
+                    console.log('Mongo raw', raw);
+                    errorLogger(err, cb);
+                });
         },
 
         delete: function (id) {
@@ -41,3 +41,4 @@ const ArticleDataService = function (Article) {
 };
 
 module.exports = ArticleDataService;
+

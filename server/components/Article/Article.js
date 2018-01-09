@@ -32,4 +32,11 @@ const ArticleSchema = new Schema({
     timestamps: true
 });
 
+ArticleSchema.statics.timeToReadInMin = function (text) {
+    const averageWordsPerMin = 250;
+    const numWordsInArticle = text.split(' ').length;
+    return Math.ceil(numWordsInArticle / averageWordsPerMin)
+        || 1;
+};
+
 module.exports = mongoose.model('Article', ArticleSchema);
