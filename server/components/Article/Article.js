@@ -8,19 +8,29 @@ const ArticleSchema = new Schema({
     },
     normalizedTitle: {
         type: String,
-        trim: true
+        trim: true,
+        validate: {
+            validator: function(field, cb) {
+                return cb(true);
+            },
+            message: '{VALUE} is not a valid phone number!'
+        },
     },
     author: {
         type: String,
         default: 'Sophie Clark',
         trim: true
     },
-    body:   String,
-    // comments: [{ body: String, date: Date }],
+    body: String,
     hidden: Boolean,
     disableComments: Boolean,
     draft: Boolean,
     trashed: Boolean, // Keep???
+    placement: {
+        type: String,
+        default: 'none',
+        enum: ['none', 'featured', 'carousel'],
+    },
     // Are these something that we want??
     // TODO: Check some analytics libs for this functionality
     meta: {
@@ -39,4 +49,33 @@ ArticleSchema.statics.timeToReadInMin = function (text) {
         || 1;
 };
 
-module.exports = mongoose.model('Article', ArticleSchema);
+ArticleSchema.methods.addNormalizedTitle = function (title) {
+    this.normalizedTitle = title
+        // TODO: possibly need to update this
+        // replace all non-alphanumeric characters
+        // that isn't space
+        .replace(/[^a-zA-Z\d\s:]/g, '')
+        // replace space with "-"
+        .replace(new RegExp(" ", 'g'), '-')
+        .toLowerCase();
+};
+
+const Article = mongoose.model('Article', ArticleSchema);
+
+ArticleSchema.path('normalizedTitle').validate({
+    isAsync: true,
+    validator: function (value, cb) {
+        Article.findOne({
+                normalizedTitle: value,
+                createdAt: new Date("2018-01-09T07:05:37.630Z")
+            },
+            function (err, article) {
+            console.log(article);
+            return cb(true);
+        });
+
+    },
+    message: 'Custom error message!' // Optional
+});
+
+module.exports = Article;

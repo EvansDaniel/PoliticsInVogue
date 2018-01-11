@@ -20,6 +20,10 @@ const ArticleBootstrap = function (app) {
         routeUtils.isAuthenticated,
         ArticleRoutes.postCreateArticleHandle
     );
+
+    app.get(API_URLS.articlePlacementApi,
+        ArticleRoutes.getPlacementArticleHandle
+    );
 };
 
 module.exports = ArticleBootstrap;
