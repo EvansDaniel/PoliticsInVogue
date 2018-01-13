@@ -1,5 +1,5 @@
 // TODO: figure out a better way to do this
-const API_URLS = require('../../../src/shared/api-urls');
+const URLS = require('../../../src/shared/urls');
 const routeUtils = require('../../utils/route-utils');
 
 const ArticleBootstrap = function (app) {
@@ -7,21 +7,21 @@ const ArticleBootstrap = function (app) {
     const ArticleDataService = require('./ArticleDataService')(Article);
     const ArticleRoutes = require('./ArticleRoutes')(ArticleDataService);
 
-    app.get(API_URLS.articleApi,
+    app.get(URLS.API.article,
         ArticleRoutes.getArticleHandle
     );
 
-    app.get(API_URLS.createArticleApi,
+    app.get(URLS.API.createArticle,
         routeUtils.isAuthenticated,
         ArticleRoutes.getCreateArticleHandle
     );
 
-    app.post(API_URLS.createArticleApi,
+    app.post(URLS.API.createArticle,
         routeUtils.isAuthenticated,
         ArticleRoutes.postCreateArticleHandle
     );
 
-    app.get(API_URLS.articlePlacementApi,
+    app.get(URLS.API.articlePlacement,
         ArticleRoutes.getPlacementArticleHandle
     );
 };

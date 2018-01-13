@@ -5,32 +5,42 @@ const ArticleDataService = function (Article) {
         getArticleById: function (id, cb) {
             Article.findOne({
                     _id: id
-                }, function (err, article) {
-                return cb(err, article);
+                }, cb);
+        },
+
+        /*
+        Articles returned of form: {
+            placement1: [ list of articles w/ placement 1],
+            placement2: [ list of articles w/ placement 2]
+        }
+         */
+        getPlacedArticles: function (cb) {
+            // TODO: What if I change 'none' to something else?
+            Article.find({placement: {$ne : 'none'}}, function (err, articles) {
+                if(err) {
+                    return cb(err, null);
+                }
+                let placedArticles = {};
+                articles.forEach(function (article) {
+                    placedArticles[article.placement] = article
+                });
+                return cb(null, placedArticles);
             });
         },
 
-        getPlacedArticles: function (placement, cb) {
-            if(Article.schema.path('placement')
-                    .enumValues.indexOf(placement) <= -1) {
-                // No err, indicate no data returned
-                return cb(false, false)
+        getArticleByTitleAndDate: function (queryObj, cb) {
+            const err  = serviceUtils.checkRequiredQueryParams(queryObj, {
+                slugTitle: 'Normalized article title returned in Article model',
+                createdAt: 'ISO date of article publishing'
+            });
+            if(err) {
+                return cb(err, null);
             }
-            console.log(placement);
-            Article.find({placement: placement}, function (err, articles) {
-                return cb(err, articles);
-            });
-        },
-
-        getArticleByTitleAndDate: function (obj, cb) {
-            // obj should have "createdAt"
-            // and "normalizedTitle"
+            // TODO: date must be iso formatted, etc.
             Article.findOne({
-                normalizedTitle: obj.normalizedTitle,
-                createdAt: new Date(obj.createdAt)
-            }, function (err, article) {
-                return cb(err, article);
-            });
+                slugTitle: queryObj.slugTitle,
+                createdAt: new Date(queryObj.createdAt)
+            }, cb);
         },
 
         getArticlesByCategory: function (category, cb) {
@@ -48,8 +58,8 @@ const ArticleDataService = function (Article) {
             // https://thecodebarbarian.wordpress.com/2013/05/12/how-to-easily-validate-any-form-ever-using-angularjs/
             const newArticle = new Article(articleData);
             newArticle.addNormalizedTitle(articleData.title);
-            newArticle.save(function (err) {
-                serviceUtils.errorLogger(err,cb);
+            newArticle.save(function (err, savedArticle, rowsAffected) {
+                return cb(err, savedArticle, rowsAffected);
             });
         },
 
@@ -58,8 +68,8 @@ const ArticleDataService = function (Article) {
             // Model.update(conditions, doc, [options], [callback])
             Article.update({ _id: articleData._id }, articleData,
                 function (err, raw) {
-                    console.log('Mongo raw', raw);
-                    serviceUtils.errorLogger(err, cb);
+                    console.log('Mongo raw from update', raw);
+                    return cb(err, raw);
                 });
         },
 

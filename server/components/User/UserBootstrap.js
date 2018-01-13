@@ -1,4 +1,4 @@
-const API_URLS = require('../../../src/shared/api-urls'),
+const URLS = require('../../../src/shared/urls'),
     passport = require('passport'),
     PassportConfig = require('../../config/passport');
 // TODO: figure out a better way to do this
@@ -34,7 +34,7 @@ const UserBootstrap = function (app) {
     PassportConfig(User);
 
     // TODO: remember to use Content-Type application/json
-    app.post(API_URLS.loginApi,
+    app.post(URLS.API.login,
         passport.authenticate('local'),
         UserRoutes.postLogin);
 };

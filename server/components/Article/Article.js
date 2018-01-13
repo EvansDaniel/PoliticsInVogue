@@ -6,7 +6,7 @@ const ArticleSchema = new Schema({
         type: String,
         trim: true
     },
-    normalizedTitle: {
+    slugTitle: {
         type: String,
         trim: true,
         validate: {
@@ -50,7 +50,7 @@ ArticleSchema.statics.timeToReadInMin = function (text) {
 };
 
 ArticleSchema.methods.addNormalizedTitle = function (title) {
-    this.normalizedTitle = title
+    this.slugTitle = title
         // TODO: possibly need to update this
         // replace all non-alphanumeric characters
         // that isn't space
@@ -62,11 +62,11 @@ ArticleSchema.methods.addNormalizedTitle = function (title) {
 
 const Article = mongoose.model('Article', ArticleSchema);
 
-ArticleSchema.path('normalizedTitle').validate({
+ArticleSchema.path('slugTitle').validate({
     isAsync: true,
     validator: function (value, cb) {
         Article.findOne({
-                normalizedTitle: value,
+                slugTitle: value,
                 createdAt: new Date("2018-01-09T07:05:37.630Z")
             },
             function (err, article) {

@@ -64,8 +64,8 @@ const HomePageCarousel = (props) => {
 };
 
 const CarouselItem = (props) => {
-    //TODO: Probs should just store this transformation in the database as normalizedTitle
-    const normalizedTitle = props.title
+    //TODO: Probs should just store this transformation in the database as slug
+    const slugTitle = props.title
             // replace all non-alphanumeric characters
             // that isn't space
             .replace(/[^a-zA-Z\d\s:]/g, '')
@@ -74,7 +74,7 @@ const CarouselItem = (props) => {
             .toLowerCase();
     return (
         <div className="carousel-image" onClick={function () {
-            props.history.push(`/${props.year}/${props.month}/${normalizedTitle}`)
+            props.history.push(`/${props.year}/${props.month}/${slugTitle}`)
         }}>
             <div className="article-info">
                 <div className="title">

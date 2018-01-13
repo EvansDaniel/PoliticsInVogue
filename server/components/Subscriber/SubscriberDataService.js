@@ -6,9 +6,7 @@ const SubscriberDataService = function (Subscriber) {
             // TODO: look up validation stuff for mongoose
             const newSubscriber = new Subscriber(subscriberData);
             console.log(subscriberData);
-            newSubscriber.save(function (err) {
-                serviceUtils.errorLogger(err,cb);
-            });
+            newSubscriber.save(cb);
         },
 
         update: function (subscriberData, cb) {
@@ -16,12 +14,11 @@ const SubscriberDataService = function (Subscriber) {
             Subscriber.update({ _id: subscriberData._id }, subscriberData,
                 function (err, raw) {
                 console.log('Mongo raw', raw);
-                serviceUtils.errorLogger(err, cb);
+                return cb(err, raw);
             });
         },
 
         delete: function (id, cb) {
-            //serviceUtils.errorLogger(err, cb);
             return false;
         },
     }

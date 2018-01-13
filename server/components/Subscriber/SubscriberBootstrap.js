@@ -1,5 +1,5 @@
 // TODO: figure out a better way to do this
-const API_URLS = require('../../../src/shared/api-urls');
+const URLS = require('../../../src/shared/urls');
 const routeUtils = require('../../utils/route-utils');
 
 const SubscriberBootstrap = function (app) {

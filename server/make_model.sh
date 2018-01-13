@@ -9,7 +9,8 @@ SERVER_COMPONENTS_ROOT=~/WebstormProjects/a-really-awesome-blog/server/component
 
 # e.g. Article.js
 MODEL=$1
-MODEL_LOWER=`echo "${MODEL}" | tr '[:upper:]' '[:lower:]'`
+# Assumes give upper case words, convert to camel case
+MODEL_LOWER=`rest=${MODEL:1}; fl=${MODEL:0:1}; echo ${fl,,}${rest}`
 MODEL_FILE="$MODEL".js
 # e.g. ArticleDataService.js
 SERVICE="$MODEL"DataService
@@ -62,9 +63,7 @@ const ${SERVICE} = function (${MODEL}) {
             // TODO: look up validation stuff for mongoose
             const new${MODEL} = new ${MODEL}(${MODEL_DATA});
             console.log(${MODEL_DATA});
-            ${NEW_MODEL}.save(function (err) {
-                serviceUtils.errorLogger(err,cb);
-            });
+            ${NEW_MODEL}.save(cb);
         },
 
         update: function (${MODEL_DATA}, cb) {
@@ -72,12 +71,11 @@ const ${SERVICE} = function (${MODEL}) {
             ${MODEL}.update({ _id: ${MODEL_DATA}._id }, ${MODEL_DATA},
                 function (err, raw) {
                 console.log('Mongo raw', raw);
-                serviceUtils.errorLogger(err, cb);
+                return cb(err, raw);
             });
         },
 
         delete: function (id, cb) {
-            //serviceUtils.errorLogger(err, cb);
             return false;
         },
     }

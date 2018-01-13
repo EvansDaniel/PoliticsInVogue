@@ -41,6 +41,7 @@ class ArticleCards extends Component {
             }
         ];
         return (
+            /* TODO: Need to check styling when we have 1, 2, 3, 4, 5, and 6 cards */
             <div className="ArticleCards">
                 {
                     articleCards.map(function (card) {

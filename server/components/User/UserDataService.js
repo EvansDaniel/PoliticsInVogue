@@ -2,13 +2,12 @@ const serviceUtils = require('../../utils/service-utils');
 
 const UserDataService = function (User) {
     return {
+        // cb should have err, savedDocument, rowsAffected params
         create: function (userData, cb) {
             // TODO: look up validation stuff for mongoose
             const newUser = new User(userData);
             console.log(userData);
-            newUser.save(function (err) {
-                serviceUtils.errorLogger(err,cb);
-            });
+            newUser.save(cb);
         },
 
         update: function (userData, cb) {
@@ -16,12 +15,11 @@ const UserDataService = function (User) {
             User.update({ _id: userData._id }, userData,
                 function (err, raw) {
                 console.log('Mongo raw', raw);
-                serviceUtils.errorLogger(err, cb);
+                return cb(err, raw);
             });
         },
 
         delete: function (id, cb) {
-            //serviceUtils.errorLogger(err, cb);
             return false;
         },
     }
