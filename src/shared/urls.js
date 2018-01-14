@@ -4,8 +4,12 @@ const API_BASE = '',
 let URLS = {
     API: {
         article: 'article',
-        articlePlacement: 'article/placement',
+        articles: 'articles',
         createArticle: 'article/create',
+        editArticle: 'article/edit',
+        articlePlacement: 'article/placement',
+        categories: 'categories',
+        editCategory: 'category/edit',
         login: 'login',
     }
 };
@@ -18,6 +22,6 @@ for(let url in URLS.API) {
 }
 
 // TODO: setup logging in prod
-console.log(URLS);
+console.log(JSON.stringify(URLS, null, 2));
 
 module.exports = URLS;

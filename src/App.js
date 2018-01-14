@@ -9,6 +9,7 @@ import Category from "./modules/Category/Category";
 import CreateArticle from "./modules/CreateArticle/CreateArticle";
 import 'react-responsive-carousel/lib/styles/carousel.min.css'
 import Footer from "./components/Footer/Footer";
+import Temp from "./components/Temp/Temp";
 
 class App extends Component {
     componentDidMount() {
@@ -23,9 +24,9 @@ class App extends Component {
                            component={withTemplate(Home)}/>
                     <Route exact path="/about"
                            component={withTemplate(About)}/>
-                    <Route path="/:year/:month/:title"
+                    <Route path="/articles/:year/:month/:title"
                            component={withTemplate(Article)}/>
-                    <Route path="/:category"
+                    <Route path="/category/:category"
                            component={withTemplate(Category)}/>
                     <Route path="/article/create"
                            component={withTemplate(CreateArticle)}/>

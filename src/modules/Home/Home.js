@@ -43,13 +43,17 @@ const HomePageCarousel = (props) => {
             title: "MY WINTER UNIFORM (THAT ISN'T JEANS...)",
             excerpt: "Hands up if you have a bit of a bad habit of sticking to wearing jeans and jumpers in the winter? Yes, I'm right there with you",
             year: 2017,
-            month: 12
+            month: 12,
+            slugTitle: 'my-title',
+            id: 'Article id goes here'
         },
         {
             title: "3 PARTY LOOKS FOR 3 PARTY OCCASIONS",
             excerpt: "Party season is upon us! Almost - count down the days with me. I hope you've practiced your best fake (and real) smiles",
             year: 2017,
-            month: 11
+            month: 11,
+            slugTitle: 'my-title',
+            id: 'Article id goes here'
         }
     ];
     return (
@@ -64,17 +68,9 @@ const HomePageCarousel = (props) => {
 };
 
 const CarouselItem = (props) => {
-    //TODO: Probs should just store this transformation in the database as slug
-    const slugTitle = props.title
-            // replace all non-alphanumeric characters
-            // that isn't space
-            .replace(/[^a-zA-Z\d\s:]/g, '')
-            // replace space with "-"
-            .replace(new RegExp(" ", 'g'), '-')
-            .toLowerCase();
     return (
         <div className="carousel-image" onClick={function () {
-            props.history.push(`/${props.year}/${props.month}/${slugTitle}`)
+            props.history.push(`/articles/${props.year}/${props.month}/${props.slugTitle}`, {id: props.id})
         }}>
             <div className="article-info">
                 <div className="title">

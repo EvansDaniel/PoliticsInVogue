@@ -8,6 +8,13 @@ const ArticleCategoryBootstrap = function (app) {
     const ArticleCategoryRoutes = require('./ArticleCategoryRoutes')(ArticleCategoryDataService);
 
     // define app.get/post routes here
+    app.get(URLS.API.categories,
+        ArticleCategoryRoutes.getCategoriesHandle
+    );
+
+    app.post(URLS.API.editCategory,
+        ArticleCategoryRoutes.postEditCategoryHandle
+    )
 };
 
 module.exports = ArticleCategoryBootstrap;

@@ -108,6 +108,7 @@ fi
 
 if [[ `cat ${ROUTES_FILE} | wc -l` -eq 0 ]]; then
     echo "const routeUtils = require('../../utils/route-utils');
+const HttpError = require('http-error');
 
 const ${ROUTES} = function (${SERVICE}) {
 

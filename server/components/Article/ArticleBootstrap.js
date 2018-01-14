@@ -11,9 +11,23 @@ const ArticleBootstrap = function (app) {
         ArticleRoutes.getArticleHandle
     );
 
+    app.get(URLS.API.articles,
+        ArticleRoutes.getArticlesHandle
+    );
+
     app.get(URLS.API.createArticle,
         routeUtils.isAuthenticated,
         ArticleRoutes.getCreateArticleHandle
+    );
+
+    app.get(URLS.API.editArticle,
+        routeUtils.isAuthenticated,
+        ArticleRoutes.getEditArticleHandle
+    );
+
+    app.post(URLS.API.editArticle,
+        routeUtils.isAuthenticated,
+        ArticleRoutes.postEditArticleHandle
     );
 
     app.post(URLS.API.createArticle,

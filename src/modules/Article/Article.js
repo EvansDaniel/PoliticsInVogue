@@ -17,9 +17,7 @@ class Article extends Component {
     componentDidMount() {
         if (!this.props.articleData) {
             const queryParams = {
-                    year: this.props.match.params.year,
-                    month: this.props.match.params.month,
-                    title: this.props.match.params.title
+                    id: this.props.location.state.id
                 },
                 self = this;
 

@@ -56,7 +56,7 @@ const SubMenu = (props) => {
   return (
       <ul>
           {categories.map((category) =>
-              <Link key={category.id} to={`/${category.href}`}>
+              <Link key={category.id} to={`/category/${category.href}`}>
                   <li>
                       {category.category}
                   </li>

@@ -6,26 +6,23 @@ const ArticleSchema = new Schema({
         type: String,
         trim: true
     },
-    slugTitle: {
-        type: String,
-        trim: true,
-        validate: {
-            validator: function(field, cb) {
-                return cb(true);
-            },
-            message: '{VALUE} is not a valid phone number!'
-        },
-    },
     author: {
         type: String,
         default: 'Sophie Clark',
         trim: true
     },
+    category: {
+        type: Schema.Types.ObjectId,
+        ref: 'ArticleCategory'
+    },
     body: String,
     hidden: Boolean,
-    disableComments: Boolean,
+    allowComments: Boolean,
     draft: Boolean,
-    trashed: Boolean, // Keep???
+    trashed: { // Keep???
+        type: Boolean,
+        default: false,
+    },
     placement: {
         type: String,
         default: 'none',
@@ -49,8 +46,9 @@ ArticleSchema.statics.timeToReadInMin = function (text) {
         || 1;
 };
 
-ArticleSchema.methods.addNormalizedTitle = function (title) {
-    this.slugTitle = title
+/*
+ArticleSchema.methods.addArticleSlug = function () {
+    const slugTitle = this.title
         // TODO: possibly need to update this
         // replace all non-alphanumeric characters
         // that isn't space
@@ -58,11 +56,17 @@ ArticleSchema.methods.addNormalizedTitle = function (title) {
         // replace space with "-"
         .replace(new RegExp(" ", 'g'), '-')
         .toLowerCase();
+    console.log(this.toObject());
+    const createdAt = new Date(this.createdAt),
+        year = createdAt.getFullYear(),
+        month = createdAt.getMonth() + 1;
+    this.articleSlug = `/${year}/${month}/${slugTitle}`;
 };
+*/
 
 const Article = mongoose.model('Article', ArticleSchema);
 
-ArticleSchema.path('slugTitle').validate({
+/*ArticleSchema.path('slugTitle').validate({
     isAsync: true,
     validator: function (value, cb) {
         Article.findOne({
@@ -76,6 +80,6 @@ ArticleSchema.path('slugTitle').validate({
 
     },
     message: 'Custom error message!' // Optional
-});
+});*/
 
 module.exports = Article;

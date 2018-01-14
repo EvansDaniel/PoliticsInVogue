@@ -1,26 +1,22 @@
 const routeUtils = require('../../utils/route-utils');
+const HttpError = require('http-error');
 
 const ArticleRoutes = function (ArticleDataService) {
 
     const getArticleHandle = function (req, res, next) {
         routeUtils.debuggingHelper(req, res, next, function (req, res, next) {
-            ArticleDataService.getArticleByTitleAndDate(req.query, function (err, article) {
+            ArticleDataService.getArticleById(req.query.id,function (err, article) {
                 // Check for errors, send default response for errors
                 if (err) {
                     return next(err);
                 }
+
                 if (!article) {
                     // TODO: what to do in this case?
                     console.log(article);
                 }
-                const createdAt = new Date(article.createdAt),
-                    articleObj = article.toObject(),
-                    year = createdAt.getFullYear(),
-                    month = createdAt.getMonth() + 1;
 
-                articleObj.articleSlug = `/${year}/${month}/${articleObj.slugTitle}`;
-
-                return res.json(articleObj);
+                return res.json(article);
             });
 
         });
@@ -46,7 +42,16 @@ const ArticleRoutes = function (ArticleDataService) {
 
     const getEditArticleHandle = function (req, res, next) {
         routeUtils.debuggingHelper(req, res, next, function (req, res, next) {
-
+            ArticleDataService.getArticleById(req.query.id, function (err, article) {
+                if(err) {
+                    return next(err);
+                }
+                if(!article) {
+                    // TODO: make sure this works
+                    return next(new HttpError.NotFound('The requested resource was not found'))
+                }
+                return res.json(article);
+            })
         });
     };
 
@@ -65,11 +70,38 @@ const ArticleRoutes = function (ArticleDataService) {
         });
     };
 
+    const postEditArticleHandle = function (req, res, next) {
+        routeUtils.debuggingHelper(req, res, next, function (req, res, next) {
+            ArticleDataService.update(req.body.data, function (err, raw) {
+                if(err) {
+                    return next(err);
+                }
+                // TODO: should I explicitly send status of OK or something?
+                return res.json({});
+            });
+        });
+    };
+
+    const getArticlesHandle = function (req, res, next) {
+        routeUtils.debuggingHelper(req, res, next, function (req, res, next) {
+            ArticleDataService.getArticlesByCategory(req.query.category, function (err, articles) {
+                if(err) {
+                    return next(err);
+                }
+                // TODO: should I explicitly send status of OK or something?
+                return res.json(articles);
+            });
+        });
+    };
+
     return {
         getArticleHandle: getArticleHandle,
+        getArticlesHandle: getArticlesHandle,
         getCreateArticleHandle: getCreateArticleHandle,
+        getEditArticleHandle: getEditArticleHandle,
+        getPlacementArticleHandle: getPlacementArticleHandle,
+        postEditArticleHandle: postEditArticleHandle,
         postCreateArticleHandle: postCreateArticleHandle,
-        getPlacementArticleHandle: getPlacementArticleHandle
     };
 };
 
