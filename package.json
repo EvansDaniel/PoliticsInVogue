@@ -6,6 +6,7 @@
     "axios": "^0.17.1",
     "classnames": "^2.2.5",
     "draft-js": "^0.10.4",
+    "envalid": "^4.1.2",
     "jquery": "^3.2.1",
     "load-script": "^1.0.0",
     "lodash": "^4.17.4",

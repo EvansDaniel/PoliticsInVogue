@@ -1,4 +1,11 @@
 // set up ======================================================================
+const dotenv = require('dotenv');
+
+const dotenvResult = dotenv.config();
+if(dotenvResult.error) {
+    throw dotenvResult.error;
+}
+
 const express = require('express'),
     app = express(),
     session = require('express-session'),
@@ -13,12 +20,21 @@ const express = require('express'),
     PassportConfig = require('./config/passport'),
     cors = require('cors');
 
+process.env.isDev = process.env.NODE_ENV === 'development';
+process.env.isProd = process.env.NODE_ENV === 'production';
+process.env.isTest = process.env.NODE_ENV === 'test';
+
 // configuration ===============================================================
 // TODO: check for prod. Connect to prodUrl
-mongoose.connect(database.localUrl, {useMongoClient: true});
+if(process.env.isDev) {
+    console.log(database.localUrl);
+    mongoose.connect(database.localUrl, {useMongoClient: true});
+} else {
+    mongoose.connect(database.prodUrl, {useMongoClient: true});
+}
 
 // TODO: provide resave and saveUninitialized option
-app.use(session({secret: "cats"}));
+app.use(session({secret: process.env.EXPRESS_SESSION_SECRET}));
 app.use(passport.initialize());
 app.use(passport.session());
 // PassportConfig();

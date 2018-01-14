@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Route, Switch} from 'react-router';
+import {Route, Switch, Redirect} from 'react-router';
 import {BrowserRouter} from 'react-router-dom'
 import Home from './modules/Home/Home'
 import About from './modules/About/About'
@@ -52,5 +52,13 @@ const withTemplate = (ModuleComponent) => {
         }
     }
 };
+
+const PrivateRoute = ({ component: Component, ...rest }) => (
+    <Route {...rest} render={(props) => (
+        fakeAuth.isAuthenticated === true
+            ? <Component {...props} />
+            : <Redirect to='/auth/login' />
+    )} />
+);
 
 export default App;

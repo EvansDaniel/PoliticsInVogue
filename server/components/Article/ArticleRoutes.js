@@ -5,6 +5,7 @@ const ArticleRoutes = function (ArticleDataService) {
 
     const getArticleHandle = function (req, res, next) {
         routeUtils.debuggingHelper(req, res, next, function (req, res, next) {
+            console.log(req.user);
             ArticleDataService.getArticleById(req.query.id,function (err, article) {
                 // Check for errors, send default response for errors
                 if (err) {

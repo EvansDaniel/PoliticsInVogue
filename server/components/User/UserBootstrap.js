@@ -1,12 +1,10 @@
 const URLS = require('../../../src/shared/urls'),
     passport = require('passport'),
     PassportConfig = require('../../config/passport');
-// TODO: figure out a better way to do this
 
-// TODO: remove this and find better solution
 const signUpIfNotSignedUp = function(User) {
-    const email = 'clarksl0@sewanee.edu',
-        pass = 'password';
+    const email = process.env.AUTHOR_EMAIL,
+        pass = process.env.AUTHOR_PASSWORD;
     const newUser = new User({
         email: email,
         password: pass

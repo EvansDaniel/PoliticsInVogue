@@ -1,15 +1,25 @@
 import React, {Component} from 'react';
 import './Login.less'
 import PropTypes from 'prop-types';
+const API = require('../../shared/api-v1');
 
 class Login extends Component {
     constructor(props) {
         super(props);
-
+        this.signIn = this.signIn.bind(this);
     }
 
     componentDidMount() {
 
+    }
+
+    signIn(event) {
+        API.login(function (response) {
+            console.log(response);
+        }, {
+            email: 'clarksl0@sewanee.edu',
+            password: 'password'
+        });
     }
 
     render() {
@@ -25,7 +35,7 @@ class Login extends Component {
                     <div id="auth-fields">
                         <input type="email" placeholder="Email" icon="email-icon"/>
                         <input type="password" placeholder="Password" icon="email-icon"/>
-                        <button>Sign In</button>
+                        <button onClick={this.signIn}>Sign In</button>
                     </div>
                 </div>
             </div>

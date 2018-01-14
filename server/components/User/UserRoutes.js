@@ -4,9 +4,8 @@ const UserRoutes = function (UserDataService) {
 
     const postLogin = function (req, res, next) {
         routeUtils.debuggingHelper(req,res,next, function (req,res,next) {
-            res.json({
-                authenticated: true
-            });
+            delete req.user.password;
+            res.json(req.user);
         });
     };
 

@@ -56,6 +56,7 @@ const ArticleDataService = function (Article) {
 
     return {
         getArticleById: function (id, cb) {
+            console.log(id);
             Article.findOne({
                 _id: id
             }).populate('category')
@@ -63,7 +64,6 @@ const ArticleDataService = function (Article) {
                     // Don't think postFindArticleModification is needed here??
                     return cb(err, postFindArticleModification(article));
                 });
-
         },
 
         /*
@@ -136,7 +136,7 @@ const ArticleDataService = function (Article) {
         update: function (articleData, cb) {
             // TODO: check if _id is present
             // If we are updating as hidden article, we want to unplace it as well
-            if(articleData.hidden) {
+            if (articleData.hidden) {
                 articleData.placement = 'none';
             }
             Article.update({_id: articleData._id}, articleData,

@@ -1,5 +1,5 @@
-const API_BASE = '',
-    API_VERSION = 'v1';
+const CONSTANTS = require('./constants'),
+    API_VERSION = CONSTANTS.API_VERSION;
 
 let URLS = {
     API: {

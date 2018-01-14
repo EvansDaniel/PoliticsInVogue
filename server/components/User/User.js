@@ -48,38 +48,6 @@ UserSchema.methods.comparePassword = function (candidatePassword, cb) {
     });
 };
 
-UserSchema.statics.serializeUser = function (user, done) {
-    done(null, {
-        _id: user._id
-    });
-};
-
-UserSchema.statics.deserializeUser = function (user, done) {
-    User.findById(user._id)
-        .then((user) => {
-            done(null, user);
-        })
-        .catch((error) => {
-            console.log(`Error: ${error}`);
-        });
-};
-
 const User = mongoose.model('User', UserSchema);
-
-User.serializeUser = function (user, done) {
-    done(null, {
-        _id: user._id
-    });
-};
-
-User.deserializeUser = function (user, done) {
-    User.findById(user._id)
-        .then((user) => {
-            done(null, user);
-        })
-        .catch((error) => {
-            console.log(`Error: ${error}`);
-        });
-};
 
 module.exports = User;
