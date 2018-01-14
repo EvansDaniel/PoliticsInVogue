@@ -5,125 +5,133 @@
 @underlineMarginTop: @xxsmall;
 @coolColor: rgb(255, 122, 89);
 
+@midTabletAndSmaller: ~'only screen and (max-width : 550px)';;
+// TODO: fix squishness at 550px
+
 .Footer {
-  height: auto;
-  background-color: @black;
-  color: white;
-  margin-top: @xxlarge;
-  overflow-x: hidden;
-  padding-top: @footerPaddingTopBottom;
-  padding-bottom: @footerPaddingTopBottom;
+  .footer-container {
+    height: auto;
+    background-color: @black;
+    color: white;
+    margin-top: @xxlarge;
+    overflow-x: hidden;
+    padding-top: @footerPaddingTopBottom;
+    padding-bottom: @footerPaddingTopBottom;
 
-  @media @largerThanLaptop {
-    padding-left: 10%;
-    padding-right: 10%;
-  }
-
-  @media @laptopOrSmaller {
-    padding-left: 5%;
-    padding-right: 5%;
-  }
-
-  @media @tabletOrSmaller {
-    padding-left: 0;
-    padding-right: 0;
-  }
-
-  @media @smartphones {
-    padding-top: 0;
-    padding-bottom: 0;
-  }
-
-  .site-link-row {
-    .flex();
-    justify-content: space-around;
-
-    @media @smartphones {
-      flex-direction: column;
-      .column {
-        margin-top: @medium;
-      }
+    @media @largerThanLaptop {
+      padding-left: 10%;
+      padding-right: 10%;
     }
 
-    .column {
-      font-family: Crimson Text, serif;
-      text-align: center;
-      padding-right: 3%;
-      padding-left: 3%;
+    @media @laptopOrSmaller {
+      padding-left: 5%;
+      padding-right: 5%;
+    }
 
-      &:hover {
-        .underline {
-          width: 100% !important;
+    @media @tabletOrSmaller {
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    @media @midTabletAndSmaller {
+      padding-top: @small;
+      padding-bottom: @small;
+    }
+
+    .site-link-row {
+      .flex();
+      justify-content: space-around;
+
+      @media @midTabletAndSmaller {
+        flex-direction: column;
+        .column {
+          margin-top: @medium;
         }
       }
 
-      .title {
-        text-transform: capitalize;
-        font-weight: bold;
+      .column {
+        font-family: Crimson Text, serif;
+        text-align: center;
+        padding-right: 3%;
+        padding-left: 3%;
 
-        .underline {
-          margin-top: @underlineMarginTop;
-          height: 2px;
-          width: 0;
-          background-color: @favoriteColor;
-          transition: width .33s;
-        }
-      }
+        &:hover {
+          .underline {
+            width: 100% !important;
 
-      .list {
-        * {
-          margin-top: @small;
-        }
-
-        a {
-          text-decoration: none;
-          color: inherit;
-        }
-
-        .footer-input {
-          margin-top: @xxsmall;
-          * {
-            height: 30px;
-            .border-radius(@radius: 1px);
-          }
-          input {
-            border: none;
-            outline: none;
-            padding: 0;
-            text-indent: 5%;
-            font-family: Crimson Text, serif;
-            font-size: @emLarge + @emSmall*2;
-
-            &::placeholder {
-              text-indent: 5%;
-              font-family: Crimson Text, serif;
+            @media @midTabletAndSmaller {
+              width: 0 !important;
             }
           }
+        }
 
-          button {
-            border: none;
-            color: @black;
-            cursor: pointer;
+        .title {
+          text-transform: capitalize;
+          font-weight: bold;
+
+          .underline {
+            margin-top: @underlineMarginTop;
+            height: 2px;
+            width: 0;
+            background-color: @favoriteColor;
+            transition: width .33s;
           }
         }
-      }
 
-      &.social-media {
-        .social-media-list {
-          .flex();
-          margin-top: @small;
-          justify-content: center;
+        .list {
+          * {
+            margin-top: @small;
+          }
 
-          & > div {
-            //display: inline-block;
+          a {
+            text-decoration: none;
+            color: inherit;
+          }
 
+          .footer-input {
+            margin-top: @xxsmall;
+            * {
+              height: 30px;
+              .border-radius(@radius: 1px);
+            }
+            input {
+              border: none;
+              outline: none;
+              padding: 0;
+              text-indent: 5%;
+              font-family: Crimson Text, serif;
+              font-size: @emLarge + @emSmall*2;
+
+              &::placeholder {
+                text-indent: 5%;
+                font-family: Crimson Text, serif;
+              }
+            }
+
+            button {
+              border: none;
+              color: @black;
+              cursor: pointer;
+            }
+          }
+        }
+
+        &.social-media {
+          .social-media-list {
+            .flex();
+            margin-top: @small;
+            justify-content: center;
 
             & > div {
-              display: inline-block;
-              //padding: 5% 7% 5% 5%;
-              padding: 5px;
-              cursor: pointer;
-              width: 100%;
+              //display: inline-block;
+
+              & > div {
+                display: inline-block;
+                //padding: 5% 7% 5% 5%;
+                padding: 5px;
+                cursor: pointer;
+                width: 100%;
+              }
             }
           }
         }

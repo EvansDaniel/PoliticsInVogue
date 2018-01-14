@@ -1,0 +1,90 @@
+@import "../../shared/mixins.less";
+@import "../../shared/vars.less";
+
+@marginBetweenFields: @xlarge;
+@inputBorderColor: 1px solid #d2d8d8;
+@inputBorderFocusColor: #343642;
+@fieldWidth: 80%;
+@fontColor: #505260;
+@selectedTabBackgroundColor: rgba(128, 145, 145, .15);
+
+.Login {
+  .flex();
+  justify-content: center;
+  color: @primaryColor;
+  width: 100%;
+  margin-top: @xxlarge;
+
+  @media @smartphones {
+    width: 100%;
+  }
+
+  .login-container {
+    border: @pixel solid @primaryColor;
+    width: 33%;
+
+    @media @tabletOrSmaller {
+      width: 60%;
+    }
+
+    @media @smartphones {
+      width: 80%;
+    }
+
+    #auth-tabs {
+      letter-spacing: @pixel;
+
+      div {
+        width: 100%;
+        text-align: center;
+        padding-top: @small;
+        padding-bottom: @small;
+      }
+
+      .tab-selected {
+        background-color: @selectedTabBackgroundColor;
+        color: @primaryColor;
+      }
+    }
+
+    #auth-fields {
+      .flex();
+      // aligns center for cross axis i.e. row
+      align-items: center;
+      flex-direction: column;
+
+      :first-child {
+        margin-top: @medium;
+      }
+
+      input:last-of-type {
+        margin-bottom: @large;
+      }
+
+      input {
+        border: none;
+        border-bottom: @inputBorderColor;
+        outline: none;
+        width: @fieldWidth;
+        margin-bottom: @marginBetweenFields;
+
+        &:focus {
+          border-bottom: @pixel solid @favoriteColor;
+        }
+      }
+
+      button {
+        line-height: normal;
+        margin: 0 0 1rem;
+        font-weight: bold;
+        width: @fieldWidth;
+        height: auto;
+        min-height: @xlarge;
+        letter-spacing: @pixel;
+        background-color: white;
+        border: 1px solid @primaryColor;
+        outline: none;
+      }
+    }
+  }
+}

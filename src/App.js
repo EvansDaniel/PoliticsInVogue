@@ -9,7 +9,7 @@ import Category from "./modules/Category/Category";
 import CreateArticle from "./modules/CreateArticle/CreateArticle";
 import 'react-responsive-carousel/lib/styles/carousel.min.css'
 import Footer from "./components/Footer/Footer";
-import Temp from "./components/Temp/Temp";
+import Login from "./modules/Login/Login";
 
 class App extends Component {
     componentDidMount() {
@@ -30,6 +30,8 @@ class App extends Component {
                            component={withTemplate(Category)}/>
                     <Route path="/article/create"
                            component={withTemplate(CreateArticle)}/>
+                    <Route path="/auth/login"
+                           component={withTemplate(Login)}/>
                 </Switch>
             </BrowserRouter>
         );

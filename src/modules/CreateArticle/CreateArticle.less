@@ -3,47 +3,94 @@
 
 @outsidePadding: @xxlarge + @medium;
 
+.input-control() {
+  font-size: @em + @emMedium;
+  .border-radius(2px);
+  height: @large + @xsmall;
+  width: 100%;
+  text-align: center;
+  outline: none;
+  border: none;
+  margin-bottom: @medium;
+  position: relative;
+  border-bottom: 1px solid rgba(200, 200, 200, .8);
+
+  &::placeholder {
+    font-family: Lato, serif;
+  }
+
+  &:focus {
+    border-bottom: 1px solid @favoriteColor;
+  }
+}
+
+.default-button() {
+  display: inline-flex;
+  height: 25px;
+  border: none;
+  outline: none;
+  color: @primaryColor;
+  .border-radius(@radius: 2px);
+  margin-right: @medium;
+  cursor: pointer;
+  background-color: white;
+  .default-box-shadow();
+  .bottom-transition(@height: 3px, @time: .2s);
+}
+
 .CreateArticle {
   padding: @medium @outsidePadding 0 @outsidePadding;
   font-family: Lato, serif;
   color: @primaryColor;
 
-  & > input {
-    font-size: @em + @emMedium;
-    text-indent: @xsmall;
-    .border-radius(2px);
-    height: @large + @xsmall;
-    width: 100%;
-    text-align: center;
-    outline: none;
-    border: none;
-    margin-bottom: @medium;
-    position: relative;
-    border-bottom: 1px solid rgba(200,200,200,.8);
+  @media @smartphones {
+    padding: @medium;
+  }
 
-    &::placeholder {
-      font-family: Lato, serif;
+  & > input {
+    .input-control();
+  }
+
+  .category-control {
+    .flex();
+    justify-content: center;
+    margin-bottom: @medium;
+    div {
+      text-align: center;
+      width: auto;
+
+      .category-select-label {
+        display: block;
+      }
+
+      .category-select {
+        background-color: white;
+        color: @primaryColor;
+        outline: none;
+        width: auto;
+        min-width: 100px;
+      }
     }
 
-    &:focus {
-      border-bottom: 1px solid @favoriteColor;
+    .category-input {
+      .input-control();
+    }
+
+    button {
+      .default-button();
+      height: auto;
+      margin-left: @small;
     }
   }
 
   .editor-controls {
     margin-bottom: @medium;
+    @media @smartphones {
+      text-align: center;
+    }
 
     & > button {
-      display: inline-flex;
-      height: 25px;
-      border: none;
-      outline: none;
-      color: @primaryColor;
-      .border-radius(@radius: 2px);
-      margin-right: @medium;
-      cursor: pointer;
-      .default-box-shadow();
-      .bottom-transition(@height: 3px, @time: .2s);
+      .default-button();
 
       img {
         height: 18px;
@@ -71,7 +118,9 @@
     .saving-actions {
       display: inline-block;
       vertical-align: bottom;
-
+      @media @smartphones {
+        margin-top: @xsmall;
+      }
     }
   }
 

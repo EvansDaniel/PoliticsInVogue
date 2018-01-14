@@ -16,6 +16,7 @@ class CreateArticle extends Component {
         this.handleInputChange = this.handleInputChange.bind(this);
         this.changeView = this.changeView.bind(this);
         this.publishArticle = this.publishArticle.bind(this);
+        this.changeCategoryAction = this.changeCategoryAction.bind(this);
 
         this.SAVING_ACTIONS = {
             changesSaved: 'All changes saved',
@@ -27,10 +28,17 @@ class CreateArticle extends Component {
             keepEditing: 'Keep editing'
         };
 
+        this.CATEGORY_ACTIONS = {
+            existingCategory: 'or add to existing category',
+            newCategory: 'or add to new category'
+        };
+
         this.state = {
             showPreview: false,
             buttonViewText: 'Show preview',
             savingAction: this.SAVING_ACTIONS.changesSaved,
+            addNewCategory: false,
+            categoryAction: this.CATEGORY_ACTIONS.newCategory,
             articleData: {
                 body: '',
                 title: '',
@@ -67,7 +75,7 @@ class CreateArticle extends Component {
 
     handleInputChange(event) {
         let name = null, value = null;
-        if(event.editor) {
+        if (event.editor) {
             value = event.editor.getData();
             name = 'body';
         } else {
@@ -87,6 +95,29 @@ class CreateArticle extends Component {
         this.setState({
             articleData: articleData
         });
+    }
+
+    changeCategoryAction(event) {
+        if(this.state.addNewCategory) {
+            this.setState({
+                addNewCategory: !this.state.addNewCategory,
+                categoryAction: this.CATEGORY_ACTIONS.newCategory
+            });
+        } else {
+            this.setState({
+                addNewCategory: !this.state.addNewCategory,
+                categoryAction: this.CATEGORY_ACTIONS.existingCategory
+            });
+        }
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if(!prevState.addNewCategory && this.state.addNewCategory) {
+            // Since we just changed to adding a new category
+            // erase old value and focus input
+            this.categoryInput.value = '';
+            this.categoryInput.focus();
+        }
     }
 
     buildDate() {
@@ -110,12 +141,35 @@ class CreateArticle extends Component {
                        onChange={this.handleInputChange}
                        value={this.state.articleData.title}
                 />
-                <input className="category-input" type="text"
-                       placeholder="What is the article category?"
-                       name="category"
-                       onChange={this.handleInputChange}
-                       value={this.state.articleData.category}
+                <input className="showcase-image-input"
+                       type="text"
+                       placeholder="Enter the url for the main article image. This will appear at the top of the article"
+                       name="showcaseImage"
+                       value={this.state.articleData.showcaseImage}
                 />
+                <div className="category-control">
+                    {
+                     !this.state.addNewCategory ?
+                    <div>
+                        <label className="category-select-label">Choose an existing category</label>
+                        <select className="category-select">
+                            <option value="">Option 1</option>
+                            <option value="">Option 2</option>
+                            <option value="">Option 3</option>
+                        </select>
+                    </div> :
+                    <input className="category-input" type="text"
+                           placeholder="Add new category"
+                           ref={(input) => {
+                               this.categoryInput = input
+                           }}
+                           name="category"
+                           onChange={this.handleInputChange}
+                           value={this.state.articleData.category}
+                    />
+                    }
+                    <button onClick={this.changeCategoryAction}>{this.state.categoryAction}</button>
+                </div>
                 <div className="editor-controls">
                     <button onClick={this.changeView} className="view-button">
                         <img src={previewIcon} alt=""/>
@@ -123,8 +177,8 @@ class CreateArticle extends Component {
                     </button>
 
                     {/*<button onClick={this.changeView} className="upload-image-button">
-                        Upload image
-                    </button>*/}
+                     Upload image
+                     </button>*/}
 
                     <button onClick={this.publishArticle} className="save-as-draft-button">
                         <img src={publishIcon}/>
