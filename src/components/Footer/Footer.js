@@ -100,7 +100,7 @@ const SocialMediaList = (props) => {
                 <div>
                     {Array.from(new Array(socialMedia.length), (val, index) => index).map((index) => {
                         return (
-                            <SocialShare type={socialMedia[index]} transitionType='grow'/>
+                            <SocialShare type={socialMedia[index]} transitionType='float'/>
                         )
                     })}
                 </div>
