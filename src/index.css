@@ -1,5 +1,19 @@
-body {
+html, body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  font-family: Roboto, sans-serif;
+  font-size: 1em;
+  /* Cause footer to stick to bottom */
+  height: 100%;
+}
+
+/* Cause footer to stick to bottom */
+#root {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+}
+
+#root > .content {
+  flex: 1 0 auto;
 }

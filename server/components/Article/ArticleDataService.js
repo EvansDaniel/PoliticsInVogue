@@ -1,6 +1,4 @@
 const serviceUtils = require('../../utils/service-utils');
-const ArticleCategoryDataService = require('../ArticleCategory/ArticleCategoryDataService')
-(require('../ArticleCategory/ArticleCategory'));
 
 const ArticleDataService = function (Article) {
     const minimumArticleFields = ['_id', 'title', 'createdAt', 'updatedAt',
@@ -55,15 +53,26 @@ const ArticleDataService = function (Article) {
     };
 
     return {
-        getArticleById: function (id, cb) {
-            console.log(id);
-            Article.findOne({
-                _id: id
-            }).populate('category')
+        getArticle: function (queryObj, cb) {
+            let filter = {},
+                findFunc = Article.find.bind(Article);
+            if(queryObj.hasOwnProperty('id')) {
+                filter._id = queryObj.id;
+                findFunc = Article.findOne.bind(Article);
+            } else if(queryObj.hasOwnProperty('category')) {
+                filter.category = queryObj.category;
+                findFunc = Article.find.bind(Article);
+            }
+
+            findFunc(filter)
                 .exec(function (err, article) {
                     // Don't think postFindArticleModification is needed here??
                     return cb(err, postFindArticleModification(article));
                 });
+        },
+
+        getAllCategories: function (cb) {
+            Article.find({category: 'Uncategorized'})
         },
 
         /*
@@ -101,35 +110,14 @@ const ArticleDataService = function (Article) {
             });
         },
 
-        // TODO: generalize this based on query params to handle different types of filtering, default now is categories
-        // Could extend to trashed, disableComments, all articles, etc.
-        getArticlesByCategory: function (categoryId, cb) {
-            const category = 'My category';
-            Article.find({category: categoryId})
-                .populate('category')
-                .exec(function (err, articles) {
-                    return cb(err, postFindArticleModification(articles));
-                });
-        },
-
         create: function (articleData, cb) {
             // Article data contains title, author, body
             // hidden, draft, trashed
             // TODO: look up validation stuff for mongoose
-            // https://thecodebarbarian.wordpress.com/2013/05/12/how-to-easily-validate-any-form-ever-using-angularjs/
-            ArticleCategoryDataService.create(articleData.category, function (err, category) {
-                if (err) {
-                    return cb(err, category);
-                }
-                if (!category) {
-                    // TODO: ???
-                }
-                // Replace the category data with its id
-                articleData.category = category._id;
-                const newArticle = new Article(articleData);
-                newArticle.save(function (err, savedArticle, rowsAffected) {
-                    return cb(err, savedArticle, rowsAffected);
-                });
+            // Replace the category data with its id
+            const newArticle = new Article(articleData);
+            newArticle.save(function (err, savedArticle, rowsAffected) {
+                return cb(err, savedArticle, rowsAffected);
             });
         },
 

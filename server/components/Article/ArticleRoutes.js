@@ -6,7 +6,7 @@ const ArticleRoutes = function (ArticleDataService) {
     const getArticleHandle = function (req, res, next) {
         routeUtils.debuggingHelper(req, res, next, function (req, res, next) {
             console.log(req.user);
-            ArticleDataService.getArticleById(req.query.id,function (err, article) {
+            ArticleDataService.getArticle(req.query,function (err, article) {
                 // Check for errors, send default response for errors
                 if (err) {
                     return next(err);
@@ -35,15 +35,9 @@ const ArticleRoutes = function (ArticleDataService) {
         });
     };
 
-    const getCreateArticleHandle = function (req, res, next) {
-        routeUtils.debuggingHelper(req, res, next, function (req, res, next) {
-            ArticleDataService.getArticleById()
-        });
-    };
-
     const getEditArticleHandle = function (req, res, next) {
         routeUtils.debuggingHelper(req, res, next, function (req, res, next) {
-            ArticleDataService.getArticleById(req.query.id, function (err, article) {
+            ArticleDataService.getArticle(req.query, function (err, article) {
                 if(err) {
                     return next(err);
                 }
@@ -98,11 +92,10 @@ const ArticleRoutes = function (ArticleDataService) {
     return {
         getArticleHandle: getArticleHandle,
         getArticlesHandle: getArticlesHandle,
-        getCreateArticleHandle: getCreateArticleHandle,
-        getEditArticleHandle: getEditArticleHandle,
         getPlacementArticleHandle: getPlacementArticleHandle,
-        postEditArticleHandle: postEditArticleHandle,
         postCreateArticleHandle: postCreateArticleHandle,
+        getEditArticleHandle: getEditArticleHandle,
+        postEditArticleHandle: postEditArticleHandle,
     };
 };
 

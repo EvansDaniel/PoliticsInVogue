@@ -9,8 +9,15 @@ const UserRoutes = function (UserDataService) {
         });
     };
 
+    const getCheckAuthenticated = function (req, res, next) {
+        return res.json({
+            authenticated: req.isAuthenticated && req.isAuthenticated()
+        });
+    };
+
     return {
-        postLogin: postLogin
+        postLogin: postLogin,
+        getCheckAuthenticated: getCheckAuthenticated
     };
 };
 

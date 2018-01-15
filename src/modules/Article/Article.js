@@ -17,16 +17,20 @@ class Article extends Component {
     componentDidMount() {
         if (!this.props.articleData) {
             const queryParams = {
+                // TODO: fix this, check that state is defined
                     id: this.props.location.state.id
                 },
                 self = this;
 
-            API.getArticle(function (res) {
-                self.setState({
-                    loading: false,
-                    articleData: res
-                });
-            }, queryParams);
+            API.getArticle({
+                success: function (res) {
+                    self.setState({
+                        loading: false,
+                        articleData: res
+                    });
+                },
+                params: queryParams
+            });
         } else {
             this.setState({
                 loading: false,

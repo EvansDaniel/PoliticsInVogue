@@ -35,6 +35,10 @@ const UserBootstrap = function (app) {
     app.post(URLS.API.login,
         passport.authenticate('local'),
         UserRoutes.postLogin);
+
+    app.get(URLS.API.checkAuthenticated,
+        UserRoutes.getCheckAuthenticated
+    )
 };
 
 module.exports = UserBootstrap;

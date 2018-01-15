@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 const ArticleSchema = new Schema({
     title:  {
         type: String,
+        required: [true, 'Article title is required'],
         trim: true
     },
     author: {
@@ -12,13 +13,33 @@ const ArticleSchema = new Schema({
         trim: true
     },
     category: {
-        type: Schema.Types.ObjectId,
-        ref: 'ArticleCategory'
+        type: String,
+        required: [function () {
+            return !this.draft;
+        }, 'You must provide a category for the article before it is published'],
     },
-    body: String,
-    hidden: Boolean,
-    allowComments: Boolean,
-    draft: Boolean,
+    showcaseImage: {
+        type: String,
+        required: [true, 'Main article image url is required']
+        // TODO: write an image url validator
+    },
+    body: {
+        type: String,
+        default: '',
+        trim: true,
+    },
+    hidden: {
+        type: String,
+        default: false,
+    },
+    allowComments: {
+        type: Boolean,
+        default: true
+    },
+    draft: {
+        type: Boolean,
+        default: true
+    },
     trashed: { // Keep???
         type: Boolean,
         default: false,
@@ -45,24 +66,6 @@ ArticleSchema.statics.timeToReadInMin = function (text) {
     return Math.ceil(numWordsInArticle / averageWordsPerMin)
         || 1;
 };
-
-/*
-ArticleSchema.methods.addArticleSlug = function () {
-    const slugTitle = this.title
-        // TODO: possibly need to update this
-        // replace all non-alphanumeric characters
-        // that isn't space
-        .replace(/[^a-zA-Z\d\s:]/g, '')
-        // replace space with "-"
-        .replace(new RegExp(" ", 'g'), '-')
-        .toLowerCase();
-    console.log(this.toObject());
-    const createdAt = new Date(this.createdAt),
-        year = createdAt.getFullYear(),
-        month = createdAt.getMonth() + 1;
-    this.articleSlug = `/${year}/${month}/${slugTitle}`;
-};
-*/
 
 const Article = mongoose.model('Article', ArticleSchema);
 

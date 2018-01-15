@@ -14,8 +14,12 @@ class Login extends Component {
     }
 
     signIn(event) {
+        const locationState = this.props.location.state;
+        const self = this;
         API.login(function (response) {
             console.log(response);
+            console.log(self.props);
+            self.props.history.push(locationState && locationState.redirect || '/');
         }, {
             email: 'clarksl0@sewanee.edu',
             password: 'password'
@@ -23,6 +27,7 @@ class Login extends Component {
     }
 
     render() {
+        console.log(this.props);
         return (
             <div className="Login">
                 <div className="login-container">

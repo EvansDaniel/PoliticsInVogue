@@ -9,8 +9,8 @@ let URLS = {
         editArticle: 'article/edit',
         articlePlacement: 'article/placement',
         categories: 'categories',
-        editCategory: 'category/edit',
         login: 'login',
+        checkAuthenticated: 'checkAuthenticated'
     }
 };
 

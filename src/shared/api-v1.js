@@ -17,7 +17,6 @@ for (let key in URLS.API) {
         if (isProd) {
             URLS.APP[key] = `${API_DOMAIN}/${API_VERSION}/${URLS.API[key]}`
         } else {
-            console.log(key);
             URLS.APP[key] = `${URLS.API[key]}`
         }
 
@@ -27,40 +26,75 @@ for (let key in URLS.API) {
 }
 
 let post = (url, options) => {
-    return fetch(url, {
+    options = options || {};
+    // server expects data this way for all post requests
+    const data = {
+        data: options.data
+    };
+    console.log(options);
+    axios({
+        url: url,
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(options)
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        data: JSON.stringify(data)
+    }).then(response => {
+        console.log(response);
+        options.success && options.success(response)
+    }).catch(error => {
+        console.log('request failed', error.response);
+        options.error && options.error(error.response);
     });
 };
 
-const buildApiUrl = (baseUrl, queryParams) => {
-    return [baseUrl, queryString.stringify(queryParams)].join('?');
+let get = function (url, options) {
+    options = options || {};
+    axios({
+        url: url,
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        params: options.queryParams,
+    }).then(response => {
+        console.log(response);
+        options.success && options.success(response)
+    }).catch(error => {
+        console.log('request failed', error.response);
+        options.error && options.error(error.response);
+    });
 };
 
 module.exports = {
-    getArticle: function (callback: (response: {}) => void, queryParams?: {}) {
+    getArticle: function (options) {
+        options = options || {}
         // TODO: check for the necessary query params
-        let articleUrl = buildApiUrl(URLS.article);
-        console.log('getArticle', articleUrl);
+        get(URLS.APP.article, {
+            success: options.success,
+            error: options.error,
+            queryParams: options.params
+        })
+    },
+
+    createArticle: function (callback: (response: {}) => void, options: {}) {
+        let createArticleUrl = URLS.APP.createArticle;
+        post(createArticleUrl, {
+            success: callback,
+            data: options.data
+        })
+    },
+
+    checkAuthenticated: function (callback: (response: {}) => void, options: {}) {
         axios({
-            url: articleUrl,
+            url: URLS.APP.checkAuthenticated,
             method: 'GET',
-            crossDomain: true,
-            headers: {
-                'Content-Type': 'application/json'
-            },
-        }).then((response) => {
+        }).then(response => {
             console.log(response);
             callback(response.data)
         }).catch(error => {
             console.log('request failed', error);
         });
-    },
-
-    createArticle: function (callback: (response: {}) => void, options: {}) {
-        let createArticleUrl = URLS.APP.createArticle;
-        post(createArticleUrl, options);
     },
 
     login: function (callback: (response: {}) => void, options: {email: string, password: string}) {
