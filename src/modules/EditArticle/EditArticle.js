@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import './EditArticle.less'
-import CKEditor from 'react-ckeditor-component';
 import Article from '../../modules/Article/Article';
 import _ from 'lodash';
 import {waitBeforeCall} from '../../shared/utils';
@@ -8,8 +7,6 @@ import previewIcon from '../../../src/img/preview.svg';
 import publishIcon from '../../../src/img/publish.svg';
 import API from '../../shared/api-v1';
 import {MegadraftEditor, editorStateFromRaw, editorStateToJSON} from 'megadraft-denistsuman';
-import 'megadraft/dist/css/megadraft.css';
-/*import { stateToMarkdown } from 'megadraft-js-export-markdown'*/
 import {stateToHTML} from 'draft-js-export-html';
 import {stateFromHTML} from 'draft-js-import-html';
 

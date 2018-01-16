@@ -29,6 +29,7 @@ class NavBar extends Component {
                     <li>
                         <Link to="/">Search</Link>
                     </li>
+                    <li><Link to="/dashboard">Dashboard</Link></li>
                     <li>
                         <a className="icon" href="mailto:clarksl0@sewanee.edu">
                             <i className="fa fa-envelope-o" aria-hidden="true"></i>

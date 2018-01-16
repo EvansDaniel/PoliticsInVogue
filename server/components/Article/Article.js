@@ -19,9 +19,8 @@ const ArticleSchema = new Schema({
         }, 'You must provide a category for the article before it is published'],
     },
     showcaseImage: {
-        type: String,
-        required: [true, 'Main article image url is required']
         // TODO: write an image url validator
+        type: String
     },
     body: {
         type: String,

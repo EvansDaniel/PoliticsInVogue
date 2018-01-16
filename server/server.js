@@ -2,7 +2,7 @@
 const dotenv = require('dotenv');
 
 const dotenvResult = dotenv.config();
-if(dotenvResult.error) {
+if (dotenvResult.error) {
     throw dotenvResult.error;
 }
 
@@ -18,7 +18,8 @@ const express = require('express'),
     path = require('path'),
     passport = require('passport'),
     PassportConfig = require('./config/passport'),
-    cors = require('cors');
+    cors = require('cors'),
+    MongoDBStore = require('connect-mongodb-session')(session);
 
 process.env.isDev = process.env.NODE_ENV === 'development';
 process.env.isProd = process.env.NODE_ENV === 'production';
@@ -26,15 +27,36 @@ process.env.isTest = process.env.NODE_ENV === 'test';
 
 // configuration ===============================================================
 // TODO: check for prod. Connect to prodUrl
-if(process.env.isDev) {
-    console.log(database.localUrl);
-    mongoose.connect(database.localUrl, {useMongoClient: true});
-} else {
-    mongoose.connect(database.prodUrl, {useMongoClient: true});
-}
+dbUrl = process.env.isDev ? database.localUrl : datab.prodUrl;
+mongoose.connect(dbUrl, {useMongoClient: true});
+
+const store = new MongoDBStore({
+    uri: dbUrl,
+    collection: 'sessions'
+});
+
+// Catch errors
+store.on('error', function (error) {
+    assert.ifError(error);
+    assert.ok(false);
+});
+
+
+app.use(require('express-session')({
+    secret: process.env.EXPRESS_SESSION_SECRET,
+    cookie: {
+        httpOnly: false,
+        maxAge: 1000 * 60 * 60 * 24 * 7 // 1 week
+    },
+    store: process.env.isProd ? store : null,
+    // Boilerplate options, see:
+    // * https://www.npmjs.com/package/express-session#resave
+    // * https://www.npmjs.com/package/express-session#saveuninitialized
+    resave: true,
+    saveUninitialized: true
+}));
 
 // TODO: provide resave and saveUninitialized option
-app.use(session({secret: process.env.EXPRESS_SESSION_SECRET}));
 app.use(passport.initialize());
 app.use(passport.session());
 // PassportConfig();

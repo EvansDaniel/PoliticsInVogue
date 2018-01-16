@@ -25,9 +25,7 @@ class Dashboard extends Component {
             });
         }, {
 	        data: {
-	            title: 'Title 1',
-                category: 'Cat 1',
-                showcaseImage: 'https://static.pexels.com/photos/248797/pexels-photo-248797.jpeg'
+	            title: 'Untitled',
             }
         });
 	    // call create article api
