@@ -23,68 +23,6 @@
   .article-carousel {
     margin-bottom: @xxlarge;
 
-    .carousel-image {
-      .flex();
-      background-image: url("https://1.bp.blogspot.com/-GdYQArpi-xU/WX-YFSG7BEI/AAAAAAAAH7M/vhajqhWGQNEzLlnkt1ocUWJLaI1H9R1tgCLcBGAs/s1600/coffeedate.jpg");
-      background-repeat: no-repeat;
-      background-size: cover;
-      height: 400px;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-
-      .article-info {
-        .flex();
-        flex-direction: column;
-        width: 35%;
-        color: black;
-        background-color: @whiteOut;
-        padding: @xxlarge;
-        text-align: center;
-
-        @media @smartphones {
-          padding: @large;
-        }
-
-        .title {
-          .ovo-font-family(@fontSize: 25px, @letterSpacing: 1.5px);
-          margin-bottom: @medium;
-
-          @media @smartphones {
-            font-size: 18px;
-          }
-        }
-
-        .excerpt {
-          font-family: Crimson Text, serif;
-          font-weight: 400;
-          font-size: 14px;
-          font-style: italic;
-          .add-quotes("...");
-
-          @media @smartphones {
-            font-size: 12px;
-          }
-        }
-      }
-    }
-
-    // Prev button
-    .slider-decorator-0 {
-
-    }
-
-    // Next button
-    .slider-decorator-1 {
-      button {
-        content: '';
-      }
-    }
-
-    // Dots on bottom of carousel
-    .slider-decorator-2 {
-      display: none;
-    }
   }
 
   .recent-articles {

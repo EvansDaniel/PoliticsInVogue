@@ -4,17 +4,18 @@ import ArticleCard from "../../components/ArticleCard/ArticleCard";
 import $ from 'jquery';
 import renderHTML from 'react-render-html';
 import ArticleCards from "../../components/ArticleCards/ArticleCards";
-let Carousel = require('nuka-carousel');
+import ArticleCarousel from "../../components/ArticleCarousel/ArticleCarousel";
 
 class Home extends Component {
 
     componentDidMount() {
         // TODO: Hack to get the buttons to have the correct inner html
-        const slider1 = $('.slider-decorator-1 button'),
-            slider2 = $('.slider-decorator-2 button');
-        if (slider1.length && slider2.length) {
+        const slider0 = $('.slider-decorator-0 button'),
+                slider1 = $('.slider-decorator-1 button');
+
+        if (slider0.length && slider1.length) {
+            slider0[0].innerHTML = '<i class="fa fa-chevron-left" aria-hidden="true"></i>';
             slider1[0].innerHTML = '<i class="fa fa-chevron-right" aria-hidden="true"></i>';
-            slider2[0].innerHTML = '<i class="fa fa-chevron-left" aria-hidden="true"></i>';
         }
     }
 
@@ -23,7 +24,7 @@ class Home extends Component {
             <div className="Home">
                 <div className="awesome-banner"></div>
                 <div className="article-carousel">
-                    <HomePageCarousel {...this.props}/>
+                    <ArticleCarousel {...this.props}/>
                 </div>
                 {
                     /*
@@ -39,46 +40,5 @@ class Home extends Component {
         );
     }
 }
-
-const HomePageCarousel = (props) => {
-    // TODO: carousel does not load properly when only one item
-    const carouselInfo = [
-        {
-            title: "MY WINTER UNIFORM (THAT ISN'T JEANS...)",
-            excerpt: "Hands up if you have a bit of a bad habit of sticking to wearing jeans and jumpers in the winter? Yes, I'm right there with you",
-            year: 2017,
-            month: 12,
-            slugTitle: 'my-title',
-            id: '5a5d897e3cb53c1d932cfb8d',
-            key: '1'
-        }
-    ];
-    return (
-        <Carousel {...props}>
-            {
-                carouselInfo.map((info) => {
-                    return <CarouselItem {...info} {...props} />
-                })
-            }
-        </Carousel>
-    );
-};
-
-const CarouselItem = (props) => {
-    return (
-        <div className="carousel-image" onClick={function () {
-            props.history.push(`/articles/${props.year}/${props.month}/${props.slugTitle}`, {id: props.id})
-        }}>
-            <div className="article-info">
-                <div className="title">
-                    {props.title}
-                </div>
-                <div className="excerpt">
-                    {props.excerpt}
-                </div>
-            </div>
-        </div>
-    );
-};
 
 export default Home;

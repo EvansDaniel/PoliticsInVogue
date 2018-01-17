@@ -16,9 +16,10 @@ const ArticleRoutes = function (ArticleDataService) {
                     // TODO: what to do in this case?
                     console.log(article);
                 }
-                const a = article.toObject();
-                a.showcaseImage = 'https://static.pexels.com/photos/248797/pexels-photo-248797.jpeg';
-                return res.json(a);
+
+                article.showcaseImage = 'https://static.pexels.com/photos/248797/pexels-photo-248797.jpeg';
+
+                return res.json(article);
             });
 
         });

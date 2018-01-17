@@ -20,21 +20,19 @@ const ArticleDataService = function (Article) {
             return articles;
         }
         const modifyArticle = function (article) {
-            const articleObj = article.toObject(),
-                slugTitle = articleObj.title
+            //const articleObj = article instanceof Article ? article.toObject() : article,
+            const slugTitle = article.title
                 // replace all non-alphanumeric characters
                 // that isn't space
                     .replace(/[^a-zA-Z\d\s:]/g, '')
                     // replace space with "-"
                     .replace(new RegExp(" ", 'g'), '-')
                     .toLowerCase();
-            const createdAt = new Date(articleObj.createdAt),
+            const createdAt = new Date(article.createdAt),
                 year = createdAt.getFullYear(),
                 month = createdAt.getMonth() + 1;
 
-            articleObj.articleSlug = `/${year}/${month}/${slugTitle}`;
-
-            const bodyWords = articleObj.body.split(" "),
+            const bodyWords = article.body.split(" "),
                 maxExcerptLen = 100;
             let excerpt = '';
 
@@ -45,9 +43,11 @@ const ArticleDataService = function (Article) {
                 }
             });
 
-            articleObj.excerpt = excerpt.trim();
-            articleObj.timeToReadInMin = Article.timeToReadInMin(articleObj.body);
-            return articleObj;
+            return Object.assign(article.toObject(), {
+                excerpt: excerpt.trim(),
+                timeToReadInMin: Article.timeToReadInMin(article.body),
+                articleSlug: `/${year}/${month}/${slugTitle}`
+            });
         };
         // check for array of articles and handle properly
         return articles instanceof Array ? articles.map(modifyArticle) : modifyArticle(articles);
@@ -76,18 +76,15 @@ const ArticleDataService = function (Article) {
                     return cb(err, articles);
                 }
                 if (articles) {
-                    console.log(articles);
                     const categories = articles.reduce(function (accumulator, article) {
                         const cat = article.category;
                         accumulator[cat] = cat;
                         return accumulator;
                     }, {});
 
-                    console.log(err, categories);
                     return cb(err, Object.keys(categories));
                 }
 
-                console.log('here3');
                 return cb(err, []);
             });
         },
