@@ -9,7 +9,7 @@ class ArticleCard extends Component {
 
     render() {
         const style = {
-            'background-image': `url('${this.props.url}')`,
+            'backgroundImage': `url('${this.props.url}')`,
         };
         return (
             <div className={`ArticleCard ${this.props.className}`} style={style}>

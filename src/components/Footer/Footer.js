@@ -114,13 +114,15 @@ const SocialMediaList = (props) => {
         ['facebook', 'twitter'],
         ['pinterest', 'linkedin'],
     ];
+    let key = 0;
     return (
         socialMediaList.map(function (socialMedia) {
             return (
-                <div>
+                <div key={key}>
                     {Array.from(new Array(socialMedia.length), (val, index) => index).map((index) => {
+                        key++;
                         return (
-                            <SocialShare type={socialMedia[index]} transitionType='float'/>
+                            <SocialShare type={socialMedia[index]} key={key} transitionType='float'/>
                         )
                     })}
                 </div>

@@ -47,12 +47,11 @@ const withTemplate = (ModuleComponent, footer) => {
             // Content div is to fix footer to bottom
             return (
                 [
-                    <div className="content">
-                        <NavBar key="nav"/>
-                        <ModuleComponent key="component"
-                                         {...this.props} />
+                    <div className="content" key="content">
+                        <NavBar/>
+                        <ModuleComponent {...this.props} />
                     </div>,
-                    footer ? <Footer/> : null
+                    footer ? <Footer key="footer"/> : null
                 ]
             )
         }

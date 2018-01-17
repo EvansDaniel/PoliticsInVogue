@@ -10,8 +10,12 @@ class Home extends Component {
 
     componentDidMount() {
         // TODO: Hack to get the buttons to have the correct inner html
-        $('.slider-decorator-1 button')[0].innerHTML = '<i class="fa fa-chevron-right" aria-hidden="true"></i>';
-        $('.slider-decorator-0 button')[0].innerHTML = '<i class="fa fa-chevron-left" aria-hidden="true"></i>';
+        const slider1 = $('.slider-decorator-1 button'),
+            slider2 = $('.slider-decorator-2 button');
+        if (slider1.length && slider2.length) {
+            slider1[0].innerHTML = '<i class="fa fa-chevron-right" aria-hidden="true"></i>';
+            slider2[0].innerHTML = '<i class="fa fa-chevron-left" aria-hidden="true"></i>';
+        }
     }
 
     render() {
@@ -23,10 +27,10 @@ class Home extends Component {
                 </div>
                 {
                     /*
-                    abstract this to a component that
-                    retrieves max 4 articles based on
-                    some strategy: latest, popular, etc.
-                    */
+                     abstract this to a component that
+                     retrieves max 4 articles based on
+                     some strategy: latest, popular, etc.
+                     */
                 }
                 <div className="recent-articles">
                     <ArticleCards/>
@@ -45,7 +49,8 @@ const HomePageCarousel = (props) => {
             year: 2017,
             month: 12,
             slugTitle: 'my-title',
-            id: 'Article id goes here'
+            id: 'Article id goes here',
+            key: '1'
         },
         {
             title: "3 PARTY LOOKS FOR 3 PARTY OCCASIONS",
@@ -53,7 +58,8 @@ const HomePageCarousel = (props) => {
             year: 2017,
             month: 11,
             slugTitle: 'my-title',
-            id: 'Article id goes here'
+            id: 'Article id goes here',
+            key: '2'
         }
     ];
     return (
