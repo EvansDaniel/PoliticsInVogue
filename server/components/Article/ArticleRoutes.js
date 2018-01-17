@@ -16,11 +16,24 @@ const ArticleRoutes = function (ArticleDataService) {
                     // TODO: what to do in this case?
                     console.log(article);
                 }
-
-                return res.json(article);
+                const a = article.toObject();
+                a.showcaseImage = 'https://static.pexels.com/photos/248797/pexels-photo-248797.jpeg';
+                return res.json(a);
             });
 
         });
+    };
+
+    const getCategories = function (req, res, next) {
+        ArticleDataService.getAllCategories(function (err, categories) {
+            if(err) {
+                return next(err);
+            }
+            if(!categories) {
+                return res.json([]);
+            }
+            return res.json(categories);
+        })
     };
 
     const getPlacementArticleHandle = function (req, res, next) {
@@ -94,6 +107,7 @@ const ArticleRoutes = function (ArticleDataService) {
         getArticlesHandle: getArticlesHandle,
         getPlacementArticleHandle: getPlacementArticleHandle,
         postCreateArticleHandle: postCreateArticleHandle,
+        getCategories: getCategories,
         getEditArticleHandle: getEditArticleHandle,
         postEditArticleHandle: postEditArticleHandle,
     };

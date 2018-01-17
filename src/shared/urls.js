@@ -8,7 +8,7 @@ let URLS = {
         createArticle: 'article/create',
         editArticle: 'article/edit',
         articlePlacement: 'article/placement',
-        categories: 'categories',
+        categories: 'articles/categories',
         login: 'login',
         checkAuthenticated: 'checkAuthenticated'
     }

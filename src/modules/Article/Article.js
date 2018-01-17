@@ -15,6 +15,7 @@ class Article extends Component {
     }
 
     componentDidMount() {
+        console.log(this.props.location);
         if (!this.props.articleData) {
             const queryParams = {
                 // TODO: fix this, check that state is defined

@@ -20,6 +20,10 @@ const ArticleBootstrap = function (app) {
         ArticleRoutes.getEditArticleHandle
     );
 
+    app.get(URLS.API.categories,
+        ArticleRoutes.getCategories
+    );
+
     app.post(URLS.API.editArticle,
         routeUtils.isAuthenticated,
         ArticleRoutes.postEditArticleHandle

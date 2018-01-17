@@ -49,17 +49,8 @@ const HomePageCarousel = (props) => {
             year: 2017,
             month: 12,
             slugTitle: 'my-title',
-            id: 'Article id goes here',
+            id: '5a5d897e3cb53c1d932cfb8d',
             key: '1'
-        },
-        {
-            title: "3 PARTY LOOKS FOR 3 PARTY OCCASIONS",
-            excerpt: "Party season is upon us! Almost - count down the days with me. I hope you've practiced your best fake (and real) smiles",
-            year: 2017,
-            month: 11,
-            slugTitle: 'my-title',
-            id: 'Article id goes here',
-            key: '2'
         }
     ];
     return (

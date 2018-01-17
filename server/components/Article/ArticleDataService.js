@@ -5,7 +5,7 @@ const ArticleDataService = function (Article) {
         'placement', 'excerpt', 'articleSlug'];
 
     // article is a plain object with all data attributes
-    const buildMinimumArticle = function (article) {
+    const _buildMinimumArticle = function (article) {
         const minArticle = {};
         for (let field in article) {
             if (article.hasOwnProperty(field) && (minimumArticleFields.indexOf(field) > -1)) {
@@ -15,7 +15,7 @@ const ArticleDataService = function (Article) {
         return minArticle;
     };
 
-    const postFindArticleModification = function (articles) {
+    const _postFindArticleModification = function (articles) {
         if (!articles) {
             return articles;
         }
@@ -46,6 +46,7 @@ const ArticleDataService = function (Article) {
             });
 
             articleObj.excerpt = excerpt.trim();
+            articleObj.timeToReadInMin = Article.timeToReadInMin(articleObj.body);
             return articleObj;
         };
         // check for array of articles and handle properly
@@ -56,23 +57,39 @@ const ArticleDataService = function (Article) {
         getArticle: function (queryObj, cb) {
             let filter = {},
                 findFunc = Article.find.bind(Article);
-            if(queryObj.hasOwnProperty('id')) {
+            if (queryObj.hasOwnProperty('id')) {
                 filter._id = queryObj.id;
                 findFunc = Article.findOne.bind(Article);
-            } else if(queryObj.hasOwnProperty('category')) {
+            } else if (queryObj.hasOwnProperty('category')) {
                 filter.category = queryObj.category;
                 findFunc = Article.find.bind(Article);
             }
 
-            findFunc(filter)
-                .exec(function (err, article) {
-                    // Don't think postFindArticleModification is needed here??
-                    return cb(err, postFindArticleModification(article));
-                });
+            findFunc(filter, function (err, article) {
+                return cb(err, _postFindArticleModification(article));
+            });
         },
 
         getAllCategories: function (cb) {
-            Article.find({category: 'Uncategorized'})
+            Article.find({category: {$exists: true}}, function (err, articles) {
+                if (err) {
+                    return cb(err, articles);
+                }
+                if (articles) {
+                    console.log(articles);
+                    const categories = articles.reduce(function (accumulator, article) {
+                        const cat = article.category;
+                        accumulator[cat] = cat;
+                        return accumulator;
+                    }, {});
+
+                    console.log(err, categories);
+                    return cb(err, Object.keys(categories));
+                }
+
+                console.log('here3');
+                return cb(err, []);
+            });
         },
 
         /*
@@ -100,7 +117,7 @@ const ArticleDataService = function (Article) {
 
                 // add each article to its respective placement
                 articles.forEach(function (article) {
-                    const modifiedArticle = buildMinimumArticle(postFindArticleModification(article));
+                    const modifiedArticle = _buildMinimumArticle(_postFindArticleModification(article));
                     // remove body because it is not needed for a minimum article
                     //delete modifiedArticle.body;
                     placedArticles[article.placement].push(modifiedArticle);
@@ -137,6 +154,9 @@ const ArticleDataService = function (Article) {
         delete: function (id, cb) {
             return false;
         },
+
+        _postFindArticleModification: _postFindArticleModification,
+        _buildMinimumArticle: _buildMinimumArticle
     }
 };
 
