@@ -12,6 +12,7 @@ import Footer from "./components/Footer/Footer";
 import Login from "./modules/Login/Login";
 import Dashboard from "./modules/Dashboard/Dashboard";
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
+import 'babel-polyfill'
 const URLS = require('./shared/urls');
 
 class App extends Component {
