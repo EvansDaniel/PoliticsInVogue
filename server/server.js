@@ -43,6 +43,7 @@ const store = new MongoDBStore({
 store.on('error', function (error) {
     assert.ifError(error);
     assert.ok(false);
+    throw error;
 });
 
 
@@ -71,9 +72,6 @@ app.use(bodyParser.json()); // parse application/json
 app.use(bodyParser.json({type: 'application/vnd.api+json'}));
 app.use(methodOverride('X-HTTP-Method-Override'));
 
-// routes ======================================================================
-require('./bootstrap.js')(app);
-
 const CORS_ORIGINS_ALLOWED = [
     'http://localhost:3000',
     'http://politicsinvogue.com'
@@ -85,6 +83,9 @@ app.use(cors({
     // Some old browsers choke on 204
     optionsSuccessStatus: 200,
 }));
+
+// Bootstrap the app VERY LAST
+require('./bootstrap.js')(app);
 
 app.listen(port);
 console.log("App listening on port " + port);

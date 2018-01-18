@@ -5,7 +5,7 @@
   "main": "server.js",
   "author": "Daniel Evans",
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha ./components/**/*.test.js"
+    "test": "export NODE_ENV=test && ./node_modules/mocha/bin/mocha ./*.test.js ./components/**/*.test.js"
   },
   "dependencies": {
     "bcrypt": "^1.0.3",
