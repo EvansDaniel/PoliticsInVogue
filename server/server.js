@@ -27,7 +27,7 @@ process.env.isTest = process.env.NODE_ENV === 'test';
 
 // configuration ===============================================================
 // TODO: check for prod. Connect to prodUrl
-dbUrl = process.env.isDev ? database.localUrl : datab.prodUrl;
+dbUrl = process.env.isDev ? database.localUrl : database.prodUrl;
 mongoose.connect(dbUrl, {useMongoClient: true});
 
 const store = new MongoDBStore({

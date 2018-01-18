@@ -16,7 +16,6 @@
     "chalk": "1.1.3",
     "classnames": "^2.2.5",
     "concurrently": "^3.5.1",
-    "connect-mongodb-session": "^1.4.0",
     "css-loader": "0.28.7",
     "domkit": "0.0.1",
     "dotenv": "4.0.0",
@@ -71,8 +70,9 @@
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom",
     "upload:static": "npm run build && aws s3 sync build/ s3://politicsinvogue.com --delete",
-    "upload:server": "ssh -i ~/.ssh/evansdaniel2000_personal_server.pem ubuntu@ec2-34-238-254-185.compute-1.amazonaws.com 'source ~/.bashrc && source ~/.nvm/nvm.sh && cd a-really-awesome-blog/server && rm -rf package-lock.json && git pull && npm install && forever restart server.js'",
-    "build:upload": "concurrently concurrently 'npm run upload:static' 'npm run upload:server'"
+    "upload:server": "ssh -i ~/.ssh/evansdaniel2000_personal_server.pem ubuntu@ec2-34-238-254-185.compute-1.amazonaws.com 'source ~/.bashrc && source ~/.nvm/nvm.sh && cd PoliticsInVogue.com/server && rm -rf package-lock.json && git pull && npm install && node server.js'",
+    "copy:config": "node ./server/scripts/upload_env_file.js",
+    "build:upload": "./node_modules/.bin/concurrently 'npm run upload:static' 'npm run upload:server' 'npm run copy:config'"
   },
   "devDependencies": {
     "flow-bin": "^0.62.0",
