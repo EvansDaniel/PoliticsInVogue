@@ -13,7 +13,9 @@ import Login from "./modules/Login/Login";
 import Dashboard from "./modules/Dashboard/Dashboard";
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import 'babel-polyfill'
+// This file must be loaded before api-v1.js
 const URLS = require('./shared/urls');
+require('./shared/api-v1');
 
 class App extends Component {
     render() {

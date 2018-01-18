@@ -1,6 +1,9 @@
 // set up ======================================================================
 const dotenv = require('dotenv');
 
+// TODO: perform find up/down to find .env in server dir always
+// Currently doesn't work if running "node /path/to/server.js"
+// when not in server dir
 const dotenvResult = dotenv.config();
 if (dotenvResult.error) {
     throw dotenvResult.error;
@@ -11,7 +14,6 @@ const express = require('express'),
     session = require('express-session'),
     mongoose = require('mongoose'),
     port = 3001,
-    database = require('./config/database'),
     morgan = require('morgan'),
     bodyParser = require('body-parser'),
     methodOverride = require('method-override'),
@@ -27,8 +29,10 @@ process.env.isTest = process.env.NODE_ENV === 'test';
 
 // configuration ===============================================================
 // TODO: check for prod. Connect to prodUrl
-dbUrl = process.env.isDev ? database.localUrl : database.prodUrl;
-mongoose.connect(dbUrl, {useMongoClient: true});
+const dbUrl = `mongodb://${process.env.DB_HOST}/${process.env.DB_NAME}`
+mongoose.connect(dbUrl,
+    {useMongoClient: true}
+);
 
 const store = new MongoDBStore({
     uri: dbUrl,

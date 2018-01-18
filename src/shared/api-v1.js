@@ -3,7 +3,6 @@ const URLS = require('./urls');
 const queryString = require('query-string');
 const axios = require('axios');
 const CONSTANTS = require('./constants'),
-    API_VERSION = CONSTANTS.API_VERSION,
     API_DOMAIN = CONSTANTS.API_DOMAIN;
 
 
@@ -11,17 +10,15 @@ const CONSTANTS = require('./constants'),
 // TODO: i.e. /v1/article -> {domain}/v1/article/
 URLS.APP = {};
 for (let key in URLS.API) {
-    const isProd = process.env.NODE_ENV === 'production';
     if (URLS.API.hasOwnProperty(key)) {
         // configure client api url for prod or dev
-        if (isProd) {
-            URLS.APP[key] = `${API_DOMAIN}/${API_VERSION}/${URLS.API[key]}`
+        if (process.env.NODE_ENV === 'production') {
+            URLS.APP[key] = `${API_DOMAIN}${URLS.API[key]}`;
+            // console.log('prod', API_DOMAIN, API_VERSION, URLS.API[key]);
         } else {
-            URLS.APP[key] = `${URLS.API[key]}`
+            URLS.APP[key] = `${URLS.API[key]}`;
+            console.log('dev', URLS.APP[key]);
         }
-
-        // add server API url
-        URLS.API[key] = `/${API_VERSION}/${URLS[key]}`;
     }
 }
 
