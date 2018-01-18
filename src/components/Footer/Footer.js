@@ -7,42 +7,6 @@ import $ from 'jquery';
 class Footer extends Component {
     constructor(props) {
         super(props);
-        this.fixPushDownDivHeight = this.fixPushDownDivHeight.bind(this);
-    }
-
-    fixPushDownDivHeight() {
-        /*const pushDownDivHeight = window.innerHeight - this.footer.clientHeight - this.footer.offsetTop;
-        console.log(this.footer.getBoundingClientRect());
-        console.log(window.innerHeight, this.footer.clientHeight, this.footer.offsetTop, pushDownDivHeight);
-        if(pushDownDivHeight > 0) {
-            this.pushDownDiv.style.height = pushDownDivHeight + 'px';
-        }
-
-        if (window.innerHeight > this.footer.offsetTop) {
-            /!*$(this.footer).css("position", "relative");
-            $(this.footer).css("bottom", "0");*!/
-        }*/
-
-        /*var wraph = $('#root').outerHeight();
-        if(wraph < window.innerHeight){ //if content is less than screenheight
-            console.log('here');
-            var footh   = this.footer.offsetHeight;
-            //var foottop = window.innerHeight - (headh + conth + footh);
-            var foottop = window.innerHeight - (footh*2);
-            //this.pushDownDiv.style.height = foottop + 'px';
-            $(this.footer).css({top:foottop+'px'});
-        }*/
-    }
-
-    componentDidMount() {
-        this.fixPushDownDivHeight();
-        // TODO: debounce this
-        window.addEventListener('onresize', this.fixPushDownDivHeight);
-    }
-
-    componentWillUnmount() {
-        // TODO: debounce this
-        window.removeEventListener('onresize', this.fixPushDownDivHeight);
     }
 
     render() {

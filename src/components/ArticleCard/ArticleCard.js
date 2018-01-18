@@ -8,17 +8,18 @@ class ArticleCard extends Component {
     }
 
     render() {
+        const cardData = this.props.cardData;
         const style = {
-            'backgroundImage': `url('${this.props.url}')`,
+            'backgroundImage': `url('${cardData.showcaseImage}')`,
         };
         return (
-            <div className={`ArticleCard ${this.props.className}`} style={style}>
+            <div className={`ArticleCard ${cardData.className}`} style={style}>
                 <Link to="/">
                     <div className="article-info">
                         <div>
                             <div>
-                                <div className="article-name">Why do I turn into a child when I'm home for Christmas</div>
-                                <div className="article-date">25 Dec 2017</div>
+                                <div className="article-name">{cardData.title}</div>
+                                <div className="article-date">May 25 2017</div>
                             </div>
                         </div>
                     </div>

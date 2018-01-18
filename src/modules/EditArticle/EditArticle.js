@@ -49,8 +49,7 @@ class EditArticle extends Component {
     }
 
     onChange(editorState) {
-        console.log(editorState);
-        console.log(stateToHTML(editorState.getCurrentContent()));
+        //console.log(stateToHTML(editorState.getCurrentContent()));
         this.setState({editorState});
     }
 

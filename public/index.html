@@ -9,20 +9,14 @@
       manifest.json provides metadata used when your web app is added to the
       homescreen on Android. See https://developers.google.com/web/fundamentals/engage-and-retain/web-app-manifest/
     -->
+    <!-- Facebook SDK -->
     <!-- Pinterest SDK -->
     <script async defer src="https://assets.pinterest.com/js/pinit.js"></script>
-    <!-- Facebook SDK -->
-      <div id="fb-root"></div>
-      <script>(function(d, s, id) {
-          var js, fjs = d.getElementsByTagName(s)[0];
-          if (d.getElementById(id)) return;
-          js = d.createElement(s); js.id = id;
-          js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.11';
-          fjs.parentNode.insertBefore(js, fjs);
-      }(document, 'script', 'facebook-jssdk'));</script>
       <link href="https://fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
+    <!-- TODO: Add a meta tag for main page image -> <meta property="og:image" content='<main page image>'}/>-->
+    <link rel="canonical" href="http://www.politicsinvogue.com" />
     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
@@ -33,12 +27,13 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>Sophie's blog</title>
+    <title>Politics In Vogue</title>
   </head>
   <body>
     <noscript>
       You need to enable JavaScript to run this app.
     </noscript>
+    <div id="fb-root"></div>
     <script src="%PUBLIC_URL%/font-awesome.js"></script>
     <div id="root"></div>
     <!--

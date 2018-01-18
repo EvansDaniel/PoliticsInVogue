@@ -5,7 +5,6 @@ const ArticleRoutes = function (ArticleDataService) {
 
     const getArticleHandle = function (req, res, next) {
         routeUtils.debuggingHelper(req, res, next, function (req, res, next) {
-            console.log(req.user);
             ArticleDataService.getArticle(req.query,function (err, article) {
                 // Check for errors, send default response for errors
                 if (err) {
@@ -14,10 +13,8 @@ const ArticleRoutes = function (ArticleDataService) {
 
                 if (!article) {
                     // TODO: what to do in this case?
-                    console.log(article);
+                    return next(new HttpError.NotFound('The requested resource was not found'));
                 }
-
-                article.showcaseImage = 'https://static.pexels.com/photos/248797/pexels-photo-248797.jpeg';
 
                 return res.json(article);
             });
@@ -25,7 +22,19 @@ const ArticleRoutes = function (ArticleDataService) {
         });
     };
 
-    const getCategories = function (req, res, next) {
+    const getSuggestedArticlesHandle = function (req, res, next) {
+        ArticleDataService.getSuggestedArticles(req.query, function (err, articles) {
+            if(err) {
+                return next(err);
+            }
+            if(!articles) {
+                return new HttpError.NotFound('The requested resource was not found');
+            }
+            return res.json(articles);
+        });
+    };
+
+    const getCategoriesHandle = function (req, res, next) {
         ArticleDataService.getAllCategories(function (err, categories) {
             if(err) {
                 return next(err);
@@ -106,9 +115,10 @@ const ArticleRoutes = function (ArticleDataService) {
     return {
         getArticleHandle: getArticleHandle,
         getArticlesHandle: getArticlesHandle,
+        getSuggestedArticlesHandle: getSuggestedArticlesHandle,
         getPlacementArticleHandle: getPlacementArticleHandle,
         postCreateArticleHandle: postCreateArticleHandle,
-        getCategories: getCategories,
+        getCategoriesHandle: getCategoriesHandle,
         getEditArticleHandle: getEditArticleHandle,
         postEditArticleHandle: postEditArticleHandle,
     };

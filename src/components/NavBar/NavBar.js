@@ -26,9 +26,6 @@ class NavBar extends Component {
                         <i className="fa fa-caret-down"></i>
                         <SubMenu categories={categories}/>
                     </li>
-                    <li>
-                        <Link to="/">Search</Link>
-                    </li>
                     <li><Link to="/dashboard">Dashboard</Link></li>
                     <li>
                         <a className="icon" href="mailto:clarksl0@sewanee.edu">

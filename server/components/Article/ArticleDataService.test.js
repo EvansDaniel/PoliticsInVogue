@@ -52,8 +52,8 @@ describe('ArticleDataService', function () {
 
     describe('getArticle', function () {
 
-        it('calls findOne when id passed', function () {
-            const mockQueryObject = {id: 'mock id'};
+        it('calls findOne when _id passed', function () {
+            const mockQueryObject = {_id: 'mock id'};
             const stub = sinon.stub(Article, "findOne");
             ArticleDataService.getArticle(mockQueryObject);
             assert.isTrue(stub.called, 'Article.findOne should have been called');
@@ -67,7 +67,7 @@ describe('ArticleDataService', function () {
         });
 
         it('yields an article', function () {
-            const mockQueryObject = {id: 'mock id'};
+            const mockQueryObject = {_id: 'mock id'};
             const mockArticle = {
                 _id: 'Mock id',
                 title: 'Mock title',

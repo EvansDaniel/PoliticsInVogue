@@ -1,8 +1,9 @@
 const serviceUtils = require('../../utils/service-utils');
+const Mongoose = require('mongoose');
 
 const ArticleDataService = function (Article) {
     const minimumArticleFields = ['_id', 'title', 'createdAt', 'updatedAt',
-        'placement', 'excerpt', 'articleSlug'];
+        'placement', 'excerpt', 'articleSlug', 'showcaseImage'];
 
     // article is a plain object with all data attributes
     const _buildMinimumArticle = function (article) {
@@ -21,13 +22,16 @@ const ArticleDataService = function (Article) {
         }
         const modifyArticle = function (article) {
             //const articleObj = article instanceof Article ? article.toObject() : article,
+            if (!article) {
+                return article;
+            }
             const slugTitle = article.title
-                // replace all non-alphanumeric characters
-                // that isn't space
-                    .replace(/[^a-zA-Z\d\s:]/g, '')
-                    // replace space with "-"
-                    .replace(new RegExp(" ", 'g'), '-')
-                    .toLowerCase();
+            // replace all non-alphanumeric characters
+            // that isn't space
+                .replace(/[^a-zA-Z\d\s:]/g, '')
+                // replace space with "-"
+                .replace(new RegExp(" ", 'g'), '-')
+                .toLowerCase();
             const createdAt = new Date(article.createdAt),
                 year = createdAt.getFullYear(),
                 month = createdAt.getMonth() + 1;
@@ -43,7 +47,7 @@ const ArticleDataService = function (Article) {
                 }
             });
 
-            return Object.assign(article.toObject(), {
+            return Object.assign(article.toObject && article.toObject() || article, {
                 excerpt: excerpt.trim(),
                 timeToReadInMin: Article.timeToReadInMin(article.body),
                 articleSlug: `/${year}/${month}/${slugTitle}`
@@ -53,21 +57,61 @@ const ArticleDataService = function (Article) {
         return articles instanceof Array ? articles.map(modifyArticle) : modifyArticle(articles);
     };
 
-    return {
-        getArticle: function (queryObj, cb) {
-            let filter = {},
-                findFunc = Article.find.bind(Article);
-            if (queryObj.hasOwnProperty('id')) {
-                filter._id = queryObj.id;
-                findFunc = Article.findOne.bind(Article);
-            } else if (queryObj.hasOwnProperty('category')) {
-                filter.category = queryObj.category;
-                findFunc = Article.find.bind(Article);
-            }
+    const getArticle = function (queryObj, cb) {
+        let filter = {},
+            findFunc = Article.find.bind(Article);
+        if (queryObj.hasOwnProperty('_id')) {
+            filter._id = queryObj._id;
+            findFunc = Article.findOne.bind(Article);
+        } else if (queryObj.hasOwnProperty('category')) {
+            filter.category = queryObj.category;
+            findFunc = Article.find.bind(Article);
+        }
 
-            findFunc(filter, function (err, article) {
-                return cb(err, _postFindArticleModification(article));
-            });
+        findFunc(filter, function (err, article) {
+            return cb(err, _postFindArticleModification(article));
+        });
+    };
+
+    return {
+        getArticle: getArticle,
+
+        getSuggestedArticles: function (queryObj, cb) {
+            const category = queryObj.category;
+            console.log(category);
+            let articles = [];
+            Article
+                .aggregate([
+                    { $match: { _id: { $nin: queryObj.exclude && [queryObj.exclude] || []} } }
+                ])
+                .sample(2)
+                .cursor({})
+                .exec()
+                .on('data', doc => {
+                    articles.push(doc);
+                })
+                .on('err', err => {
+                    return cb(err, null)
+                })
+                .on('end', () => {
+                    Article.find({
+                        _id: {
+                            $nin: articles.map((article) =>
+                                Mongoose.Types.ObjectId(article._id))
+                                .concat(queryObj.exclude && [queryObj.excerpt] || [])
+                        }
+                    }).limit(2).exec(function (err, arts) {
+                        if(err || !arts) {
+                            return cb(err, arts);
+                        }
+
+                        arts.forEach(function (article) {
+                            articles.push(article);
+                        });
+
+                        return cb(err, _postFindArticleModification(articles));
+                    });
+                });
         },
 
         getAllCategories: function (cb) {

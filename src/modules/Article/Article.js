@@ -3,6 +3,9 @@ import './Article.less';
 import ArticleContent from "../../components/ArticleContent/ArticleContent";
 import Comments from "../../components/Comments/Comments";
 import PropTypes from 'prop-types';
+import Loading from '../../components/Loading/Loading';
+import {Helmet} from 'react-helmet';
+import CONSTANTS from '../../shared/constants';
 const API = require('../../shared/api-v1');
 
 class Article extends Component {
@@ -14,21 +17,37 @@ class Article extends Component {
         };
     }
 
-    componentDidMount() {
-        console.log(this.props.location);
+    getSuggestedArticles(articleData) {
+        const self = this;
+        API.getSuggestedArticles({
+            success: function (response) {
+                self.setState({
+                    loading: false,
+                    articleData: articleData,
+                    suggestedArticles: response.data
+                });
+            },
+            error: function () {
+                // TODO:
+            },
+            queryParams: {
+                category: 'Politics',
+                exclude: articleData._id,
+            }
+        });
+    }
+
+    getData() {
         if (!this.props.articleData) {
             const queryParams = {
-                // TODO: fix this, check that state is defined
-                    id: this.props.location.state.id
+                    // TODO: fix this, check that state is defined
+                    _id: this.props.location.state._id
                 },
                 self = this;
 
             API.getArticle({
                 success: function (res) {
-                    self.setState({
-                        loading: false,
-                        articleData: res
-                    });
+                    self.getSuggestedArticles(res.data);
                 },
                 params: queryParams
             });
@@ -39,13 +58,35 @@ class Article extends Component {
         }
     }
 
+    componentDidUpdate(prevProps, prevState) {
+        if(!prevProps || !prevState) {
+            return false;
+        }
+
+        if (prevState.articleData &&
+            prevState.articleData._id !== this.props.location.state._id) {
+            this.getData();
+        }
+    }
+
+    componentDidMount() {
+        this.getData();
+    }
+
     render() {
+        // For previewing the article
         const articleData = this.state.articleData || this.props.articleData;
         return (
             <div className="Article">
+                <Helmet>
+                    <title>{CONSTANTS.APP_NAME} | TITLE</title>
+                    <meta property="og:image" content={articleData && articleData.showcaseImage}/>
+                </Helmet>
                 {
-                    this.state.loading ? "Loading..." :
-                        <ArticleContent articleData={articleData}/>
+                    this.state.loading ? <Loading/> :
+                        <ArticleContent suggestedArticles={this.state.suggestedArticles}
+                                        articleData={articleData}
+                        />
                 }
             </div>
         );

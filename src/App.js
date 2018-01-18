@@ -12,27 +12,28 @@ import Footer from "./components/Footer/Footer";
 import Login from "./modules/Login/Login";
 import Dashboard from "./modules/Dashboard/Dashboard";
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
+const URLS = require('./shared/urls');
 
 class App extends Component {
     render() {
         return (
             <BrowserRouter>
                 <Switch>
-                    <PrivateRoute path="/article/:id/edit"
+                    <PrivateRoute path={URLS.ROUTES.editArticle}
                                   component={withTemplate(EditArticle, false)}
                     />
-                    <PrivateRoute path="/dashboard"
+                    <PrivateRoute path={URLS.ROUTES.dashboard}
                                   component={withTemplate(Dashboard, false)}
                     />
-                    <Route exact path="/"
+                    <Route exact path={URLS.ROUTES.home}
                            component={withTemplate(Home)}/>
-                    <Route exact path="/about"
+                    <Route exact path={URLS.ROUTES.about}
                            component={withTemplate(About)}/>
-                    <Route path="/articles/:year/:month/:title"
+                    <Route path={URLS.ROUTES.article}
                            component={withTemplate(Article)}/>
-                    <Route path="/category/:category"
+                    <Route path={URLS.ROUTES.category}
                            component={withTemplate(Category)}/>
-                    <Route path="/auth/login"
+                    <Route path={URLS.ROUTES.login}
                            component={withTemplate(Login)}/>
                 </Switch>
             </BrowserRouter>

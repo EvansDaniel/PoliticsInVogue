@@ -7,13 +7,14 @@ import $ from 'jquery';
 import Comments from "../Comments/Comments";
 import ArticleBlock from "../ArticleBlock/ArticleBlock";
 import PropTypes from 'prop-types';
+import API from '../../shared/api-v1';
 
 class ArticleContent extends Component {
     constructor(props) {
         super(props);
         this.changeArticleMeterWidth = this.changeArticleMeterWidth.bind(this);
         this.state = {
-            articleMeterWidth: 0
+            articleMeterWidth: 0,
         }
     }
 
@@ -29,7 +30,7 @@ class ArticleContent extends Component {
         const articleBody = $('.article-body'),
             bodyOffset = articleBody.offset();
 
-        if(!bodyOffset) {
+        if (!bodyOffset) {
             return;
         }
         const meterLoc = $(window).scrollTop(),
@@ -40,8 +41,7 @@ class ArticleContent extends Component {
             newWidth = 0;
         }
 
-        console.log(newWidth);
-        this.articleMeter.style.width = newWidth+"%";
+        this.articleMeter.style.width = newWidth + "%";
     }
 
     render() {
@@ -49,7 +49,9 @@ class ArticleContent extends Component {
         // TODO: test the article with really long and short article length
         return (
             <div className="ArticleContent">
-                <div className="article-meter" ref={(ref) => {this.articleMeter = ref}}></div>
+                <div className="article-meter" ref={(ref) => {
+                    this.articleMeter = ref
+                }}></div>
                 <div className="article">
                     <div className="article-top">
                         <div className="article-info">
@@ -59,28 +61,60 @@ class ArticleContent extends Component {
                                 {articleData.title}
                             </div>
                             <div className="author-info">
-                                <div className="date-published">Date Published: {new Date(articleData.createdAt).toLocaleDateString()}</div>
-                                <div className="author">Written by: <Link to="/about" className="name">Sophie Clark</Link></div>
+                                <div className="date-published">Date
+                                    Published: {new Date(articleData.createdAt).toLocaleDateString()}</div>
+                                <div className="author">Written by: <Link to="/about" className="name">Sophie
+                                    Clark</Link></div>
                             </div>
                         </div>
                         <div className="main-image">
-                            <img src={articleData.showcaseImage}/>
+                            <img
+                                src={articleData.showcaseImage}/>
                         </div>
                     </div>
                     <div className="lower-article">
                         <div className="article-main">
                             <div className="suggested-articles">
-                                <ArticleBlock/>
-                                <ArticleBlock/>
-                                <ArticleBlock/>
-                                <ArticleBlock/>
+                                {
+                                    this.props.suggestedArticles.map((suggestedArticle) => {
+                                        return (
+                                            <ArticleBlock key={suggestedArticle._id} article={suggestedArticle}/>
+                                        )
+                                    })
+                                }
                             </div>
                             <div className="article-body">
-                                {renderHTML(articleData.body)}
+                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
                             </div>
                             <div className="social-media-block">
                                 <SocialMediaBlock articleData={articleData}/>
                             </div>
+                        </div>
+                        <div className="mobile-suggested-articles">
+                            {
+                                this.props.suggestedArticles.splice(0, 2).map((suggestedArticle) => {
+                                    return (
+                                        <ArticleBlock key={suggestedArticle._id}
+                                                      article={suggestedArticle}
+                                                      orientation={'horizontal'}
+                                        />
+                                    )
+                                })
+                            }
                         </div>
                         <div className="comment-section">
                             <Comments/>

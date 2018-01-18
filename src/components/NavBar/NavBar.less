@@ -1,10 +1,11 @@
 @import "../../shared/vars.less";
 @import "../../shared/mixins.less";
 
-@navBarHeight: 51px;
+@navBarHeight: 51*@rPixel;
 @navBarBorderBottom: @favoriteColor;
 @navColor: #2d3e50;
 @navFont: "Lunito", serif;
+@pinterestSaveButtonZIndex: 8675309;
 
 .NavBar {
   .flex();
@@ -15,14 +16,13 @@
   color: @navColor;
   font-family: 'Roboto', sans-serif;
   width: 100%;
-  font-size: 12px;
-  letter-spacing: 2px;
+  font-size: 12*@pixel;
+  letter-spacing: 2*@pixel;
   text-transform: uppercase;
   background-color: rgb(242, 245, 248);
   height: @navBarHeight;
-  z-index: @levelOne;
-  //border-bottom: 1px solid rgb(203, 214, 226);
-  // thing to change
+  // Need to be above pinterest extension save button
+  z-index: @pinterestSaveButtonZIndex + 1;
 
   // Content div
   div {
@@ -32,14 +32,14 @@
     & > li {
       position: relative;
       display: inline-block;
-      padding: 5px 10px;
-      margin: 0 10px;
+      padding: 5*@pixel 10*@pixel;
+      margin: 0 10*@pixel;
       cursor: pointer;
       line-height: @navBarHeight;
       font-family: @navFont;
 
       @media @smartphones {
-        padding: 0 5px 0 5px;
+        padding: 0 5*@pixel 0 5*@pixel;
         margin: 0;
       }
 
@@ -57,7 +57,7 @@
       }
 
       .fa-caret-down {
-        margin-left: 3px;
+        margin-left: 3*@pixel;
         color:black;
       }
 
@@ -76,11 +76,11 @@
         background-color: white;
         padding-left: 0;
         margin: @xxsmall 0 0;
-        border: 1px solid #cbd6e2;
+        border: 1*@pixel solid #cbd6e2;
         overflow-y: scroll;
-        max-height: 225px;
-        width: 150px;
-        .border-radius(@radius: 2px);
+        max-height: 225*@pixel;
+        width: 150*@rPixel;
+        .border-radius(@radius: 2*@pixel);
 
         // Just submenu a tags
         a {
@@ -89,7 +89,7 @@
 
         // only sub menu lis
         &:first-child {
-          padding-top: 5px;
+          padding-top: 5*@pixel;
         }
       }
 
@@ -102,7 +102,7 @@
 
         // Items of submenus
         & > li {
-          padding-top: 5px;
+          padding-top: 5*@pixel;
           text-align: left;
           padding-left: @small;
 

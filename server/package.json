@@ -1,7 +1,7 @@
 {
   "name": "Blog",
   "version": "0.0.0",
-  "description": "Blog for Sophie Clark",
+  "description": "Politics In Vogue",
   "main": "server.js",
   "author": "Daniel Evans",
   "scripts": {

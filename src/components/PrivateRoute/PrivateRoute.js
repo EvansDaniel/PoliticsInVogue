@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import {Route} from 'react-router';
 import {withRouter} from 'react-router-dom';
 import API from '../../shared/api-v1';
+import URLS from '../../shared/urls';
+import Loading from '../Loading/Loading';
 
 // TODO: extract to component
 class PrivateRoute extends Component {
@@ -17,17 +19,15 @@ class PrivateRoute extends Component {
     }
 
     isAuthenticated(document) {
+        // TODO: Keep the real isAuthenticated below
         document.cookie = "username=John Doe";
-        console.log('cookies', document.cookie);
-        console.log(document.cookie.indexOf('connect.sid'));
         return document.cookie.indexOf('connect.sid') > -1;
     }
 
     componentDidMount() {
         if (!this.isAuthenticated(window.document)) {
-            console.log(this.props.history);
             this.props.history.push({
-                pathname: '/auth/login',
+                pathname: URLS.ROUTES.login,
                 state: {
                     redirect: this.props.location.pathname
                 }
@@ -38,29 +38,12 @@ class PrivateRoute extends Component {
                 loading: false
             });
         }
-        /*const self = this;
-        API.checkAuthenticated(function (data) {
-            if (!data.authenticated) {
-                console.log(self.props.history);
-                self.props.history.push({
-                    pathname: '/auth/login',
-                    state: {
-                        redirect: self.props.location.pathname
-                    }
-                });
-            } else {
-                self.setState({
-                    authenticated: data.authenticated,
-                    loading: false
-                });
-            }
-        });*/
     }
 
     render() {
         if (this.state.loading) {
             return (
-                'Loading...'
+                <Loading/>
             );
         }
         if (this.state.authenticated) {

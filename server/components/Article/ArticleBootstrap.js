@@ -11,6 +11,10 @@ const ArticleBootstrap = function (app) {
         ArticleRoutes.getArticleHandle
     );
 
+    app.get(URLS.API.suggestedArticles,
+        ArticleRoutes.getSuggestedArticlesHandle
+    );
+
     app.get(URLS.API.articles,
         ArticleRoutes.getArticlesHandle
     );
@@ -21,7 +25,7 @@ const ArticleBootstrap = function (app) {
     );
 
     app.get(URLS.API.categories,
-        ArticleRoutes.getCategories
+        ArticleRoutes.getCategoriesHandle
     );
 
     app.post(URLS.API.editArticle,

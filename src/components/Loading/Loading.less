@@ -1,0 +1,15 @@
+@import "../../shared/mixins.less";
+@import "../../shared/vars.less";
+
+.Loading {
+  // TODO: find better solution for this
+  position: absolute;
+  top: 25%;
+  left: 43%;
+  // Just in case it goes into other content
+  z-index: -1;
+
+  @media @smartphones {
+    top: 15%;
+  }
+}

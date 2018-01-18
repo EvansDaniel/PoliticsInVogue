@@ -1,28 +1,47 @@
 import React, {Component} from 'react';
 import './ArticleBlock.less'
+import {withRouter} from 'react-router';
+import URLS from '../../shared/urls';
 
 class ArticleBlock extends Component {
-	constructor(props) {
+    constructor(props) {
         super(props);
-        
+        this.readArticle = this.readArticle.bind(this);
+    }
+
+    readArticle() {
+        console.log('_id', this.props.article._id);
+        this.props.history.push({
+            pathname: URLS.transform(URLS.ROUTES.article, {articleSlug: this.props.article.articleSlug}),
+            state: {_id: this.props.article._id}
+        });
     }
 
     componentDidMount() {
-
     }
 
     render() {
         return (
-            <div className="ArticleBlock">
+            <div className={"ArticleBlock " + this.props.orientation}
+                 onClick={(event) => { this.readArticle() }}
+            >
                 <div className="img-block">
-                    <img src="https://images.taboola.com/taboola/image/fetch/f_jpg%2Cq_auto%2Ch_80%2Cw_120%2Cc_fill%2Cg_faces:auto%2Ce_sharpen/https%3A//tctechcrunch2011.files.wordpress.com/2017/05/kuri-bot.gif" alt=""/>
-                    {/*TODO: determine if this is necessary*/}
-                    <div>12 min read</div>
+                    <img src={this.props.article.showcaseImage} alt={this.props.article.title}/>
+                    <div>{this.props.article.timeToReadInMin} min read</div>
                 </div>
-                <div className="excerpt">Hands up if you have a bit of a bad habit of sticking to wearing jeans and jumpers in the winter? Yes, I'm right there with you</div>
+                <div className="details">
+                    <div className="title">{this.props.article.title}</div>
+                    <div className="excerpt">{this.props.article.category}</div>
+                </div>
             </div>
         );
     }
 }
+
+ArticleBlock.defaultProps = {
+    orientation: 'vertical'
+};
+
+ArticleBlock = withRouter(ArticleBlock);
 
 export default ArticleBlock;

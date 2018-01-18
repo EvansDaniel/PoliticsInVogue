@@ -12,7 +12,7 @@ class Comments extends Component {
         super(props);
     }
 
-    componentDidMount() {
+    loadFacebookComments() {
         window.fbAsyncInit = function () {
             window.FB.init({
                 appId: CONSTANTS.FB_APP_ID,
@@ -32,27 +32,16 @@ class Comments extends Component {
             js.src = "https://connect.facebook.net/en_US/sdk.js";
             fjs.parentNode.insertBefore(js, fjs);
         }(document, 'script', 'facebook-jssdk'));
-
-        console.log('did mount');
     }
 
-    /*componentDidUpdate() {
-        console.log('did update');
-        window.FB.XFBML.parse();
-    }*/
+    componentDidMount() {
+        this.loadFacebookComments()
+    }
 
     render() {
-        const tabs = [
-            {name: 'Facebook', icon: fbIcon, className: 'fb'},
-            {name: 'Twitter', icon: twitterIcon, className: 'tweet'},
-            {name: 'LinkedIn', icon: linkedinIcon, className: 'link'},
-        ];
-        const iconHeight = 25;
         return (
             <div className="Comments">
-                <div className="create-comment">
-                    <div className="fb-comments" data-href="https://www.google.com" data-width="100%">
-                    </div>
+                <div className="fb-comments" data-href="http://www.politicsinvogue.com" data-width="100%">
                 </div>
             </div>
         );

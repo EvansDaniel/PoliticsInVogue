@@ -3,33 +3,45 @@
 
 .ArticleBlock {
   .flex();
-  height: 100px;
+  height: auto;
+  max-height: 100px;
   width: 200px;
-  border-bottom: 1px solid @dimmedColor;
+  padding-bottom: @xxsmall;
+  border-bottom: 1*@pixel solid @dimmedColor;
+
+  &.horizontal {
+    border-bottom: none;
+  }
 
   @media @tabletOrSmaller {
-    width: 160px;
+    width: 160*@pixel;
   }
 
   .img-block {
-    max-width: 40%;
+    max-width: 50%;
     img {
-      height: 50%;
-      @media @tabletOrSmaller {
-        height: 40%;
-      }
+      .border-radius(@radius: 3*@pixel);
+      width: 100%;
+      max-height: 75*@pixel;
     }
 
     div {
-      margin-top: 5px;
+      margin-top: @xxsmall;
       font-size: @emLarge + @emSmall;
     }
   }
 
-  .excerpt {
+  .details {
     padding-left: @small;
-    font-size: 12px;
-    line-height: 19px;
-    .truncate(@fontSize: 14px, @linesToShow: 6, @lineHeight: 1em)
+
+    .title {
+      font-weight: bold;
+      .truncate(@fontSize: 13*@pixel, @linesToShow: 3, @lineHeight: 1em);
+    }
+
+    .excerpt {
+      font-size: 12px;
+      .truncate(@fontSize: 12*@pixel, @linesToShow: 4, @lineHeight: 1.2em)
+    }
   }
 }

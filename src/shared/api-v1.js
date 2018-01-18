@@ -40,10 +40,10 @@ let post = (url, options) => {
         },
         data: JSON.stringify(data)
     }).then(response => {
-        console.log(response);
+        console.log(url, response);
         options.success && options.success(response)
     }).catch(error => {
-        console.log('request failed', error.response);
+        console.log(`${url} request failed`, error.response);
         options.error && options.error(error.response);
     });
 };
@@ -56,12 +56,12 @@ let get = function (url, options) {
         headers: {
             'Content-Type': 'application/json'
         },
-        params: options.queryParams,
+        params: options.queryParams || {},
     }).then(response => {
-        console.log(response);
+        console.log(url, response);
         options.success && options.success(response)
     }).catch(error => {
-        console.log('request failed', error.response);
+        console.log(`${url} request failed`, error.response);
         options.error && options.error(error.response);
     });
 };
@@ -77,12 +77,27 @@ module.exports = {
         })
     },
 
+    getPlacedArticles: function (options: {}) {
+        get(URLS.APP.articlePlacement, {
+            success: options.success,
+            error: options.error
+        });
+    },
+
     createArticle: function (callback: (response: {}) => void, options: {}) {
         let createArticleUrl = URLS.APP.createArticle;
         post(createArticleUrl, {
             success: callback,
             data: options.data
         })
+    },
+
+    getSuggestedArticles: function (options) {
+        get(URLS.APP.suggestedArticles, {
+            success: options.success,
+            error: options.error,
+            queryParams: options.params
+        });
     },
 
     checkAuthenticated: function (callback: (response: {}) => void, options: {}) {

@@ -27,6 +27,7 @@ module.exports = function (app) {
             });
         }
 
-        return res.status(err.code || 500).json({ error: err });
+        return res.status(err.code && err.code >= 100 && err.code
+            || 500).json({ error: err });
     });
 };

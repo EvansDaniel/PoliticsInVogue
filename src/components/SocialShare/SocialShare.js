@@ -75,11 +75,12 @@ class SocialShare extends Component {
 
     facebookShare() {
         // TODO: get app id
+        console.log(window.location.href);
         window.FB.ui({
             app_id: CONSTANTS.FB_APP_ID,
             method: 'share',
             display: 'popup',
-            href: 'https://developers.facebook.com/docs/'
+            href: 'http://www.politicsinvogue.com'
         }, function (response) {
             console.log('FB share response', response);
         });

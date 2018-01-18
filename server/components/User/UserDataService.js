@@ -19,7 +19,7 @@ const UserDataService = function (User) {
             });
         },
 
-        delete: function (id, cb) {
+        delete: function (_id, cb) {
             return false;
         },
     }
