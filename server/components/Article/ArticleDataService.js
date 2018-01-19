@@ -78,8 +78,8 @@ const ArticleDataService = function (Article) {
 
         getSuggestedArticles: function (queryObj, cb) {
             const category = queryObj.category;
-            console.log(category);
             let articles = [];
+            // TODO: exclude current article from results
             Article
                 .aggregate([
                     { $match: { _id: { $nin: queryObj.exclude && [queryObj.exclude] || []} } }

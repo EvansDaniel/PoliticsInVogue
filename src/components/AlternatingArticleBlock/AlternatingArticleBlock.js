@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import './AlternatingArticleBlock.less'
+import readArticle from '../../utils/read-article';
+import {withRouter} from 'react-router-dom';
 
 class AlternatingArticleBlock extends Component {
 	constructor(props) {
@@ -11,8 +13,9 @@ class AlternatingArticleBlock extends Component {
 
     }
 
-    readArticle(url) {
-        this.props.history.push(url);
+    readArticle(event) {
+	    // TODO: include article data here
+	    readArticle(this.props.history, {})
     }
 
     render() {
@@ -58,4 +61,4 @@ const SideBySideArticleBlock = (props) => {
     );
 };
 
-export default AlternatingArticleBlock;
+export default withRouter(AlternatingArticleBlock);

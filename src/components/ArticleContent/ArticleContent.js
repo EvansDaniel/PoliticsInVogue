@@ -74,16 +74,60 @@ class ArticleContent extends Component {
                     </div>
                     <div className="lower-article">
                         <div className="article-main">
-                            <div className="suggested-articles">
-                                {
-                                    this.props.suggestedArticles.map((suggestedArticle) => {
-                                        return (
-                                            <ArticleBlock key={suggestedArticle._id} article={suggestedArticle}/>
-                                        )
-                                    })
-                                }
+                            <div className="suggested">
+                                <div className="articles">
+                                <div className="suggested-cta">Articles You Might Like</div>
+                                    {
+                                        this.props.suggestedArticles.map((suggestedArticle) => {
+                                            return (
+                                                <ArticleBlock key={suggestedArticle._id} article={suggestedArticle}/>
+                                            )
+                                        })
+                                    }
+                                </div>
                             </div>
                             <div className="article-body">
+                                <p>
+                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                </p>
+                                <p>
+                                    slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                    slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                    slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                    slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                    slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                    slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                </p><p>
+                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                            </p><p>
+                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                            </p><p>
+                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                            </p><p>
                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
@@ -94,14 +138,34 @@ class ArticleContent extends Component {
                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                            </p><p>
                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                            </p><p>
+                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                            </p><p>
+                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                            </p>
                             </div>
                             <div className="social-media-block">
-                                <SocialMediaBlock articleData={articleData}/>
+                                <div className="social-media-icons">
+                                    <SocialMediaBlock articleData={articleData}/>
+                                </div>
                             </div>
                         </div>
                         <div className="mobile-suggested-articles">

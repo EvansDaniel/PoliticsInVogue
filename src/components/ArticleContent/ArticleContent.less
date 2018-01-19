@@ -5,6 +5,8 @@
 @articleInfoWidth: 27%;
 // :( why??? I didn't want to have to do this
 @midTabletAndSmaller: ~'only screen and (max-width : 700px)';
+@smallTabletAndSmaller: ~'only screen and (max-width: 600px)';
+@stickyTopPosition: 100px;
 
 .ArticleContent {
   color: @black;
@@ -136,16 +138,27 @@
       .flex();
       padding-top: @xlarge;
 
-      .suggested-articles {
+      .suggested {
         border-right: 1*@pixel solid @favoriteColor;
-        padding: 0 @em*1 0 @emMedium;
-        position:sticky;
+        padding-right: @medium;
+        min-width: @articleInfoWidth;
+        max-width: @articleInfoWidth;
 
-        @media @tabletOrSmaller {
-          padding: 0 @em 0 @emMedium;
+        @media @midTabletAndSmaller {
+          min-width: @articleInfoWidth + 10%;
+          max-width: @articleInfoWidth + 10%;
         }
 
-        @media @smartphones {
+        .suggested-cta {
+          margin-bottom: @xsmall;
+        }
+
+        .articles {
+          position: sticky;
+          top: @stickyTopPosition;
+        }
+
+        @media @smallTabletAndSmaller {
           display: none;
         }
 
@@ -158,21 +171,29 @@
         font-family: Lato, serif;
         color: #33475b;
         font-size: 1.1em;
-        line-height: 1.45em;
+        line-height: 1.58em;
         letter-spacing: .01em;
-        padding-left: 5%;
-        padding-right: 15%;
+        padding-left: 2.5%;
+        padding-right: 10%;
+        max-width: 500*@pixel;
+        // text-align: justify????
 
         @media @tabletOrSmaller {
-          padding-left: 2.5%;
           padding-right: 5%;
+        }
+
+        // When this happens left side suggested articles will disappear as well
+        @media @smallTabletAndSmaller {
+          padding-left: 0;
         }
       }
 
       .social-media-block {
-        position: sticky;
-        top: 50*@pixel;
-        right: 100*@pixel;
+
+        .social-media-icons {
+          position: sticky;
+          top: @stickyTopPosition;
+        }
 
         @media @tabletOrSmaller {
           right: 0;
@@ -187,7 +208,7 @@
       border-bottom: @pixel*1 solid @dimmedColor;
       padding: @medium 0 @medium 0;
 
-      @media @smartphones {
+      @media @smallTabletAndSmaller {
         .flex();
       }
     }

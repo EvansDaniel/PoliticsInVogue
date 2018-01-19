@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import './ArticleBlock.less'
 import {withRouter} from 'react-router';
 import URLS from '../../shared/urls';
+import readArticle from '../../utils/read-article';
 
 class ArticleBlock extends Component {
     constructor(props) {
@@ -10,11 +11,7 @@ class ArticleBlock extends Component {
     }
 
     readArticle() {
-        console.log('_id', this.props.article._id);
-        this.props.history.push({
-            pathname: URLS.transform(URLS.ROUTES.article, {articleSlug: this.props.article.articleSlug}),
-            state: { _id: this.props.article._id }
-        });
+        readArticle(this.props.history, this.props.article)
     }
 
     componentDidMount() {
@@ -23,7 +20,7 @@ class ArticleBlock extends Component {
     render() {
         return (
             <div className={"ArticleBlock " + this.props.orientation}
-                 onClick={(event) => { this.readArticle() }}
+                 onClick={this.readArticle}
             >
                 <div className="img-block">
                     <img src={this.props.article.showcaseImage} alt={this.props.article.title}/>
