@@ -13,7 +13,7 @@ class ArticleBlock extends Component {
         console.log('_id', this.props.article._id);
         this.props.history.push({
             pathname: URLS.transform(URLS.ROUTES.article, {articleSlug: this.props.article.articleSlug}),
-            state: {_id: this.props.article._id}
+            state: { _id: this.props.article._id }
         });
     }
 

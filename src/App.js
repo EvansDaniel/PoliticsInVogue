@@ -12,6 +12,9 @@ import Footer from "./components/Footer/Footer";
 import Login from "./modules/Login/Login";
 import Dashboard from "./modules/Dashboard/Dashboard";
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
+
+// This is required so that
+// See https://medium.com/@andrewzey/google-seo-with-create-react-app-fixing-the-hidden-gotcha-c164063106d
 import 'babel-polyfill'
 // This file must be loaded before api-v1.js
 const URLS = require('./shared/urls');

@@ -1,22 +1,32 @@
 @import "../../shared/mixins.less";
 @import "../../shared/vars.less";
 
+@midTabletAndSmaller: ~'only screen and (max-width : 600px)';
+
 .AlternatingArticleBlock {
 
   .SideBySideArticleBlock {
     // TODO: not sure about the border stuff
-    //border-bottom: 1px solid @favoriteColor;
+    //border-bottom: 2px solid @favoriteColor;
 
     .category-wrapper {
       .article-flip {
         .flex();
         align-items: center;
 
+        @media @midTabletAndSmaller {
+          flex-direction: column-reverse;
+        }
+
         &.reverse {
           flex-direction: row-reverse;
           .article-image {
-            //border-left: 1px solid @favoriteColor;
+            //border-left: 2px solid @favoriteColor;
             //border-right: none;
+          }
+
+          @media @midTabletAndSmaller {
+            flex-direction: column-reverse;
           }
         }
 
@@ -25,6 +35,11 @@
           text-transform: uppercase;
           color: @realBlack;
           width: 50%;
+
+          @media @midTabletAndSmaller {
+            padding: @medium 0 @medium 0;
+            width: 100%;
+          }
 
           & > div {
             margin-bottom: @medium;
@@ -39,28 +54,15 @@
             .ovo-font-family(@fontSize: @em, @letterSpacing: 4px);
           }
 
-          .excerpt {
-            padding-left: 10%;
-            padding-right: 10%;
-            font-size: @em;
-            font-family: Crimson Text, serif;
-            text-transform: none;
-            &:after {
-              content: '...';
-            }
-          }
-
-          .read-article {
-            .ovo-font-family(@fontSize: 12px, @letterSpacing: 4px);
+          .read-article-button {
+            .ovo-font-family(@fontSize: @emMedium*2, @letterSpacing: 4*@rPixel);
             background-color: #f1f1f1;
             outline: none;
             border: none;
-            font-size: @emMedium*2;
             padding: 10px 25px;
             cursor: pointer;
             box-shadow: none;
             transition: box-shadow .33s;
-            margin-top: @small;
 
             &:hover {
               .default-box-shadow();
@@ -69,11 +71,57 @@
         }
 
         .article-image {
+          .border-radius(@radius: 3*@pixel);
           background-image: url(https://2.bp.blogspot.com/-AuLlxJCRk3M/WkE3m_0uD6I/AAAAAAAAbWU/24a0ToPfPVY-kiaFvQQxm6HvesO0nNAJgCLcBGAs/s1600/xmas2.jpg);
           width: 50%;
-          height: 500px;
+          height: 500*@pixel;
           background-size: cover;
           background-position: 50%;
+          cursor: pointer;
+
+          @media @tabletOrSmaller {
+            height: 400*@pixel;
+          }
+
+          @media @midTabletAndSmaller {
+            height: 350*@pixel;
+          }
+
+          // Transitioning image black out and excerpt
+          &:hover {
+            .image-content {
+              .flex();
+              background-color: @blackOut;
+
+              .excerpt {
+                visibility: visible;
+              }
+            }
+          }
+
+          .image-content {
+            .ovo-font-family(@fontSize: 15*@pixel, @letterSpacing: @pixel);
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            width: 100%;
+            background-color: rgba(0,0,0,0);
+            transition: background-color .33s ease-out;
+            color: white;
+            text-align: center;
+
+            .excerpt {
+              text-transform: none;
+              .add-quotes(@ending: "...");
+              max-width: 75%;
+              visibility: hidden;
+            }
+          }
+
+          @media @midTabletAndSmaller {
+            width: 100%;
+          }
+
           //border-right: 1px solid @favoriteColor;
         }
       }
