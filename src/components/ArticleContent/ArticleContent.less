@@ -7,16 +7,11 @@
 @midTabletAndSmaller: ~'only screen and (max-width : 700px)';
 @smallTabletAndSmaller: ~'only screen and (max-width: 600px)';
 @stickyTopPosition: 100px;
+@leftColumnIncrease: 10%;
 
 .ArticleContent {
+  width: 100%;
   color: @black;
-  max-width: 1100*@pixel;
-  position: relative;
-  //right: 50px;
-
-  @media @tabletOrSmaller {
-    right: 0;
-  }
 
   .article-meter {
     height: 2*@pixel;
@@ -30,202 +25,212 @@
     max-width: 100%;
   }
 
-  .article {
-    padding-left: @articleBodyPadding;
-    padding-right: @articleBodyPadding;
+  .wrapper {
+    .flex();
+    width: 100%;
+    justify-content: center;
 
-    @media @tabletOrSmaller {
-      padding-left: @large;
-      padding-right: @large;
-    }
+    .article-wrapper {
+      max-width: 1100*@pixel;
 
-    .article-top {
-      .flex();
-      margin-top: @large;
+      .article {
+        padding-left: @articleBodyPadding;
+        padding-right: @articleBodyPadding;
 
-      @media @smartphones {
-        flex-direction: column;
-      }
-
-      .article-info {
-        font-family: Lato, serif;
-        color: @primaryFontColor;
-        padding-right: @medium;
-        min-width: @articleInfoWidth;
-
-        @media @midTabletAndSmaller {
-          min-width: @articleInfoWidth + 10%;
+        @media @tabletOrSmaller {
+          padding-left: @large;
+          padding-right: @large;
         }
 
-        & > div {
-          line-height: @em + @emMedium;
-
-          @media @smartphones {
-            line-height: @em + @emSmall*2;
-          }
-        }
-
-        .title {
-          .word-break();
+        .article-top {
+          .flex();
           margin-top: @large;
-          text-align: left;
-          font-size: 28*@pixel;
-          margin-bottom: @small;
-          letter-spacing: @emSmall;
 
           @media @smartphones {
-            margin-top: @small;
+            flex-direction: column;
           }
-        }
 
-        .category {
-          text-transform: uppercase;
-          color: @black;
+          .article-info {
+            font-family: Lato, serif;
+            color: @primaryFontColor;
+            padding-right: @medium;
+            min-width: @articleInfoWidth;
 
-          a {
-            text-decoration: none;
-            &:hover {
-              color: @favoriteColor !important;
+            @media @midTabletAndSmaller {
+              min-width: @articleInfoWidth + @leftColumnIncrease;
             }
-            &:visited {
-              color: inherit;
+
+            & > div {
+              line-height: @em + @emMedium;
+
+              @media @smartphones {
+                line-height: @em + @emSmall*2;
+              }
+            }
+
+            .title {
+              .word-break();
+              margin-top: @large;
+              text-align: left;
+              font-size: 28*@pixel;
+              margin-bottom: @small;
+              letter-spacing: @emSmall;
+
+              @media @smartphones {
+                margin-top: @small;
+              }
+            }
+
+            .category {
+              text-transform: uppercase;
+              color: @black;
+
+              a {
+                text-decoration: none;
+                &:hover {
+                  color: @favoriteColor !important;
+                }
+                &:visited {
+                  color: inherit;
+                }
+              }
+
+              @media @smartphones {
+                display: inline-block;
+                &:after {
+                  content: " | ";
+                }
+              }
+            }
+
+            .time-to-read {
+              display: inline-block;
+              margin-left: @xxsmall;
+              color: @primaryColor;
+              text-transform: uppercase;
+            }
+
+            .author-info {
+              font-size: @emLarge + @emSmall;
+              color: #33475b;
+              letter-spacing: @emSmall/2;
+
+              .date-published {
+                text-align: left;
+                text-transform: capitalize;
+                margin-bottom: @xxsmall;
+              }
+
+              .name {
+                color: @favoriteColor;
+                text-decoration: none;
+              }
             }
           }
 
-          @media @smartphones {
-            display: inline-block;
-            &:after {
-              content: " | ";
+          .main-image {
+            img {
+              .border-radius(@radius: 8*@pixel);
+              //max-width: 100% - @articleInfoWidth;
+              width: 100%;
+              max-height: 350*@pixel;
+
+              @media @laptopOrSmaller {
+                max-width: 100%;
+                max-height: 100%;
+              }
+            }
+
+            @media @smartphones {
+              margin-top: @large;
             }
           }
         }
 
-        .time-to-read {
-          display: inline-block;
-          margin-left: @xxsmall;
-          color: @primaryColor;
-          text-transform: uppercase;
-        }
+        .article-main {
+          .flex();
+          padding-top: @xlarge;
 
-        .author-info {
-          font-size: @emLarge + @emSmall;
-          color: #33475b;
-          letter-spacing: @emSmall/2;
+          .suggested {
+            border-right: 1*@pixel solid @favoriteColor;
+            padding-right: @medium;
+            min-width: @articleInfoWidth;
+            max-width: @articleInfoWidth;
 
-          .date-published {
-            text-align: left;
-            text-transform: capitalize;
-            margin-bottom: @xxsmall;
+            @media @midTabletAndSmaller {
+              min-width: @articleInfoWidth + @leftColumnIncrease;
+              max-width: @articleInfoWidth + @leftColumnIncrease;
+            }
+
+            .suggested-cta {
+              margin-bottom: @xsmall;
+            }
+
+            .articles {
+              position: sticky;
+              top: @stickyTopPosition;
+            }
+
+            @media @smallTabletAndSmaller {
+              display: none;
+            }
+
+            & > * {
+              margin-bottom: @em * .5;
+            }
           }
 
-          .name {
-            color: @favoriteColor;
-            text-decoration: none;
+          .article-body {
+            .word-break();
+            font-family: Lato, serif;
+            color: #33475b;
+            font-size: 1.1em;
+            line-height: 1.58em;
+            letter-spacing: .01em;
+            padding-left: 2.5%;
+            padding-right: 10%;
+            max-width: 500*@pixel;
+            // text-align: justify????
+
+            @media @tabletOrSmaller {
+              padding-right: 5%;
+            }
+
+            // When this happens left side suggested articles will disappear as well
+            @media @smallTabletAndSmaller {
+              padding-left: 0;
+            }
+          }
+
+          .social-media-block {
+
+            .social-media-icons {
+              position: sticky;
+              top: @stickyTopPosition;
+            }
+
+            @media @tabletOrSmaller {
+              right: 0;
+            }
           }
         }
-      }
 
-      .main-image {
-        img {
-          .border-radius(@radius: 8*@pixel);
-          //max-width: 100% - @articleInfoWidth;
-          width: 100%;
-          max-height: 350*@pixel;
-
-          @media @laptopOrSmaller {
-            max-width: 100%;
-            max-height: 100%;
-          }
-        }
-
-        @media @smartphones {
-          margin-top: @large;
-        }
-      }
-    }
-
-    .article-main {
-      .flex();
-      padding-top: @xlarge;
-
-      .suggested {
-        border-right: 1*@pixel solid @favoriteColor;
-        padding-right: @medium;
-        min-width: @articleInfoWidth;
-        max-width: @articleInfoWidth;
-
-        @media @midTabletAndSmaller {
-          min-width: @articleInfoWidth + 10%;
-          max-width: @articleInfoWidth + 10%;
-        }
-
-        .suggested-cta {
-          margin-bottom: @xsmall;
-        }
-
-        .articles {
-          position: sticky;
-          top: @stickyTopPosition;
-        }
-
-        @media @smallTabletAndSmaller {
+        .mobile-suggested-articles {
           display: none;
+          /*margin-top: @small;
+          border-top: @pixel*1 solid @dimmedColor;
+          border-bottom: @pixel*1 solid @dimmedColor;
+          padding: @medium 0 @medium 0;*/
+
+          @media @smallTabletAndSmaller {
+            display: inherit;
+          }
         }
 
-        & > * {
-          margin-bottom: @em * .5;
-        }
-      }
-
-      .article-body {
-        .word-break();
-        font-family: Lato, serif;
-        color: #33475b;
-        font-size: 1.1em;
-        line-height: 1.58em;
-        letter-spacing: .01em;
-        padding-left: 2.5%;
-        padding-right: 10%;
-        max-width: 500*@pixel;
-        // text-align: justify????
-
-        @media @tabletOrSmaller {
-          padding-right: 5%;
-        }
-
-        // When this happens left side suggested articles will disappear as well
-        @media @smallTabletAndSmaller {
-          padding-left: 0;
+        .comment-section {
+          margin-top: @large;
         }
       }
-
-      .social-media-block {
-
-        .social-media-icons {
-          position: sticky;
-          top: @stickyTopPosition;
-        }
-
-        @media @tabletOrSmaller {
-          right: 0;
-        }
-      }
-    }
-
-    .mobile-suggested-articles {
-      display: none;
-      /*margin-top: @small;
-      border-top: @pixel*1 solid @dimmedColor;
-      border-bottom: @pixel*1 solid @dimmedColor;
-      padding: @medium 0 @medium 0;*/
-
-      @media @smallTabletAndSmaller {
-        display: inherit;
-      }
-    }
-
-    .comment-section {
-      margin-top: @large;
     }
   }
 }

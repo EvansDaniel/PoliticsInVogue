@@ -36,8 +36,8 @@ class ArticleBlock extends Component {
                                         <div>{article.timeToReadInMin} min read</div>
                                     </div>
                                     <div className="details">
-                                        <div className="title">{article._id} {article.title}</div>
-                                        <div className="excerpt">{article.category}</div>
+                                        <div className="title">{article.title}</div>
+                                        <div className="excerpt">{article.excerpt}</div>
                                     </div>
                                 </div>
                             );
