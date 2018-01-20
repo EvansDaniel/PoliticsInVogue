@@ -28,7 +28,7 @@ const ArticleSchema = new Schema({
         trim: true,
     },
     hidden: {
-        type: String,
+        type: Boolean,
         default: false,
     },
     allowComments: {

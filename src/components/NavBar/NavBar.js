@@ -1,8 +1,13 @@
 import React, {Component} from 'react';
 import {Link} from "react-router-dom";
-import './NavBar.less'
+import './NavBar.less';
+import Auth from '../../services/auth';
 
 class NavBar extends Component {
+    constructor(props) {
+        super(props);
+        this.auth = new Auth();
+    }
     componentDidMount() {
 
     }
@@ -26,7 +31,9 @@ class NavBar extends Component {
                         <i className="fa fa-caret-down"></i>
                         <SubMenu categories={categories}/>
                     </li>
-                    <li><Link to="/dashboard">Dashboard</Link></li>
+                    {
+                        this.auth.isAuthenticated() ? <li><Link to="/dashboard">Dashboard</Link></li> : null
+                    }
                     <li>
                         <a className="icon" href="mailto:clarksl0@sewanee.edu">
                             <i className="fa fa-envelope-o" aria-hidden="true"></i>

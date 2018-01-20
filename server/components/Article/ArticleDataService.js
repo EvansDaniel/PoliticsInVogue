@@ -78,11 +78,20 @@ const ArticleDataService = function (Article) {
 
         getSuggestedArticles: function (queryObj, cb) {
             const category = queryObj.category;
+            const exclude = queryObj.exclude &&
+                [new Mongoose.Types.ObjectId(queryObj.exclude)] ||
+                [];
             let articles = [];
-            // TODO: exclude current article from results
             Article
                 .aggregate([
-                    { $match: { _id: { $nin: queryObj.exclude && [queryObj.exclude] || []} } }
+                    {
+                        $match: {
+                            _id: {$nin: exclude},
+                            category: category,
+                            draft: false,
+                            hidden: false
+                        }
+                    },
                 ])
                 .sample(2)
                 .cursor({})
@@ -90,22 +99,27 @@ const ArticleDataService = function (Article) {
                 .on('data', doc => {
                     articles.push(doc);
                 })
-                .on('err', err => {
-                    return cb(err, null)
-                })
                 .on('end', () => {
+                    // find 2 more articles that aren't in given category
+                    // and that aren't the article to be excluded
                     Article.find({
                         _id: {
                             $nin: articles.map((article) =>
                                 Mongoose.Types.ObjectId(article._id))
-                                .concat(queryObj.exclude && [queryObj.excerpt] || [])
-                        }
-                    }).limit(2).exec(function (err, arts) {
-                        if(err || !arts) {
+                                .concat(exclude),
+                        },
+                        category: {
+                            $nin: [category]
+                        },
+                        draft: false,
+                        hidden: false,
+                    }).exec(function (err, arts) {
+                        if (err || !arts) {
                             return cb(err, arts);
                         }
+                        const twoArts = arts.slice(0,2);
 
-                        arts.forEach(function (article) {
+                        twoArts.forEach(function (article) {
                             articles.push(article);
                         });
 
@@ -115,7 +129,11 @@ const ArticleDataService = function (Article) {
         },
 
         getAllCategories: function (cb) {
-            Article.find({category: {$exists: true}}, function (err, articles) {
+            Article.find({
+                category: {$exists: true},
+                draft: false,
+                hidden: false,
+            }, function (err, articles) {
                 if (err) {
                     return cb(err, articles);
                 }
@@ -141,7 +159,11 @@ const ArticleDataService = function (Article) {
          */
         getPlacedArticles: function (cb) {
             // TODO: What if I change 'none' to something else?
-            Article.find({placement: {$ne: 'none'}}, function (err, articles) {
+            Article.find({
+                placement: {$ne: 'none'},
+                draft: false,
+                hidden: false,
+            }, function (err, articles) {
                 if (err) {
                     return cb(err, null);
                 }
@@ -181,9 +203,10 @@ const ArticleDataService = function (Article) {
 
         update: function (articleData, cb) {
             // TODO: check if _id is present
-            // If we are updating as hidden article, we want to unplace it as well
-            if (articleData.hidden) {
-                articleData.placement = 'none';
+            // updating to placed article
+            if (articleData.placement !== 'none') {
+                articleData.hidden = false;
+                articleData.draft = false; // ??
             }
             Article.update({_id: articleData._id}, articleData,
                 function (err, raw) {

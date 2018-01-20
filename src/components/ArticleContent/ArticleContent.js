@@ -46,6 +46,13 @@ class ArticleContent extends Component {
 
     render() {
         let articleData = this.props.articleData;
+        let temp = [articleData._id].concat(this.props.suggestedArticles.map((article) => {
+            return article._id
+        }));
+        let otherTemp = {};
+        temp.forEach((t) => {
+            otherTemp[t] = t;
+        });
         // TODO: test the article with really long and short article length
         return (
             <div className="ArticleContent">
@@ -75,92 +82,98 @@ class ArticleContent extends Component {
                     <div className="lower-article">
                         <div className="article-main">
                             <div className="suggested">
-                                <div className="articles">
-                                <div className="suggested-cta">Articles You Might Like</div>
-                                    {
-                                        this.props.suggestedArticles.map((suggestedArticle) => {
-                                            return (
-                                                <ArticleBlock key={suggestedArticle._id} article={suggestedArticle}/>
-                                            )
-                                        })
-                                    }
-                                </div>
+                                {
+                                    this.props.suggestedArticles ? <div className="articles">
+                                        <div className="suggested-cta">Articles You Might Like</div>
+                                        {
+                                            this.props.suggestedArticles.map((suggestedArticle) => {
+                                                return (
+                                                    <ArticleBlock key={suggestedArticle._id}
+                                                                  article={suggestedArticle}/>
+                                                )
+                                            })
+                                        }
+                                    </div> : null
+                                }
                             </div>
                             <div className="article-body">
-                                <p>
-                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                                </p>
-                                <p>
-                                    slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                                    slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                                    slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                                    slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                                    slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                                    slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                                </p><p>
-                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                            </p><p>
-                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                            </p><p>
-                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                            </p><p>
-                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                            </p><p>
-                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                            </p><p>
-                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                            </p><p>
-                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                                slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
-                            </p>
+                                {/*<p>
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 </p>
+                                 <p>
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 </p><p>
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 </p><p>
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 </p><p>
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 </p><p>
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 </p><p>
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 </p><p>
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 </p><p>
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 slkdfjs ldkfjasdkl fjsdklfjsdklfj sdklfj sdklfj sdklfj
+                                 </p>*/}
+                                {articleData._id}
+                                <br/>
+                                {`is => ${temp.length === Object.keys(otherTemp).length}`}
                             </div>
                             <div className="social-media-block">
                                 <div className="social-media-icons">
@@ -168,18 +181,26 @@ class ArticleContent extends Component {
                                 </div>
                             </div>
                         </div>
-                        <div className="mobile-suggested-articles">
-                            {
-                                this.props.suggestedArticles.splice(0, 2).map((suggestedArticle) => {
-                                    return (
-                                        <ArticleBlock key={suggestedArticle._id}
-                                                      article={suggestedArticle}
-                                                      orientation={'horizontal'}
-                                        />
-                                    )
-                                })
-                            }
-                        </div>
+                        {
+                            this.props.suggestedArticles ?
+                                <div>
+                                    <div className="cta">Other Articles You Might Enjoy</div>
+                                    <div className="mobile-suggested">
+                                        <div className="articles">
+                                            {
+                                                this.props.suggestedArticles.splice(0, 2).map((suggestedArticle) => {
+                                                    return (
+                                                        <ArticleBlock key={suggestedArticle._id}
+                                                                      article={suggestedArticle}
+                                                                      orientation={'horizontal'}
+                                                        />
+                                                    )
+                                                })
+                                            }
+                                        </div>
+                                    </div>
+                                </div> : null
+                        }
                         <div className="comment-section">
                             <Comments/>
                         </div>

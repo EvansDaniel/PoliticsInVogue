@@ -30,22 +30,6 @@ class Footer extends Component {
                             </div>
                         </div>
                         <div className="column">
-                            <div className="title">Popular Categories
-                                <div className="underline"></div>
-                            </div>
-                            <div className="list">
-                                <Link to="/politics">
-                                    <div>Politics</div>
-                                </Link>
-                                <Link to="/fashion">
-                                    <div>Fashion</div>
-                                </Link>
-                                <Link to="/gymtime">
-                                    <div>#gymtime</div>
-                                </Link>
-                            </div>
-                        </div>
-                        <div className="column">
                             <div className="title">Get Fashion In Vogue delivered to your inbox
                                 <div className="underline"></div>
                             </div>

@@ -11,7 +11,23 @@ class ArticleBlock extends Component {
     }
 
     readArticle() {
-        readArticle(this.props.history, this.props.article)
+        console.log('jumping ship');
+        // readArticle(this.props.history, this.props.article)
+        const transform = URLS.transform,
+            articleUrl = URLS.ROUTES.article,
+            slug = this.props.article.articleSlug,
+            _id = this.props.article._id;
+        this.props.history.push({
+            path: transform(articleUrl, {
+                articleSlug: slug
+            }),
+            state: {
+                _id: _id
+            }
+        });
+        console.log(transform(articleUrl, {
+            articleSlug: slug
+        }));
     }
 
     componentDidMount() {
@@ -27,7 +43,7 @@ class ArticleBlock extends Component {
                     <div>{this.props.article.timeToReadInMin} min read</div>
                 </div>
                 <div className="details">
-                    <div className="title">{this.props.article.title}</div>
+                    <div className="title">{this.props.article._id}</div>
                     <div className="excerpt">{this.props.article.category}</div>
                 </div>
             </div>

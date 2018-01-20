@@ -14,14 +14,16 @@ const express = require('express'),
     session = require('express-session'),
     mongoose = require('mongoose'),
     port = 3001,
-    morgan = require('morgan'),
     bodyParser = require('body-parser'),
     methodOverride = require('method-override'),
     path = require('path'),
+    morgan = require('morgan'),
     passport = require('passport'),
     PassportConfig = require('./config/passport'),
     cors = require('cors'),
-    MongoDBStore = require('connect-mongodb-session')(session);
+    MongoDBStore = require('connect-mongodb-session')(session),
+    cookieParser = require('cookie-parser'),
+    CONSTANTS = require('../src/shared/constants');
 
 process.env.isDev = process.env.NODE_ENV === 'development';
 process.env.isProd = process.env.NODE_ENV === 'production';
@@ -39,7 +41,7 @@ const store = new MongoDBStore({
     collection: 'sessions'
 });
 
-// Catch errors
+// Catch store errors
 store.on('error', function (error) {
     assert.ifError(error);
     assert.ok(false);
@@ -50,9 +52,10 @@ store.on('error', function (error) {
 app.use(require('express-session')({
     secret: process.env.EXPRESS_SESSION_SECRET,
     cookie: {
-        httpOnly: false,
-        maxAge: 1000 * 60 * 60 * 24 * 7 // 1 week
+        maxAge: CONSTANTS.SESSION_COOKIE_TIME,
+        httpOnly: true,
     },
+    name: process.env.SESSION_COOKIE_ID,
     store: process.env.isProd ? store : null,
     // Boilerplate options, see:
     // * https://www.npmjs.com/package/express-session#resave
@@ -64,12 +67,14 @@ app.use(require('express-session')({
 // TODO: provide resave and saveUninitialized option
 app.use(passport.initialize());
 app.use(passport.session());
-// PassportConfig();
 
-app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({'extended': 'true'}));
 app.use(bodyParser.json()); // parse application/json
 app.use(bodyParser.json({type: 'application/vnd.api+json'}));
+
+app.use(morgan('dev'));
+
+app.use(cookieParser());
 app.use(methodOverride('X-HTTP-Method-Override'));
 
 const CORS_ORIGINS_ALLOWED = [

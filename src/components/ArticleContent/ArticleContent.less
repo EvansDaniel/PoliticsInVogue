@@ -10,6 +10,13 @@
 
 .ArticleContent {
   color: @black;
+  max-width: 1100*@pixel;
+  position: relative;
+  //right: 50px;
+
+  @media @tabletOrSmaller {
+    right: 0;
+  }
 
   .article-meter {
     height: 2*@pixel;
@@ -27,7 +34,7 @@
     padding-left: @articleBodyPadding;
     padding-right: @articleBodyPadding;
 
-    @media @laptopOrSmaller {
+    @media @tabletOrSmaller {
       padding-left: @large;
       padding-right: @large;
     }
@@ -201,7 +208,7 @@
       }
     }
 
-    .mobile-suggested-articles {
+    .mobile-suggested {
       display: none;
       margin-top: @small;
       border-top: @pixel*1 solid @dimmedColor;
@@ -209,7 +216,11 @@
       padding: @medium 0 @medium 0;
 
       @media @smallTabletAndSmaller {
-        .flex();
+        display: inherit;
+      }
+
+      .articles {
+        /*.flex();*/
       }
     }
 

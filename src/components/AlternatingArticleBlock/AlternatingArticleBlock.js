@@ -15,7 +15,7 @@ class AlternatingArticleBlock extends Component {
 
     readArticle(event) {
 	    // TODO: include article data here
-	    readArticle(this.props.history, {})
+	    readArticle(this.props.history, {});
     }
 
     render() {

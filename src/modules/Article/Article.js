@@ -30,8 +30,8 @@ class Article extends Component {
             error: function () {
                 // TODO:
             },
-            queryParams: {
-                category: 'Politics',
+            params: {
+                category: articleData.category,
                 exclude: articleData._id,
             }
         });

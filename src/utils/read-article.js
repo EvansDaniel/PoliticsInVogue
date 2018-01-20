@@ -6,13 +6,14 @@ const readArticle = (history, articleData) => {
         slug = articleData.articleSlug,
         _id = articleData._id;
     history.push({
-        path: transform(articleUrl, {
-            articleSlug: slug
-        }),
+        path: '/',
         state: {
             _id: _id
         }
     });
+    console.log('here',_id, slug, transform(articleUrl, {
+        articleSlug: slug
+    }));
 };
 
 export default readArticle;

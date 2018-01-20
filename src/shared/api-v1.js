@@ -17,7 +17,6 @@ for (let key in URLS.API) {
             // console.log('prod', API_DOMAIN, API_VERSION, URLS.API[key]);
         } else {
             URLS.APP[key] = `${URLS.API[key]}`;
-            console.log('dev', URLS.APP[key]);
         }
     }
 }
@@ -26,7 +25,7 @@ let post = (url, options) => {
     options = options || {};
     // server expects data this way for all post requests
     const data = {
-        data: options.data
+        data: options.data || options
     };
     console.log(options);
     axios({
@@ -40,7 +39,8 @@ let post = (url, options) => {
         console.log(url, response);
         options.success && options.success(response)
     }).catch(error => {
-        console.log(`${url} request failed`, error.response);
+        console.log(`${url} request failed`, 'response err', error,
+            'response err', error.response);
         options.error && options.error(error.response);
     });
 };
@@ -81,10 +81,11 @@ module.exports = {
         });
     },
 
-    createArticle: function (callback: (response: {}) => void, options: {}) {
+    createArticle: function (options: {}) {
         let createArticleUrl = URLS.APP.createArticle;
         post(createArticleUrl, {
-            success: callback,
+            success: options.success,
+            error: options.error,
             data: options.data
         })
     },

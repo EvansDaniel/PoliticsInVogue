@@ -16,7 +16,7 @@ let URLS = {
 
     ROUTES: {
         home: '/',
-        editArticle: '/article/:id/edit',
+        editArticle: '/article/:_id/edit',
         dashboard: '/dashboard',
         about: '/about',
         article: '/articles/:articleSlug',

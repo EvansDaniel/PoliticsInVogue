@@ -47,9 +47,9 @@ class SocialShare extends Component {
         const baseShareUrl = 'https://twitter.com/intent/tweet';
         const queryParams = {
             url: window.encodeURI(window.location.href),
-            text:`${articleData && articleData.title + ' by Sophie Clark' || 'FashionInVogue'}`,
-            hashtags:`fashioninvogue,${articleData && articleData.categoryName || ''}`,
-            via: '_fashioninvogue',
+            text:`${articleData && articleData.title + ' by Sophie Clark' || 'PoliticsInVogue'}`,
+            hashtags:`politicsinvogue,${articleData && articleData.categoryName || ''}`,
+            via: 'politicsinvogue',
         };
         const url = `${baseShareUrl}?${queryString.stringify(queryParams)}`;
         window.open(url);

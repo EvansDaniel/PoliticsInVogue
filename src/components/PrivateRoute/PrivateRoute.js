@@ -6,11 +6,13 @@ import {withRouter} from 'react-router-dom';
 import API from '../../shared/api-v1';
 import URLS from '../../shared/urls';
 import Loading from '../Loading/Loading';
+import Auth from '../../services/auth';
 
 // TODO: extract to component
 class PrivateRoute extends Component {
     constructor(props) {
         super(props);
+        this.auth = new Auth();
         this.component = props.component;
         this.state = {
             loading: true,
@@ -18,14 +20,8 @@ class PrivateRoute extends Component {
         }
     }
 
-    isAuthenticated(document) {
-        // TODO: Keep the real isAuthenticated below
-        document.cookie = "username=John Doe";
-        return document.cookie.indexOf('connect.sid') > -1;
-    }
-
     componentDidMount() {
-        if (!this.isAuthenticated(window.document)) {
+        if (!this.auth.isAuthenticated()) {
             this.props.history.push({
                 pathname: URLS.ROUTES.login,
                 state: {

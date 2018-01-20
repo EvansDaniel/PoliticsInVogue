@@ -34,11 +34,12 @@ const UserBootstrap = function (app) {
     // TODO: remember to use Content-Type application/json
     app.post(URLS.API.login,
         passport.authenticate('local'),
-        UserRoutes.postLogin);
+        UserRoutes.postLogin
+    );
 
     app.get(URLS.API.checkAuthenticated,
         UserRoutes.getCheckAuthenticated
-    )
+    );
 };
 
 module.exports = UserBootstrap;

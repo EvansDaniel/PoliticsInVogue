@@ -20,9 +20,10 @@ class SocialMediaBlock extends Component {
         return (
             <div className="SocialMediaBlock">
                 {
-                    socialMedias.map(function (socialMedia) {
+                    socialMedias.map(function (socialMedia, index) {
                         return (
-                          <SocialShare articleData={articleData}
+                          <SocialShare key={index}
+                                       articleData={articleData}
                                        type={socialMedia}
                           />
                         );

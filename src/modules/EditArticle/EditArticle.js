@@ -6,9 +6,10 @@ import {waitBeforeCall} from '../../shared/utils';
 import previewIcon from '../../../src/img/preview.svg';
 import publishIcon from '../../../src/img/publish.svg';
 import API from '../../shared/api-v1';
-import {MegadraftEditor, editorStateFromRaw, editorStateToJSON} from 'megadraft-denistsuman';
+import {MegadraftEditor, editorStateFromRaw} from 'megadraft-denistsuman';
 import {stateToHTML} from 'draft-js-export-html';
 import {stateFromHTML} from 'draft-js-import-html';
+import '../../css/megadraft.css';
 
 class EditArticle extends Component {
 
@@ -224,13 +225,15 @@ class EditArticle extends Component {
                     </div>
                     {
                         !this.state.showPreview ?
-                            < div className="editing">
+                            <div className="editing">
                                 <MegadraftEditor
                                     editorState={this.state.editorState}
-                                    onChange={this.onChange}/>
+                                    onChange={this.onChange}
+                                />
                             </div>
                             :
                             <div className="preview">
+                                {/*TODO: Use ArticleContent for the preview and remove checks for props.articleData in Article comp*/}
                                 <Article articleData={this.state.articleData}/>
                             </div>
                     }

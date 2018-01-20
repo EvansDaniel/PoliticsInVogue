@@ -16,19 +16,23 @@ class Dashboard extends Component {
 
     createNewArticle(event) {
 	    const self = this;
-	    API.createArticle(function (response) {
-	        const data = response.data;
-	        self.props.history.push({
-                pathname: URLS.transform(URLS.ROUTES.editArticle, {
-                    _id: data._id
-                }),
-                state: {
-                    article: data
-                }
-            });
-        }, {
-	        data: {
-	            title: 'Untitled',
+	    API.createArticle({
+            success: (response) => {
+                const data = response.data;
+                self.props.history.push({
+                    pathname: URLS.transform(URLS.ROUTES.editArticle, {
+                        _id: data._id
+                    }),
+                    state: {
+                        article: data
+                    }
+                });
+                console.log('here');
+            },
+            error: () => false ,// TODO:
+            data: {
+                title: 'Untitled',
+                draft: true,
             }
         });
 	    // call create article api
