@@ -83,17 +83,13 @@ class ArticleContent extends Component {
                         <div className="article-main">
                             <div className="suggested">
                                 {
-                                    this.props.suggestedArticles ? <div className="articles">
-                                        <div className="suggested-cta">Articles You Might Like</div>
-                                        {
-                                            this.props.suggestedArticles.map((suggestedArticle) => {
-                                                return (
-                                                    <ArticleBlock key={suggestedArticle._id}
-                                                                  article={suggestedArticle}/>
-                                                )
-                                            })
-                                        }
-                                    </div> : null
+                                    this.props.suggestedArticles ?
+                                        <ArticleBlock
+                                            articles={this.props.suggestedArticles}
+                                            cta={'Articles You Might Like'}
+                                            orientation="vertical"
+                                        />
+                                        : null
                                 }
                             </div>
                             <div className="article-body">
@@ -181,26 +177,15 @@ class ArticleContent extends Component {
                                 </div>
                             </div>
                         </div>
-                        {
-                            this.props.suggestedArticles ?
-                                <div>
-                                    <div className="cta">Other Articles You Might Enjoy</div>
-                                    <div className="mobile-suggested">
-                                        <div className="articles">
-                                            {
-                                                this.props.suggestedArticles.splice(0, 2).map((suggestedArticle) => {
-                                                    return (
-                                                        <ArticleBlock key={suggestedArticle._id}
-                                                                      article={suggestedArticle}
-                                                                      orientation={'horizontal'}
-                                                        />
-                                                    )
-                                                })
-                                            }
-                                        </div>
-                                    </div>
-                                </div> : null
-                        }
+                        <div className="mobile-suggested-articles">
+                            {
+                                this.props.suggestedArticles ?
+                                    <ArticleBlock articles={this.props.suggestedArticles.slice(0,2)}
+                                                  cta={"Other Articles You Might Enjoy"}
+                                                  orientation="horizontal"
+                                    /> : null
+                            }
+                        </div>
                         <div className="comment-section">
                             <Comments/>
                         </div>

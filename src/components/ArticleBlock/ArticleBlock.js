@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import './ArticleBlock.less'
 import {withRouter} from 'react-router';
 import URLS from '../../shared/urls';
+import PropTypes from 'prop-types';
 import readArticle from '../../utils/read-article';
 
 class ArticleBlock extends Component {
@@ -10,41 +11,39 @@ class ArticleBlock extends Component {
         this.readArticle = this.readArticle.bind(this);
     }
 
-    readArticle() {
-        console.log('jumping ship');
-        // readArticle(this.props.history, this.props.article)
-        const transform = URLS.transform,
-            articleUrl = URLS.ROUTES.article,
-            slug = this.props.article.articleSlug,
-            _id = this.props.article._id;
-        this.props.history.push({
-            path: transform(articleUrl, {
-                articleSlug: slug
-            }),
-            state: {
-                _id: _id
-            }
-        });
-        console.log(transform(articleUrl, {
-            articleSlug: slug
-        }));
-    }
-
-    componentDidMount() {
+    readArticle(article) {
+        readArticle(this.props.history, article)
     }
 
     render() {
+        const self = this;
         return (
-            <div className={"ArticleBlock " + this.props.orientation}
-                 onClick={this.readArticle}
-            >
-                <div className="img-block">
-                    <img src={this.props.article.showcaseImage} alt={this.props.article.title}/>
-                    <div>{this.props.article.timeToReadInMin} min read</div>
-                </div>
-                <div className="details">
-                    <div className="title">{this.props.article._id}</div>
-                    <div className="excerpt">{this.props.article.category}</div>
+            <div className={"ArticleBlock " + this.props.orientation}>
+                {
+                    this.props.cta ?
+                        <div className="articles-cta">{this.props.cta}</div>
+                        : null
+                }
+                <div className="content-articles">
+                    {
+                        this.props.articles.map((article) => {
+                            return (
+                                <div key={article._id} onClick={function (event) {
+                                    self.readArticle(article);
+                                }}>
+                                    <div className="img-block">
+                                        <img src={article.showcaseImage} alt={article.title}/>
+                                        <div>{article.timeToReadInMin} min read</div>
+                                    </div>
+                                    <div className="details">
+                                        <div className="title">{article._id} {article.title}</div>
+                                        <div className="excerpt">{article.category}</div>
+                                    </div>
+                                </div>
+                            );
+                        })
+                    }
+
                 </div>
             </div>
         );
@@ -53,6 +52,10 @@ class ArticleBlock extends Component {
 
 ArticleBlock.defaultProps = {
     orientation: 'vertical'
+};
+
+ArticleBlock.proptypes = {
+    articles: PropTypes.object.isRequired
 };
 
 ArticleBlock = withRouter(ArticleBlock);

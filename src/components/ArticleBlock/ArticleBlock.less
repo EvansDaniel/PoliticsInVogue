@@ -3,42 +3,77 @@
 
 .ArticleBlock {
   .flex();
+  flex-direction: column;
   height: auto;
-  //max-height: 100px;
   width: 100%;
-  padding-bottom: @xxsmall;
-  margin-bottom: @xsmall;
-  border-bottom: 1*@pixel solid @dimmedColor;
+
+  &.vertical {
+    /*border-bottom: 1*@pixel solid @dimmedColor;*/
+  }
+
+  .articles-cta {
+    border-bottom: 1*@pixel solid @dimmedColor;
+    margin-bottom: @xsmall;
+    padding-bottom: @xxsmall;
+  }
+
+  &.vertical {
+    .content-articles {
+      flex-direction: column;
+
+      & > div {
+        margin-bottom: @xsmall;
+      }
+    }
+  }
 
   &.horizontal {
-    border-bottom: none;
-  }
-
-  .img-block {
-    max-width: 50%;
-
-    img {
-      .border-radius(@radius: 3*@pixel);
-      width: 100%;
-    }
-
-    div {
-      margin-top: @xxsmall;
-      font-size: @emLarge + @emSmall;
+    .content-articles {
+      flex-direction: row;
     }
   }
 
-  .details {
-    padding-left: @small;
+  .content-articles {
+    // direction depends on orientation prop passed
+    .flex();
 
-    .title {
-      font-weight: bold;
-      .truncate(@fontSize: 13*@pixel, @linesToShow: 3, @lineHeight: 1em);
-    }
+    // Each article div is direct child
+    & > div {
+      .flex();
+      flex-direction: row;
+      border-bottom: @pixel solid @dimmedColor;
+      padding-bottom: @xsmall;
 
-    .excerpt {
-      font-size: 12px;
-      .truncate(@fontSize: 12*@pixel, @linesToShow: 4, @lineHeight: 1.2em)
+      .img-block {
+        max-width: 50%;
+
+        img {
+          .border-radius(@radius: 3*@pixel);
+          width: 100%;
+        }
+
+        div {
+          margin-top: @xxsmall;
+          font-size: @emLarge + @emSmall;
+        }
+      }
+
+      .details {
+        padding-left: @xsmall;
+        padding-right: @xsmall;
+
+        .title {
+          .word-break();
+          .truncate(@fontSize: 13*@pixel, @linesToShow: 3, @lineHeight: 1em);
+          font-weight: bold;
+        }
+
+        .excerpt {
+          .truncate(@fontSize: 12*@pixel, @linesToShow: 4, @lineHeight: 1.2em);
+          .word-break();
+          font-size: 12px;
+        }
+      }
     }
   }
 }

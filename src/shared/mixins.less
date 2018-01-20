@@ -6,6 +6,20 @@
   letter-spacing: @letterSpacing;
 }
 
+.word-break() {
+  -ms-word-break: break-all;
+  word-break: break-all;
+  /* Non standard for WebKit */
+  word-break: break-word;
+  .hyphens();
+}
+
+.hyphens() {
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  hyphens: auto;
+}
+
 .bottom-transition(@height: 5px, @time: .33s, @type: ease-in-out) {
   position: relative;
   bottom: 0;
