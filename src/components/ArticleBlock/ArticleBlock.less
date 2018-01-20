@@ -1,6 +1,9 @@
 @import "../../shared/mixins.less";
 @import "../../shared/vars.less";
 
+@articleBottomPadding: @small;
+@verticalArticleMarginBottom: @xsmall;
+
 .ArticleBlock {
   .flex();
   flex-direction: column;
@@ -8,21 +11,12 @@
   width: 100%;
 
   &.vertical {
-    /*border-bottom: 1*@pixel solid @dimmedColor;*/
-  }
-
-  .articles-cta {
-    border-bottom: 1*@pixel solid @dimmedColor;
-    margin-bottom: @xsmall;
-    padding-bottom: @xxsmall;
-  }
-
-  &.vertical {
     .content-articles {
       flex-direction: column;
+      padding-top: @verticalArticleMarginBottom;
 
       & > div {
-        margin-bottom: @xsmall;
+        margin-bottom: @verticalArticleMarginBottom;
       }
     }
   }
@@ -30,10 +24,16 @@
   &.horizontal {
     .content-articles {
       flex-direction: row;
+      padding-top: @articleBottomPadding;
     }
   }
 
+  .articles-cta {
+    margin-bottom: @xxsmall;
+  }
+
   .content-articles {
+    border-top: 1*@pixel solid @dimmedColor;
     // direction depends on orientation prop passed
     .flex();
 
@@ -42,7 +42,7 @@
       .flex();
       flex-direction: row;
       border-bottom: @pixel solid @dimmedColor;
-      padding-bottom: @xsmall;
+      padding-bottom: @articleBottomPadding;
 
       .img-block {
         max-width: 50%;

@@ -1,4 +1,5 @@
 import URLS from '../shared/urls';
+import $ from 'jquery';
 
 const readArticle = (history, articleData) => {
     const transform = URLS.transform,
@@ -11,9 +12,9 @@ const readArticle = (history, articleData) => {
             _id: _id
         }
     });
-    console.log('here',_id, slug, transform(articleUrl, {
-        articleSlug: slug
-    }));
+    // TODO: make sure this works from any starting page i.e. check readArticle from category page
+    $('html').animate({ scrollTop: '0px' });
+
 };
 
 export default readArticle;
