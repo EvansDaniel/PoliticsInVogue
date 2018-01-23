@@ -12,6 +12,7 @@
 .ArticleContent {
   width: 100%;
   color: @black;
+  font-family: "Lunito", serif !important;
 
   .article-meter {
     height: 2*@pixel;
@@ -51,7 +52,7 @@
           }
 
           .article-info {
-            font-family: Lato, serif;
+            font-family: "Lunito", serif !important;
             color: @primaryFontColor;
             padding-right: @medium;
             min-width: @articleInfoWidth;
@@ -84,16 +85,6 @@
             .category {
               text-transform: uppercase;
               color: @black;
-
-              a {
-                text-decoration: none;
-                &:hover {
-                  color: @favoriteColor !important;
-                }
-                &:visited {
-                  color: inherit;
-                }
-              }
 
               @media @smartphones {
                 display: inline-block;
@@ -182,7 +173,7 @@
 
           .article-body {
             .word-break();
-            font-family: Lato, serif;
+            font-family: "Lunito", serif !important;
             color: #33475b;
             font-size: 1.1em;
             line-height: 1.58em;
@@ -199,6 +190,16 @@
             // When this happens left side suggested articles will disappear as well
             @media @smallTabletAndSmaller {
               padding-left: 0;
+            }
+
+            // The below media queries ensure that the social media
+            // block is pushed to the right
+            @media @largerThanLaptop, @laptopOrSmaller {
+              min-width: 50%;
+            }
+
+            @media @smallTabletAndSmaller {
+              min-width: 80%;
             }
           }
 

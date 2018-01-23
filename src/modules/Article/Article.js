@@ -75,7 +75,7 @@ class Article extends Component {
 
     render() {
         // For previewing the article
-        const articleData = this.state.articleData || this.props.articleData;
+        const articleData = this.state.articleData;
         return (
             <div className="Article">
                 <Helmet>
@@ -94,8 +94,7 @@ class Article extends Component {
 }
 
 Article.proptypes = {
-    // TODO: finalize articleData object type and add here as PropTypes.shape(<shape>)
-    articleData: PropTypes.object.isRequired
+
 };
 
 export default Article;

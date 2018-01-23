@@ -41,7 +41,7 @@ let post = (url, options) => {
     }).catch(error => {
         console.log(`${url} request failed`, 'response err', error,
             'response err', error.response);
-        options.error && options.error(error.response);
+        options.error && options.error(error);
     });
 };
 
@@ -84,6 +84,14 @@ module.exports = {
     createArticle: function (options: {}) {
         let createArticleUrl = URLS.APP.createArticle;
         post(createArticleUrl, {
+            success: options.success,
+            error: options.error,
+            data: options.data
+        })
+    },
+
+    editArticle: function (options) {
+        post(URLS.APP.editArticle, {
             success: options.success,
             error: options.error,
             data: options.data

@@ -44,8 +44,17 @@
       .flex();
       justify-content: space-around;
 
+      // Make About title disappear
       @media @midTabletAndSmaller {
-        flex-direction: column;
+        .column:first-of-type {
+          .title:first-of-type {
+            display: none;
+          }
+        }
+      }
+
+      @media @midTabletAndSmaller {
+        flex-direction: column-reverse;
         .column {
           margin-top: @medium;
         }
@@ -88,7 +97,6 @@
           }
 
           a {
-            text-decoration: none;
             color: inherit;
           }
 

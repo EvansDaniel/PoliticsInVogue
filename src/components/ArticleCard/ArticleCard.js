@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import './ArticleCard.less';
 import {Link} from 'react-router-dom';
+import URLS from '../../shared/urls';
 
 class ArticleCard extends Component {
     componentDidMount() {
@@ -14,7 +15,11 @@ class ArticleCard extends Component {
         };
         return (
             <div className={`ArticleCard ${cardData.className}`} style={style}>
-                <Link to="/">
+                <Link to={{
+                    pathname: URLS.transform(URLS.ROUTES.article, {articleSlug: cardData.articleSlug}),
+                    state: {_id: cardData._id}
+                }}
+                >
                     <div className="article-info">
                         <div>
                             <div>

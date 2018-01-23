@@ -3,6 +3,7 @@ import './Dashboard.less'
 import PropTypes from 'prop-types';
 import API from '../../shared/api-v1';
 import URLS from '../../shared/urls';
+import Error from '../../components/Error/Error';
 
 class Dashboard extends Component {
 	constructor(props) {
@@ -24,12 +25,15 @@ class Dashboard extends Component {
                         _id: data._id
                     }),
                     state: {
-                        article: data
+                        _id: data._id
                     }
                 });
-                console.log('here');
             },
-            error: () => false ,// TODO:
+            error: () => function () {
+                self.setState({
+                    error: true
+                });
+            } , // TODO:
             data: {
                 title: 'Untitled',
                 draft: true,
@@ -40,6 +44,11 @@ class Dashboard extends Component {
     }
 
     render() {
+	    if(this.state.error) {
+	        return (
+	            <Error error={{}}/>
+            );
+        }
         return (
             <div className="Dashboard">
                 <button onClick={this.createNewArticle}>Create New Article</button>

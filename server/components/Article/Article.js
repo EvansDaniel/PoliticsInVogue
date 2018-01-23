@@ -16,11 +16,14 @@ const ArticleSchema = new Schema({
         type: String,
         required: [function () {
             return !this.draft;
-        }, 'You must provide a category for the article before it is published'],
+        }, 'You must provide a category prior to publishing the article'],
     },
     showcaseImage: {
         // TODO: write an image url validator
-        type: String
+        type: String,
+        require: [function () {
+            return !this.draft
+        }, 'You must provide a main image prior to publishing the article']
     },
     body: {
         type: String,
@@ -38,10 +41,6 @@ const ArticleSchema = new Schema({
     draft: {
         type: Boolean,
         default: true
-    },
-    trashed: { // Keep???
-        type: Boolean,
-        default: false,
     },
     placement: {
         type: String,

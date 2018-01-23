@@ -35,12 +35,13 @@
 }
 
 .add-quotes(@ending: "") {
-  @quote: "\"";
+  @rightQuote: "\201D";
+  @leftQuote: "\201C";
   &:before {
-    content: @quote;
+    content: @leftQuote;
   }
   &:after {
-    content: "@{ending}@{quote}";
+    content: "@{ending}@{rightQuote}";
   }
 }
 

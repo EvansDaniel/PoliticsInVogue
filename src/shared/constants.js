@@ -5,5 +5,6 @@ module.exports = {
     APP_NAME: 'Politics In Vogue',
     API_DOMAIN: 'http://api.politicsinvogue.com',
     SESSION_COOKIE_TIME: 1000 * 60 * 60 * 24 * 7, // 1 week
-    CACHED_AUTH_COOKIE: 'cached-auth'
+    CACHED_AUTH_COOKIE: 'cached-auth',
+    ALL_TEXT_TAGS: 'p, div, h1, h2, h3, h4, h5, h6, span, a, figure, code, ul, li'
 };

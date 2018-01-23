@@ -1,57 +1,32 @@
 @import "../../shared/mixins.less";
 @import "../../shared/vars.less";
 
-.input-control() {
-  font-size: @em + @emMedium;
-  .border-radius(2px);
-  height: @large + @xsmall;
-  width: 100%;
-  text-align: center;
-  outline: none;
-  border: none;
-  margin-bottom: @medium;
-  position: relative;
-  border-bottom: 1px solid rgba(200, 200, 200, .8);
-
-  &::placeholder {
-    font-family: Lato, serif;
-  }
-
-  &:focus {
-    border-bottom: 1px solid @favoriteColor;
-  }
-}
-
-.default-button() {
-  display: inline-flex;
-  height: 25px;
-  border: none;
-  outline: none;
-  color: @primaryColor;
-  .border-radius(@radius: 2px);
-  margin-right: @medium;
-  cursor: pointer;
-  background-color: white;
-  .default-box-shadow();
-  .bottom-transition(@height: 3px, @time: .2s);
-}
-
 .EditArticle {
   .flex();
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   font-family: Lato, serif;
-  color: @primaryColor;
   padding: @medium @medium 0 @medium;
+  width: 100%;
 
   .edit-article-container {
     max-width: 500px;
+    text-align: center;
+    color: @realBlack;
 
-    & > input {
+    .title-input, .showcase-image-input {
       .input-control();
     }
 
-    .showcase-image-input {
-      font-size: 12px;
+    .showcase-image-wrapper {
+      .showcase-image-input {
+        font-size: 12px;
+      }
+
+      .image-preview {
+        height: 50*@pixel;
+        float: right;
+      }
     }
 
     .category-control {
@@ -67,11 +42,7 @@
         }
 
         .category-select {
-          background-color: white;
-          color: @primaryColor;
-          outline: none;
-          width: auto;
-          min-width: 100px;
+          .default-select();
         }
       }
 
@@ -81,6 +52,7 @@
 
       button {
         .default-button();
+        color: @realBlack;
         height: auto;
         margin-left: @small;
       }
@@ -106,18 +78,6 @@
         }
       }
 
-      .view-button {
-        background-color: white;
-      }
-
-      .upload-image-button {
-        background-color: white;
-      }
-
-      .save-as-draft-button {
-        background-color: white;
-      }
-
       .saving-actions {
         display: inline-block;
         vertical-align: bottom;
@@ -129,10 +89,7 @@
 
     .editing {
       width: 100%;
-
-      .editor {
-        .default-box-shadow();
-      }
+      text-align: left;
     }
 
     .preview {
@@ -141,4 +98,94 @@
       color: black;
     }
   }
+}
+
+.input-control() {
+  color: @realBlack;
+  font-size: @em + @emMedium;
+  .border-radius(2px);
+  height: @large + @xsmall;
+  width: 100%;
+  text-align: center;
+  outline: none;
+  border: none;
+  margin-bottom: @medium;
+  position: relative;
+  border-bottom: 1px solid rgba(200, 200, 200, .8);
+
+  &::placeholder {
+    font-family: Lato, serif;
+  }
+
+  &:focus {
+    border-bottom: 1px solid @favoriteColor;
+  }
+}
+
+// Fix for showing up in modal
+.DraftEditor-root {
+  z-index: 0;
+}
+
+// Modal after clicking "Publish Article"
+.ReactModalPortal {
+
+  h4 {
+    text-align: center;
+    border-bottom: 1px solid lightgray;
+  }
+
+  label {
+    margin-right: @large;
+    color: black;
+  }
+  ul {
+    margin: 0;
+    li {
+      color: black;
+      line-height: 1.5em;
+    }
+  }
+
+  input {
+    margin: @small 0 @small 0;
+  }
+
+  .allow-comments {
+
+  }
+
+  .placement {
+    margin: @small 0 @small 0;
+
+    select {
+      .default-select();
+    }
+  }
+
+  button {
+    margin-top: @large;
+    .default-button();
+  }
+}
+
+.default-select() {
+  background-color: white;
+  outline: none;
+  width: auto;
+  min-width: 100px;
+}
+
+.default-button() {
+  color: @realBlack;
+  display: inline-flex;
+  height: 25px;
+  border: none;
+  outline: none;
+  .border-radius(@radius: 2px);
+  margin-right: @medium;
+  cursor: pointer;
+  background-color: white;
+  .default-box-shadow();
+  .bottom-transition(@height: 3px, @time: .2s);
 }

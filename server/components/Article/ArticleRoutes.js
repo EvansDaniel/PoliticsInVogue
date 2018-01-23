@@ -23,7 +23,8 @@ const ArticleRoutes = function (ArticleDataService) {
     };
 
     const getSuggestedArticlesHandle = function (req, res, next) {
-        ArticleDataService.getSuggestedArticles(req.query, function (err, articles) {
+        // get 4 articles max
+        ArticleDataService.getSuggestedArticles(req.query, 4, function (err, articles) {
             if(err) {
                 return next(err);
             }

@@ -21,8 +21,9 @@ class NavBar extends Component {
             {id: 5, category: 'Writing'},
             {id: 6, category: 'Fashion'},
         ];
+        const loggedIn = this.auth.isAuthenticated();
         return (
-            <nav className="NavBar">
+            <nav className="NavBar" style={loggedIn ? {'font-size': '11px'} : {}}>
                 <div className="inner-content">
                     <li><Link to="/">Home</Link></li>
                     <li><Link to="/about">About</Link></li>
@@ -32,7 +33,7 @@ class NavBar extends Component {
                         <SubMenu categories={categories}/>
                     </li>
                     {
-                        this.auth.isAuthenticated() ? <li><Link to="/dashboard">Dashboard</Link></li> : null
+                        loggedIn ? <li><Link to="/dashboard">Dashboard</Link></li> : null
                     }
                     <li>
                         <a className="icon" href="mailto:clarksl0@sewanee.edu">

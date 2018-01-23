@@ -1,0 +1,48 @@
+@import "../../shared/mixins.less";
+@import "../../shared/vars.less";
+
+.BodyHtml {
+
+  p {
+    margin-top: 0;
+  }
+
+  .body-image-wrapper {
+    .body-img {
+      max-width: 100%;
+      .border-radius(@radius: 3*@pixel);
+    }
+    .img-caption {
+      border: 1px solid rgba(100, 100, 100, .2);;
+      font-size: 12*@pixel;
+      font-style: italic;
+      text-align: center;
+      line-height: 1em;
+      padding: @xsmall;
+    }
+
+    .img-credit {
+      margin-top: @small;
+      display: block;
+    }
+
+  }
+
+  blockquote {
+    color: #999;
+    border-left: 2*@pixel solid rgba(100, 100, 100, .2);
+    padding: @small 0 @small @large;
+    margin: 0;
+    font-style: italic;
+  }
+
+  code {
+    &.prettyprint {
+      border-radius: 3px;
+    }
+  }
+
+  br {
+    display: none;
+  }
+}

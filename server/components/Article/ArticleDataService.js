@@ -1,5 +1,7 @@
 const serviceUtils = require('../../utils/service-utils');
 const Mongoose = require('mongoose');
+const cheerio = require('cheerio');
+const constants = require('../../../src/shared/constants');
 
 const ArticleDataService = function (Article) {
     const minimumArticleFields = ['_id', 'title', 'createdAt', 'updatedAt',
@@ -36,7 +38,12 @@ const ArticleDataService = function (Article) {
                 year = createdAt.getFullYear(),
                 month = createdAt.getMonth() + 1;
 
-            const bodyWords = article.body.split(" "),
+            const $ = cheerio.load(article.body);
+            const bodyToPlainText = $(constants.ALL_TEXT_TAGS)
+                .text()
+                // make sure there are spaces after periods
+                .replace(/[.]\s*/g,". ");
+            const bodyWords = bodyToPlainText.split(" "),
                 maxExcerptLen = 100;
             let excerpt = '';
 
@@ -76,12 +83,14 @@ const ArticleDataService = function (Article) {
     return {
         getArticle: getArticle,
 
-        getSuggestedArticles: function (queryObj, cb) {
+        getSuggestedArticles: function (queryObj, max, cb) {
             const category = queryObj.category;
             const exclude = queryObj.exclude &&
                 [new Mongoose.Types.ObjectId(queryObj.exclude)] ||
                 [];
+            const amount = max % 2 === 0 ? max/2 : Math.floor(max/2) + 1;
             let articles = [];
+
             Article
                 .aggregate([
                     {
@@ -93,7 +102,7 @@ const ArticleDataService = function (Article) {
                         }
                     },
                 ])
-                .sample(2)
+                .sample(amount)
                 .cursor({})
                 .exec()
                 .on('data', doc => {
@@ -117,7 +126,7 @@ const ArticleDataService = function (Article) {
                         if (err || !arts) {
                             return cb(err, arts);
                         }
-                        const twoArts = arts.slice(0,2);
+                        const twoArts = arts.slice(0,max - articles.length);
 
                         twoArts.forEach(function (article) {
                             articles.push(article);

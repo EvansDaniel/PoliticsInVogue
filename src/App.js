@@ -12,6 +12,7 @@ import Footer from "./components/Footer/Footer";
 import Login from "./modules/Login/Login";
 import Dashboard from "./modules/Dashboard/Dashboard";
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
+import './App.less';
 
 // This is required so that
 // See https://medium.com/@andrewzey/google-seo-with-create-react-app-fixing-the-hidden-gotcha-c164063106d
@@ -49,6 +50,7 @@ class App extends Component {
 
 const withTemplate = (ModuleComponent, footer) => {
     footer = footer === false ? footer : true;
+    console.log(ModuleComponent);
     return class extends React.Component {
         render() {
             // Content div is to fix footer to bottom

@@ -11,6 +11,7 @@
     "bcrypt": "^1.0.3",
     "body-parser": "^1.4.3",
     "bunyan": "^1.8.12",
+    "cheerio": "^1.0.0-rc.2",
     "connect-mongodb-session": "^1.4.0",
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.4",

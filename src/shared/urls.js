@@ -16,7 +16,7 @@ let URLS = {
 
     ROUTES: {
         home: '/',
-        editArticle: '/article/:_id/edit',
+        editArticle: '/dashboard/article/:_id/edit',
         dashboard: '/dashboard',
         about: '/about',
         article: '/articles/:articleSlug',
@@ -26,10 +26,14 @@ let URLS = {
 };
 
 URLS.transform = function (url, params) {
+    params = params || {};
     // Strip param values of leading slash
     Object.keys(params).forEach((paramKey) => {
         const paramVal = params[paramKey];
-        if (paramVal.length > 0 && paramVal[0] === '/') {
+        // set the value to be empty string so as to be picked up later
+        if(!paramVal) {
+            params[paramKey] = '';
+        } else if (paramVal.length > 0 && paramVal[0] === '/') {
             params[paramKey] = paramVal
                 .substring(1, paramVal.length);
         }
@@ -37,7 +41,7 @@ URLS.transform = function (url, params) {
     const pathParts = url.split('/');
     return pathParts.map((pathPart) => {
         // is url param
-        if (pathPart.length > 0 && pathPart[0] === ':') {
+        if (pathPart && pathPart.length > 0 && pathPart[0] === ':') {
             const urlParam = pathPart.substring(1, pathPart.length);
             // if not passed params has correct property and truthy value
             if (!params.hasOwnProperty(urlParam) || !params[urlParam].trim()) {
