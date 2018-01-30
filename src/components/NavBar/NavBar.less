@@ -36,20 +36,24 @@
       cursor: pointer;
       line-height: @navBarHeight;
 
-      @media @smartphones {
+      @media @smartphones, @smallerThanSmartphones {
         padding: 0 7*@pixel 0 7*@pixel;
         margin: 0;
       }
 
       & > a {
         height: @navBarHeight;
+
+        &:hover {
+          color: @favoriteColor;
+        }
       }
 
-      &:hover {
-        color: @favoriteColor;
+      .icon {
+        color: @navColor;
+        margin-right: @medium;
 
-        // Don't want sub menus highlighting
-        & > a {
+        &:hover {
           color: @favoriteColor;
         }
       }
@@ -64,6 +68,7 @@
         display: block;
       }
 
+      // Submenu
       ul {
         display: none;
         position: absolute;
@@ -83,15 +88,25 @@
         // Just submenu a tags
         a {
           width: 100%;
+
+          // Submenu background highlighting
+          &:hover {
+            background-color: @lightFavoriteColor;
+          }
         }
 
         // only sub menu lis
         &:first-child {
           padding-top: 5*@pixel;
         }
+
+        // Fix for submenu not connected to navbar on small screens
+        @media @smartphones {
+          top: 3.0rem;
+        }
       }
 
-      // Items in nav bar or submenus
+      // a tags in nav bar and submenus
       a {
         display: inline-block;
         cursor:pointer;
@@ -102,19 +117,6 @@
           padding-top: 5*@pixel;
           text-align: left;
           padding-left: @small;
-
-          &:hover {
-            //color: @favoriteColor;
-            background-color: @lightFavoriteColor;
-          }
-        }
-
-        .fa-envelope-o {
-          color: @navColor;
-
-          &:hover {
-            color: @favoriteColor;
-          }
         }
       }
     }

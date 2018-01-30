@@ -18,18 +18,21 @@ class SocialShare extends Component {
             'pinterest': {
                 icon: pinIcon,
                 shareFunc: this.pinterestShare,
+                fontAwesomeHTML: <i class="fa fa-pinterest" aria-hidden="true" onClick={this.pinterestShare}></i>
             },
             'email': {
                 icon: emailIcon,
-                shareFunc: this.facebookShare,
+                shareFunc: () => {return false;},
             },
             'facebook': {
                 icon: fbIcon,
                 shareFunc: this.facebookShare,
+                fontAwesomeHTML: <i class="fa fa-facebook" aria-hidden="true" onClick={this.facebookShare}></i>
             },
             'twitter': {
                 icon: twitterIcon,
                 shareFunc: this.twitterShare,
+                fontAwesomeHTML: <i class="fa fa-twitter" aria-hidden="true" onClick={this.twitterShare}></i>
             },
             'linkedin': {
                 icon: linkedinIcon,
@@ -47,12 +50,12 @@ class SocialShare extends Component {
         const baseShareUrl = 'https://twitter.com/intent/tweet';
         const queryParams = {
             url: window.encodeURI(window.location.href),
-            text:`${articleData && articleData.title + ' by Sophie Clark' || 'PoliticsInVogue'}`,
-            hashtags:`politicsinvogue,${articleData && articleData.categoryName || ''}`,
+            text: `${articleData && articleData.title + ' by Sophie Clark' 
+            || 'Politics In Vogue - A politics, fashion, and opinions blog by Sophie Clark'}`,
+            hashtags: `politicsinvogue,${articleData && articleData.categoryName || 'politics, fashion'}`,
             via: 'politicsinvogue',
         };
-        const url = `${baseShareUrl}?${queryString.stringify(queryParams)}`;
-        window.open(url);
+        window.open(`${baseShareUrl}?${queryString.stringify(queryParams)}`);
     }
 
     pinterestShare() {
@@ -64,7 +67,7 @@ class SocialShare extends Component {
         const baseShareUrl = 'https://www.linkedin.com/shareArticle';
         const queryParams = {
             url: window.encodeURI(window.location.href),
-            title:`${articleData && articleData.title + ' by Sophie Clark' || 'FashionInVogue'}`,
+            title: `${articleData && articleData.title + ' by Sophie Clark' || 'FashionInVogue'}`,
             // summary: 'my description', TODO: include this maybe?
             mini: true,
             source: window.encodeURI(window.location.hostname)
@@ -88,12 +91,19 @@ class SocialShare extends Component {
 
     render() {
         const socialMedia = this.socialMedias[this.props.type];
-        return (
-            <div className={`SocialShare ${this.props.transitionType}`}
-                 onClick={socialMedia.shareFunc}>
-                <img src={socialMedia.icon}/>
-            </div>
-        );
+        // TODO: linkedin and email do not have this icon stuff yet
+        if(this.props.icon) {
+            return (
+                socialMedia.fontAwesomeHTML
+            );
+        } else {
+            return (
+                <div className={`SocialShare ${this.props.transitionType}`}
+                     onClick={socialMedia.shareFunc}>
+                    <img src={socialMedia.icon}/>
+                </div>
+            );
+        }
     }
 }
 
@@ -106,7 +116,8 @@ SocialShare.propTypes = {
     // TODO: write custom validator
     type: PropTypes.string.isRequired,
     articleData: PropTypes.object,
-    transitionType: PropTypes.string
+    transitionType: PropTypes.string,
+    icon: false
 };
 
 

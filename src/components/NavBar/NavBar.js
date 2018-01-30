@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Link} from "react-router-dom";
 import './NavBar.less';
 import Auth from '../../services/auth';
+import SocialShare from "../SocialShare/SocialShare";
 
 class NavBar extends Component {
     constructor(props) {
@@ -28,7 +29,7 @@ class NavBar extends Component {
                     <li><Link to="/">Home</Link></li>
                     <li><Link to="/about">About</Link></li>
                     <li>
-                        Categories
+                        <Link to="/">Categories</Link>
                         <i className="fa fa-caret-down"></i>
                         <SubMenu categories={categories}/>
                     </li>
@@ -38,6 +39,12 @@ class NavBar extends Component {
                     <li>
                         <a className="icon" href="mailto:clarksl0@sewanee.edu">
                             <i className="fa fa-envelope-o" aria-hidden="true"></i>
+                        </a>
+                        <a className="icon">
+                            <SocialShare type="twitter" icon={true}/>
+                        </a>
+                        <a className="icon">
+                            <SocialShare type="facebook" icon={true}/>
                         </a>
                     </li>
                 </div>

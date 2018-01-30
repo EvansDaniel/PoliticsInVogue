@@ -19,9 +19,32 @@ import './App.less';
 import 'babel-polyfill'
 // This file must be loaded before api-v1.js
 const URLS = require('./shared/urls');
+const constants = require('./shared/constants');
 require('./shared/api-v1');
 
 class App extends Component {
+    componentDidMount() {
+        window.fbAsyncInit = function () {
+            window.FB.init({
+                appId: constants.FB_APP_ID,
+                autoLogAppEvents: true,
+                xfbml: true,
+                version: 'v2.11'
+            });
+        };
+
+        (function (d, s, id) {
+            let js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) {
+                return;
+            }
+            js = d.createElement(s);
+            js.id = id;
+            js.src = "https://connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    }
+
     render() {
         return (
             <BrowserRouter>
