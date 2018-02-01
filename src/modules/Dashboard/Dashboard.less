@@ -1,5 +1,99 @@
 @import "../../shared/mixins.less";
 @import "../../shared/vars.less";
+@grayedBackground: rgba(252, 252, 252, .8);
 
 .Dashboard {
+  padding: @large;
+  background-color: @grayedBackground;
+
+  .about-info {
+    .flex();
+    height: 50%;
+
+    .image-and-create-article {
+      width: 50%;
+
+      .image {
+        img {
+          width: 100%;
+          .border-radius(@radius: 3*@pixel);
+        }
+      }
+
+      .create-article-container {
+        margin-top: @large;
+
+        .create-article {
+          .default-button();
+        }
+      }
+    }
+
+    .bio-and-editor {
+      width: 80%;
+
+      .bio {
+        background-color: white;
+        .flex();
+        width: 80%;
+        flex-direction: column;
+        margin-left: @large;
+        padding: @small;
+        .default-box-shadow();
+
+        .header {
+          font-size: 18*@pixel;
+          font-weight: bold;
+          margin-bottom: @small;
+
+          .edit-bio {
+            margin-left: @small;
+            .default-button();
+          }
+        }
+
+        .text {
+          line-height: 1.5em;
+          color: @black;
+        }
+
+        .editor {
+          // TODO:
+        }
+      }
+    }
+  }
+
+  .articles {
+
+    .articles-row {
+      margin-bottom: @medium;
+    }
+
+    // All rows
+    .drafts {
+
+    }
+
+    .articles-by-category {
+      .category {
+        .default-box-shadow();
+      }
+    }
+  }
+}
+
+.default-button() {
+  color: white;
+  font-weight: bold;
+  display: inline-flex;
+  height: 25px;
+  border: none;
+  outline: none;
+  .border-radius(@radius: 2px);
+  margin-right: @medium;
+  cursor: pointer;
+  background-color: @contrastColor;
+  .default-box-shadow();
+  .bottom-transition(@height: 3px, @time: .2s);
 }

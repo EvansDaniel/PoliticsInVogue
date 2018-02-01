@@ -1,6 +1,25 @@
 @import "../../shared/mixins.less";
 @import "../../shared/vars.less";
 
-.Error {
+.ErrorModalPortal {
 
+  .ErrorModalContent {
+    .flex();
+    flex-direction: column;
+    align-items: center;
+    height: 250*@pixel;
+
+    img {
+      height: 75%;
+    }
+    p {
+      color: @black;
+    }
+
+    @media @smartphones, @smallerThanSmartphones {
+      img {
+        height: 50%;
+      }
+    }
+  }
 }

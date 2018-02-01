@@ -47,3 +47,10 @@ a {
     text-decoration: none;
   }
 }
+
+// Global fix for the modal overlay, this is so we don't have to make this change everywhere
+// and so that we can use the saved less constants
+.ReactModal__Overlay {
+  z-index: @pinterestSaveButtonZIndex + @levelTwo;
+  background-color: @dimmedColor !important;
+}

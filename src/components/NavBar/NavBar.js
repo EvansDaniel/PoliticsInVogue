@@ -41,10 +41,10 @@ class NavBar extends Component {
                             <i className="fa fa-envelope-o" aria-hidden="true"></i>
                         </a>
                         <a className="icon">
-                            <SocialShare type="twitter" icon={true}/>
+                            <SocialShare type="twitter" fontAwesome={true}/>
                         </a>
                         <a className="icon">
-                            <SocialShare type="facebook" icon={true}/>
+                            <SocialShare type="facebook" fontAwesome={true}/>
                         </a>
                     </li>
                 </div>

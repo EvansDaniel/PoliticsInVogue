@@ -9,6 +9,8 @@ import PropTypes from 'prop-types';
 import API from '../../shared/api-v1';
 import BodyHtml from "../BodyHtml/BodyHtml";
 import URLS from '../../shared/urls';
+import {withRouter} from 'react-router';
+import readArticle from '../../utils/read-article';
 
 class ArticleContent extends Component {
     constructor(props) {
@@ -50,8 +52,8 @@ class ArticleContent extends Component {
     }
 
     render() {
-        console.log(this.props);
         let articleData = this.props.articleData;
+        const self = this;
         return (
             <div className="ArticleContent">
                 <div className="article-meter" ref={(ref) => {
@@ -101,8 +103,11 @@ class ArticleContent extends Component {
                                                     !this.props.preview ?
                                                         <ArticleBlock
                                                             articles={this.props.suggestedArticles}
-                                                            cta={'Articles You Might Like'}
+                                                            title={'Articles You Might Like'}
                                                             orientation="vertical"
+                                                            onClick={function (event, article) {
+                                                                readArticle(self.props.history, article);
+                                                            }}
                                                         /> :
                                                         <p style={{color: 'lightgrey'}}>Suggested articles will go here
                                                             once published</p>
@@ -123,7 +128,10 @@ class ArticleContent extends Component {
                                     {
                                         this.props.suggestedArticles ?
                                             <ArticleBlock articles={this.props.suggestedArticles.slice(0, 2)}
-                                                          cta={"Other Articles You Might Enjoy"}
+                                                          title={"Other Articles You Might Enjoy"}
+                                                          onClick={function (event, article) {
+                                                              readArticle(self.props.history, article);
+                                                          }}
                                                           orientation="horizontal"
                                             /> : null
                                     }
@@ -151,4 +159,5 @@ ArticleContent.proptypes = {
     preview: PropTypes.bool
 };
 
-export default ArticleContent;
+
+export default withRouter(ArticleContent);

@@ -4,7 +4,6 @@
 @navBarHeight: 51*@rPixel;
 @navBarBorderBottom: @favoriteColor;
 @navColor: #2d3e50;
-@pinterestSaveButtonZIndex: 8675309;
 
 .NavBar {
   .flex();
@@ -21,7 +20,7 @@
   background-color: rgb(242, 245, 248);
   height: @navBarHeight;
   // Need to be above pinterest extension save button
-  z-index: @pinterestSaveButtonZIndex + 1;
+  z-index: @pinterestSaveButtonZIndex + @levelOne;
 
   // Content div
   div {

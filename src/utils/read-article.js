@@ -6,6 +6,7 @@ const readArticle = (history, articleData) => {
         articleUrl = URLS.ROUTES.article,
         slug = articleData.articleSlug,
         _id = articleData._id;
+    console.log('here');
     history.push({
         path: '/',
         state: {

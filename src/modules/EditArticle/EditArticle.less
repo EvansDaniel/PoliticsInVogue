@@ -128,44 +128,63 @@
 }
 
 // Modal after clicking "Publish Article"
-.ReactModalPortal {
+.FinishPublishingModalPortal {
+  .FinishPublishingModalContent {
+    height: 275*@pixel;
 
-  h4 {
-    text-align: center;
-    border-bottom: 1px solid lightgray;
-  }
-
-  label {
-    margin-right: @large;
-    color: black;
-  }
-  ul {
-    margin: 0;
-    li {
-      color: black;
-      line-height: 1.5em;
+    @media @smartphones, @smallerThanSmartphones {
+      height: 500*@pixel;
+      right: 20px;
+      left: 20px;
     }
-  }
 
-  input {
-    margin: @small 0 @small 0;
-  }
-
-  .allow-comments {
-
-  }
-
-  .placement {
-    margin: @small 0 @small 0;
-
-    select {
-      .default-select();
+    .title {
+      text-align: center;
+      border-bottom: 1px solid @prettyBlue;
     }
-  }
 
-  button {
-    margin-top: @large;
-    .default-button();
+    .inner-content {
+      .flex();
+      flex-direction: column;
+      align-items: center;
+
+      label {
+        margin-right: @large;
+        color: black;
+      }
+      ul {
+        margin: 0;
+        li {
+          color: black;
+          line-height: 1.5em;
+        }
+      }
+
+      input {
+        margin: @small 0 @small 0;
+      }
+
+      .placement {
+        text-align: center;
+        margin: @small 0 @small 0;
+
+        select {
+          .default-select();
+        }
+
+        ul {
+          text-align: left;
+        }
+      }
+
+      button {
+        margin-top: @large;
+        .default-button();
+        background-color: @prettyBlue;
+        opacity: .8;
+        color: white;
+      }
+    }
   }
 }
 

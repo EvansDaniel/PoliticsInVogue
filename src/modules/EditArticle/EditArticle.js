@@ -12,7 +12,7 @@ import {stateToHTML} from 'draft-js-export-html';
 import '../../css/megadraft.css';
 import ArticleContent from "../../components/ArticleContent/ArticleContent";
 import validators from '../../utils/validators';
-import Modal from 'react-modal';
+import PopUpModal from '../../components/PopUpModal/PopUpModal';
 import '../../css/pretty-checkbox.css';
 const empty = require('is-empty');
 const URLS = require('../../shared/urls');
@@ -27,9 +27,6 @@ class EditArticle extends Component {
         this.initialPublishArticle = this.initialPublishArticle.bind(this);
         this.finishPublishing = this.finishPublishing.bind(this);
         this.changeCategoryAction = this.changeCategoryAction.bind(this);
-
-        // For screen readers although this is not necessary for my use case
-        Modal.setAppElement(document.getElementById('modal'));
 
         this.SAVING_ACTIONS = {
             changesSaved: 'All changes saved',
@@ -67,11 +64,11 @@ class EditArticle extends Component {
 
     buildImageElementForBody(src, caption, rightsHolder) {
         const rightsHolderHtml = empty(rightsHolder) ?
-            '' : '<div className="img-credit">Credit:' + rightsHolder +'</div>';
+            '' : '<div className="img-credit">Credit:' + rightsHolder + '</div>';
         return [
             '<div className="body-image-wrapper">',
             '<img className="body-img" src="' + src + '"/>',
-            empty(caption) ? '' : '<div className="img-caption">'+ caption + rightsHolderHtml + '</div>',
+            empty(caption) ? '' : '<div className="img-caption">' + caption + rightsHolderHtml + '</div>',
             '</div>'
         ].join('');
     }
@@ -122,12 +119,12 @@ class EditArticle extends Component {
 
     initialPublishArticle() {
         /*const valid = validators.publishValidateArticleData(this.state.articleData, 'Can\'t publish yet');
-        if (!valid.valid) {
-            this.setState({
-                errorMsg: valid.message
-            });
-            return false;
-        }*/
+         if (!valid.valid) {
+         this.setState({
+         errorMsg: valid.message
+         });
+         return false;
+         }*/
 
         this.setState({
             showModal: true
@@ -143,7 +140,7 @@ class EditArticle extends Component {
             self.setState({
                 savingAction: message
             });
-        }, this.uiWaitTime/2);
+        }, this.uiWaitTime / 2);
 
         API.editArticle({
             success: (response) => {
@@ -258,44 +255,48 @@ class EditArticle extends Component {
             !this.state.articleData ? <Loading/> :
                 <div className="EditArticle">
                     <div id="modal"></div>
-                    <Modal
+                    <PopUpModal
                         contentLabel="Final Details"
                         isOpen={this.state.showModal}
                         onRequestClose={() => self.setState({showModal: false})}
                         shouldCloseOnOverlayClick={true}
+                        portalClassName="FinishPublishingModalPortal"
+                        className="FinishPublishingModalContent"
                     >
-                        <div className="allow-comments">
-                            <h4>Final Details</h4>
-                            <div class="pretty p-default p-round">
-                                <input type="checkbox"
-                                       name="allowComments"
-                                       onChange={this.handleInputChange}
-                                       value={this.state.articleData.allowComments}
-                                />
-                                <div class="state p-primary-o">
-                                    <label className="label">Allow comments for this article?</label>
+                        <h4 className="title">Final Details</h4>
+                        <div className="inner-content">
+                            <div className="allow-comments">
+                                <div class="pretty p-default p-round">
+                                    <input type="checkbox"
+                                           name="allowComments"
+                                           onChange={this.handleInputChange}
+                                           value={this.state.articleData.allowComments}
+                                    />
+                                    <div class="state p-primary-o">
+                                        <label className="label">Allow comments for this article?</label>
+                                    </div>
                                 </div>
                             </div>
+                            <div className="placement">
+                                <label>Where do you want it placed?</label>
+                                <select name="placement"
+                                        className="placement"
+                                        value={this.state.placement}
+                                        onChange={this.handleInputChange}
+                                >
+                                    <option value="featured">featured</option>
+                                    <option value="carousel">carousel</option>
+                                    <option value="none">none</option>
+                                </select>
+                                <ul>
+                                    <li>Put "none" if you don't want it to show up on the home page</li>
+                                    <li>"carousel" if you want it to show up on the slider on the home page</li>
+                                    <li>"featured" if you want it to show up in the featured section on the home page</li>
+                                </ul>
+                            </div>
+                            <button onClick={this.finishPublishing}>Finish publishing</button>
                         </div>
-                        <div className="placement">
-                            <label>Where do you want it placed?</label>
-                            <select name="placement"
-                                    className="placement"
-                                    value={this.state.placement}
-                                    onChange={this.handleInputChange}
-                            >
-                                <option value="featured">featured</option>
-                                <option value="carousel">carousel</option>
-                                <option value="none">none</option>
-                            </select>
-                            <ul>
-                                <li>Put "none" if you don't want it to show up on the home page</li>
-                                <li>"carousel" if you want it to show up on the slider on the home page</li>
-                                <li>"featured" if you want it to show up in the featured section on the home page</li>
-                            </ul>
-                        </div>
-                        <button onClick={this.finishPublishing}>Finish publishing</button>
-                    </Modal>
+                    </PopUpModal>
                     <div className="edit-article-container">
                         <input className="title-input" type="text"
                                placeholder="What is the article title?"

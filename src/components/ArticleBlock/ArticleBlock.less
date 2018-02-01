@@ -28,20 +28,34 @@
     }
   }
 
-  .articles-cta {
+  .articles-title {
     margin-bottom: @xxsmall;
   }
 
   .content-articles {
-    border-top: 1*@pixel solid @dimmedColor;
+    //border-top: 1*@pixel solid @dimmedColor;
     // direction depends on orientation prop passed
     .flex();
 
+    * {
+      min-height: 0;
+      min-width: 0;
+    }
+
+    .ArticleBlockSlider {
+      display: flex !important;
+
+      .slick-next, .slick-prev {
+        background-color: @prettyBlue !important;
+        color: white !important;
+      }
+    }
+
     // Each article div is direct child
-    & > div {
+    .block {
       .flex();
       flex-direction: row;
-      border-bottom: @pixel solid @dimmedColor;
+      //border-bottom: @pixel solid @dimmedColor;
       padding-bottom: @articleBottomPadding;
       cursor: pointer;
 

@@ -73,7 +73,6 @@ class App extends Component {
 
 const withTemplate = (ModuleComponent, footer) => {
     footer = footer === false ? footer : true;
-    console.log(ModuleComponent);
     return class extends React.Component {
         render() {
             // Content div is to fix footer to bottom

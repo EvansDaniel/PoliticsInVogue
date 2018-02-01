@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import './Error.less'
 import PropTypes from 'prop-types';
-import Modal from 'react-modal';
+import Modal from '../PopUpModal/PopUpModal';
+import errorIcon from "../../../src/img/error.jpg";
 
 // Handles server errors (404, 400, 401, 500, etc)
 class Error extends Component {
@@ -19,17 +20,27 @@ class Error extends Component {
         return (
             <div className="Error">
                 <Modal
-                    contentLabel="Final Details"
                     isOpen={this.state.showModal}
-                    onRequestClose={() => self.setState({showModal: false})}
+                    onRequestClose={() => {
+                        self.props.requestClose();
+                        self.setState({showModal: false});
+                    }}
                     shouldCloseOnOverlayClick={true}
+                    portalClassName="ErrorModalPortal"
+                    className="ErrorModalContent"
+                    overlayClassName="ErrorModalOverlay"
                 >
-                    <p>Sorry there was an error :(. Try again later.</p>
+                    <img src={errorIcon}/>
+                    <p>{this.props.error}</p>
                 </Modal>
             </div>
         );
     }
 }
+
+Error.defaultProps = {
+    requestClose: () => {return false;}
+};
 
 Error.proptypes = {
     error: PropTypes.object.isRequired

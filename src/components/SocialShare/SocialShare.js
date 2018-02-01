@@ -18,7 +18,7 @@ class SocialShare extends Component {
             'pinterest': {
                 icon: pinIcon,
                 shareFunc: this.pinterestShare,
-                fontAwesomeHTML: <i class="fa fa-pinterest" aria-hidden="true" onClick={this.pinterestShare}></i>
+                fontAwesomeHTML: <i className="fa fa-pinterest" aria-hidden="true" onClick={this.pinterestShare}></i>
             },
             'email': {
                 icon: emailIcon,
@@ -27,12 +27,12 @@ class SocialShare extends Component {
             'facebook': {
                 icon: fbIcon,
                 shareFunc: this.facebookShare,
-                fontAwesomeHTML: <i class="fa fa-facebook" aria-hidden="true" onClick={this.facebookShare}></i>
+                fontAwesomeHTML: <i className="fa fa-facebook" aria-hidden="true" onClick={this.facebookShare}></i>
             },
             'twitter': {
                 icon: twitterIcon,
                 shareFunc: this.twitterShare,
-                fontAwesomeHTML: <i class="fa fa-twitter" aria-hidden="true" onClick={this.twitterShare}></i>
+                fontAwesomeHTML: <i className="fa fa-twitter" aria-hidden="true" onClick={this.twitterShare}></i>
             },
             'linkedin': {
                 icon: linkedinIcon,
@@ -92,7 +92,7 @@ class SocialShare extends Component {
     render() {
         const socialMedia = this.socialMedias[this.props.type];
         // TODO: linkedin and email do not have this icon stuff yet
-        if(this.props.icon) {
+        if(this.props.fontAwesome) {
             return (
                 socialMedia.fontAwesomeHTML
             );
@@ -109,7 +109,8 @@ class SocialShare extends Component {
 
 SocialShare.defaultProps = {
     // TODO: write custom validator
-    transitionType: 'float'
+    transitionType: 'float',
+    fontAwesome: false
 };
 
 SocialShare.propTypes = {
@@ -117,7 +118,7 @@ SocialShare.propTypes = {
     type: PropTypes.string.isRequired,
     articleData: PropTypes.object,
     transitionType: PropTypes.string,
-    icon: false
+    fontAwesome: PropTypes.bool
 };
 
 
