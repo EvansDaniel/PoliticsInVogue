@@ -61,17 +61,6 @@ const ArticleSchema = new Schema({
     timestamps: true
 });
 
-ArticleSchema.pre('save', function (next) {
-    const article = this;
-
-    if (!article.isModified('title')) return next();
-
-    article.getArticleSlug(function (slug) {
-        article.articleSlug = slug;
-        return next();
-    });
-});
-
 ArticleSchema.statics.timeToReadInMin = function (text) {
     const averageWordsPerMin = 250;
     const numWordsInArticle = text.split(' ').length;
@@ -79,197 +68,83 @@ ArticleSchema.statics.timeToReadInMin = function (text) {
         || 1;
 };
 
-ArticleSchema.statics.defaultSlug = function (title) {
-    return title
-    // replace all non-alphanumeric characters
-    // that isn't space
-        .replace(/[^a-zA-Z\d\s:]/g, '')
-        // replace space with "-"
-        .replace(new RegExp(" ", 'g'), '-')
-        .toLowerCase();
-};
 
-ArticleSchema.methods.defaultSlug = function () {
-    return this.title
-    // replace all non-alphanumeric characters
-    // that isn't space
-        .replace(/[^a-zA-Z\d\s:]/g, '')
-        // replace space with "-"
-        .replace(new RegExp(" ", 'g'), '-')
-        .toLowerCase();
-};
+(function setUpUniqueArticleSlug(ArticleSchema) {
+    const defaultSlug = function (title) {
+        return title
+        // replace all non-alphanumeric characters
+        // that isn't space
+            .replace(/[^a-zA-Z\d\s:]/g, '')
+            // replace space with "-"
+            .replace(new RegExp(" ", 'g'), '-')
+            .toLowerCase();
+    };
 
-/*ArticleSchema.pre('save', function (next) {
-    console.log('here i am');
-    const article = this;
-
-    // only if title has been modified or is a new title (i.e. new article)
-    if (!article.isModified('title')) return next();
-
-    article.model('Article').find({}, function (err, articles) {
-        if(err) return next(err);
-        const defaultSlug = article.defaultSlug();
-        if (!articles) {
-            article.articleSlug = defaultSlug;
-        } else {
-            const articleSlugEndings = articles.reduce((result, article) => {
-                const slug = article.articleSlug;
-                if (article.articleSlug.startsWith(defaultSlug)) {
-                    // Get all chars after defaultSlug
-                    try {
-                        // This still guarantees uniqueness if somehow we don't have an integer at the end of the slug
-                        // title because we will be appending an integer
-                        const afterChars = slug.substring(slug.indexOf(defaultSlug) + defaultSlug.length, slug.length)
-                        if (afterChars) {
-                            result.push(parseInt(afterChars));
+    const getArticleSlug = function (cb, title, Article) {
+        Article.find({}, function (err, articles) {
+            const defaultSlug = Article.defaultSlug(title);
+            let maxAtLeast = false;
+            if (!articles) {
+                return cb(defaultSlug);
+            } else {
+                const articleSlugEndings = articles.reduce((result, article) => {
+                    const slug = article.articleSlug;
+                    if (slug && slug.startsWith(defaultSlug)) {
+                        maxAtLeast = 1;
+                        // Get all chars after defaultSlug
+                        try {
+                            // This still guarantees uniqueness if somehow we don't have an integer at the end of the slug
+                            // title because we will be appending an integer
+                            const afterChars = slug.substring(
+                                slug.indexOf(defaultSlug) + defaultSlug.length, slug.length);
+                            if (afterChars) {
+                                result.push(parseInt(afterChars));
+                            }
+                        } catch (e) {
+                            console.log('Error while parsing int', e);
                         }
-                    } catch (e) {
-                        console.log('Error while parsing int', e);
                     }
+                    return result
+                }, []);
+                // We found articles with the same articleSlug prefix so now we append the max
+                // + 1 slug ending
+                if (articleSlugEndings.length) {
+                    const ending = (Math.max.apply(Math, articleSlugEndings) + 1);
+                    return cb(defaultSlug + ending);
                 }
-                return result
-            }, []);
-            // We found articles with the same articleSlug prefix so now we append the max
-            // + 1 slug ending
-            if (articleSlugEndings.length) {
-                const ending = (Math.max(articleSlugEndings) + 1);
-                article.articleSlug = defaultSlug + ending;
+                // didn't find an articleSlugs with the same prefix so we are okay to use this one
+                // as the prefix
+                // maxAtLeast will be truthy if we found a slug that startsWith the given title's slug
+                // This was we can add a 1 to it since it isn't actually unique
+                return cb(defaultSlug + (maxAtLeast ? 1 : ''))
+
             }
-            // didn't find an articleSlugs with the same prefix so we are okay to use this one
-            // as the prefix
-            article.articleSlug = defaultSlug;
-        }
+        });
+    };
+
+    ArticleSchema.statics.defaultSlug = function (title) {
+        return defaultSlug(title);
+    };
+
+    ArticleSchema.methods.getArticleSlug = function(cb) {
+        return getArticleSlug(cb, this.title, this.model('Article'));
+    };
+
+    ArticleSchema.statics.getArticleSlug = function(cb, title, Article) {
+        return getArticleSlug(cb, title, Article);
+    };
+
+    ArticleSchema.pre('save', function (next) {
+        const article = this;
+
+        if (!article.isModified('title')) return next();
+
+        article.getArticleSlug(function (slug) {
+            article.articleSlug = slug;
+            return next();
+        });
     });
-
-    return next();
-});*/
-
-ArticleSchema.methods.getArticleSlug = function(cb) {
-    const self = this;
-    self.model('Article').find({}, function (err, articles) {
-        const defaultSlug = self.defaultSlug();
-        let maxAtLeast = false;
-        if (!articles) {
-            return cb(defaultSlug)
-        } else {
-            const articleSlugEndings = articles.reduce((result, article) => {
-                const slug = article.articleSlug;
-                if (slug && slug.startsWith(defaultSlug)) {
-                    maxAtLeast = 1;
-                    console.log('here 4');
-                    // Get all chars after defaultSlug
-                    try {
-                        // This still guarantees uniqueness if somehow we don't have an integer at the end of the slug
-                        // title because we will be appending an integer
-                        const afterChars = slug.substring(
-                            slug.indexOf(defaultSlug) + defaultSlug.length, slug.length);
-                        console.log('here 4.5', slug, slug.substring(
-                            slug.indexOf(defaultSlug) + defaultSlug.length, slug.length));
-                        if (afterChars) {
-                            console.log('here 4.75', afterChars);
-                            result.push(parseInt(afterChars));
-                        }
-                    } catch (e) {
-                        console.log('Error while parsing int', e);
-                    }
-                }
-                return result
-            }, []);
-            // We found articles with the same articleSlug prefix so now we append the max
-            // + 1 slug ending
-            if (articleSlugEndings.length) {
-                const ending = (Math.max.apply(Math, articleSlugEndings) + 1);
-                console.log(articleSlugEndings, Math.max(articleSlugEndings));
-                console.log('here 5.5');
-                return cb(defaultSlug + ending);
-            }
-            // didn't find an articleSlugs with the same prefix so we are okay to use this one
-            // as the prefix
-            // maxAtLeast will be truthy if we found a slug that startsWith the given title's slug
-            // This was we can add a 1 to it since it isn't actually unique
-            return cb(defaultSlug + (maxAtLeast ? 1 : ''))
-
-        }
-    });
-};
-
-ArticleSchema.statics.getArticleSlug = function(cb, title, Article) {
-    Article.find({}, function (err, articles) {
-        console.log('here 1');
-        const defaultSlug = Article.defaultSlug(title);
-        let maxAtLeast = false;
-        if (!articles) {
-            return cb(defaultSlug);
-        } else {
-            const articleSlugEndings = articles.reduce((result, article) => {
-                const slug = article.articleSlug;
-                if (slug && slug.startsWith(defaultSlug)) {
-                    maxAtLeast = 1;
-                    console.log('here 4');
-                    // Get all chars after defaultSlug
-                    try {
-                        // This still guarantees uniqueness if somehow we don't have an integer at the end of the slug
-                        // title because we will be appending an integer
-                        const afterChars = slug.substring(
-                            slug.indexOf(defaultSlug) + defaultSlug.length, slug.length);
-                        console.log('here 4.5', slug, slug.substring(
-                            slug.indexOf(defaultSlug) + defaultSlug.length, slug.length));
-                        if (afterChars) {
-                            console.log('here 4.75', afterChars);
-                            result.push(parseInt(afterChars));
-                        }
-                    } catch (e) {
-                        console.log('Error while parsing int', e);
-                    }
-                }
-                return result
-            }, []);
-            // We found articles with the same articleSlug prefix so now we append the max
-            // + 1 slug ending
-            if (articleSlugEndings.length) {
-                const ending = (Math.max.apply(Math, articleSlugEndings) + 1);
-                console.log(articleSlugEndings, Math.max(articleSlugEndings));
-                console.log('here 5.5');
-                return cb(defaultSlug + ending);
-            }
-            // didn't find an articleSlugs with the same prefix so we are okay to use this one
-            // as the prefix
-            // maxAtLeast will be truthy if we found a slug that startsWith the given title's slug
-            // This was we can add a 1 to it since it isn't actually unique
-            return cb(defaultSlug + (maxAtLeast ? 1 : ''))
-
-        }
-    });
-};
-
-
-/*ArticleSchema.path('title').validate({
- isAsync: true,
- validator: function (title_val, cb) {
- Article.find({},
- function (err, articles) {
- if(err) {
- return cb(false, 'There was an error checking if article with that title already exists')
- }
- if(articles) {
- const currentTitleSlug = Article.createArticleSlug(title_val);
- articles.forEach((article) => {
- if(Article.createArticleSlug(article.title) === currentTitleSlug) {
- return cb(false, `An article with this title "${title_val}" => "${article.title}" already exists. Please choose a different one`);
- }
- });
- // All articles found didn't have the same title so we are good
- return cb(true)
- } else {
- // No articles found with this title
- return cb(true)
- }
- });
-
- },
- message: 'An article with that title already exists. Please choose a different title'
- });*/
-
+})(ArticleSchema);
 
 const Article = mongoose.model('Article', ArticleSchema);
 
