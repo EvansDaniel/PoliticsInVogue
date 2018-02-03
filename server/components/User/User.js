@@ -1,7 +1,7 @@
 const mongoose = require('mongoose'),
     Schema = mongoose.Schema,
     bcrypt = require('bcrypt'),
-    SALT_WORK_FACTOR = 14;
+    SALT_WORK_FACTOR = 18;
 
 // TODO: DeprecationWarning: Mongoose: mpromise (mongoose's default promise library) is deprecated, plug in your own promise library instead: http://mongoosejs.com/docs/promises.html
 const UserSchema = new Schema({
@@ -12,6 +12,10 @@ const UserSchema = new Schema({
         trim: true
     },
     biography: {
+        type: String,
+        trim: true
+    },
+    photograph: {
         type: String,
         trim: true
     },
@@ -38,11 +42,9 @@ UserSchema.pre('save', function (next) {
 
             // override the cleartext password with the hashed one
             user.password = hash;
-            next();
+            return next();
         });
     });
-
-
 });
 
 UserSchema.methods.comparePassword = function (candidatePassword, cb) {
