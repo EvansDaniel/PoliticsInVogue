@@ -142,17 +142,15 @@ ArticleSchema.methods.defaultSlug = function () {
 ArticleSchema.methods.getArticleSlug = function(cb) {
     const self = this;
     self.model('Article').find({}, function (err, articles) {
-        console.log('here 1');
         const defaultSlug = self.defaultSlug();
-        if (true) {
-            console.log('here 1.5');
+        let maxAtLeast = false;
+        if (!articles) {
             return cb(defaultSlug)
         } else {
-            console.log('here 2');
             const articleSlugEndings = articles.reduce((result, article) => {
-                console.log('here 3');
                 const slug = article.articleSlug;
                 if (slug && slug.startsWith(defaultSlug)) {
+                    maxAtLeast = 1;
                     console.log('here 4');
                     // Get all chars after defaultSlug
                     try {
@@ -160,7 +158,10 @@ ArticleSchema.methods.getArticleSlug = function(cb) {
                         // title because we will be appending an integer
                         const afterChars = slug.substring(
                             slug.indexOf(defaultSlug) + defaultSlug.length, slug.length);
+                        console.log('here 4.5', slug, slug.substring(
+                            slug.indexOf(defaultSlug) + defaultSlug.length, slug.length));
                         if (afterChars) {
+                            console.log('here 4.75', afterChars);
                             result.push(parseInt(afterChars));
                         }
                     } catch (e) {
@@ -171,15 +172,18 @@ ArticleSchema.methods.getArticleSlug = function(cb) {
             }, []);
             // We found articles with the same articleSlug prefix so now we append the max
             // + 1 slug ending
-            console.log('here 5');
             if (articleSlugEndings.length) {
-                const ending = (Math.max(articleSlugEndings) + 1);
+                const ending = (Math.max.apply(Math, articleSlugEndings) + 1);
+                console.log(articleSlugEndings, Math.max(articleSlugEndings));
+                console.log('here 5.5');
                 return cb(defaultSlug + ending);
             }
             // didn't find an articleSlugs with the same prefix so we are okay to use this one
             // as the prefix
-            console.log('here 6', defaultSlug);
-            return cb(defaultSlug)
+            // maxAtLeast will be truthy if we found a slug that startsWith the given title's slug
+            // This was we can add a 1 to it since it isn't actually unique
+            return cb(defaultSlug + (maxAtLeast ? 1 : ''))
+
         }
     });
 };
