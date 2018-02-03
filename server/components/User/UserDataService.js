@@ -6,7 +6,6 @@ const UserDataService = function (User) {
         create: function (userData, cb) {
             // TODO: look up validation stuff for mongoose
             const newUser = new User(userData);
-            console.log(userData);
             newUser.save(cb);
         },
 

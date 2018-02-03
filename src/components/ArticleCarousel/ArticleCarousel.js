@@ -47,7 +47,6 @@ let CarouselItem = (props) => {
     const carouselImageStyle = {
         backgroundImage: `url(${props.showcaseImage})`
     };
-    console.log(props);
     return (
         <div className="carousel-image" style={carouselImageStyle} onClick={function () {
             props.history.push(URLS.transform(URLS.ROUTES.article, {articleSlug: props.articleSlug}),

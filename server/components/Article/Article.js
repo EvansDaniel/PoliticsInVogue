@@ -2,10 +2,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const ArticleSchema = new Schema({
-    title:  {
+    title: {
         type: String,
         required: [true, 'Article title is required'],
-        trim: true
+        trim: true,
     },
     author: {
         type: String,
@@ -17,6 +17,9 @@ const ArticleSchema = new Schema({
         required: [function () {
             return !this.draft;
         }, 'You must provide a category prior to publishing the article'],
+    },
+    articleSlug: {
+        type: String,
     },
     showcaseImage: {
         // TODO: write an image url validator
@@ -58,6 +61,22 @@ const ArticleSchema = new Schema({
     timestamps: true
 });
 
+ArticleSchema.pre('save', function (next) {
+    const article = this;
+
+    if (!article.isModified('title')) return next();
+
+    article.getArticleSlug(function (slug) {
+        article.articleSlug = slug;
+        return next();
+    });
+});
+
+/*ArticleSchema.pre('update', function() {
+    this.update({},{ $set: { updatedAt: new Date() } });
+});*/
+
+
 ArticleSchema.statics.timeToReadInMin = function (text) {
     const averageWordsPerMin = 250;
     const numWordsInArticle = text.split(' ').length;
@@ -65,22 +84,135 @@ ArticleSchema.statics.timeToReadInMin = function (text) {
         || 1;
 };
 
-const Article = mongoose.model('Article', ArticleSchema);
+ArticleSchema.methods.defaultSlug = function () {
+    return this.title
+    // replace all non-alphanumeric characters
+    // that isn't space
+        .replace(/[^a-zA-Z\d\s:]/g, '')
+        // replace space with "-"
+        .replace(new RegExp(" ", 'g'), '-')
+        .toLowerCase();
+};
 
-/*ArticleSchema.path('slugTitle').validate({
-    isAsync: true,
-    validator: function (value, cb) {
-        Article.findOne({
-                slugTitle: value,
-                createdAt: new Date("2018-01-09T07:05:37.630Z")
-            },
-            function (err, article) {
-            console.log(article);
-            return cb(true);
-        });
+/*ArticleSchema.pre('save', function (next) {
+    console.log('here i am');
+    const article = this;
 
-    },
-    message: 'Custom error message!' // Optional
+    // only if title has been modified or is a new title (i.e. new article)
+    if (!article.isModified('title')) return next();
+
+    article.model('Article').find({}, function (err, articles) {
+        if(err) return next(err);
+        const defaultSlug = article.defaultSlug();
+        if (!articles) {
+            article.articleSlug = defaultSlug;
+        } else {
+            const articleSlugEndings = articles.reduce((result, article) => {
+                const slug = article.articleSlug;
+                if (article.articleSlug.startsWith(defaultSlug)) {
+                    // Get all chars after defaultSlug
+                    try {
+                        // This still guarantees uniqueness if somehow we don't have an integer at the end of the slug
+                        // title because we will be appending an integer
+                        const afterChars = slug.substring(slug.indexOf(defaultSlug) + defaultSlug.length, slug.length)
+                        if (afterChars) {
+                            result.push(parseInt(afterChars));
+                        }
+                    } catch (e) {
+                        console.log('Error while parsing int', e);
+                    }
+                }
+                return result
+            }, []);
+            // We found articles with the same articleSlug prefix so now we append the max
+            // + 1 slug ending
+            if (articleSlugEndings.length) {
+                const ending = (Math.max(articleSlugEndings) + 1);
+                article.articleSlug = defaultSlug + ending;
+            }
+            // didn't find an articleSlugs with the same prefix so we are okay to use this one
+            // as the prefix
+            article.articleSlug = defaultSlug;
+        }
+    });
+
+    return next();
 });*/
+
+ArticleSchema.methods.getArticleSlug = function(cb) {
+    const self = this;
+    self.model('Article').find({}, function (err, articles) {
+        console.log('here 1');
+        const defaultSlug = self.defaultSlug();
+        if (true) {
+            console.log('here 1.5');
+            return cb(defaultSlug)
+        } else {
+            console.log('here 2');
+            const articleSlugEndings = articles.reduce((result, article) => {
+                console.log('here 3');
+                const slug = article.articleSlug;
+                if (slug && slug.startsWith(defaultSlug)) {
+                    console.log('here 4');
+                    // Get all chars after defaultSlug
+                    try {
+                        // This still guarantees uniqueness if somehow we don't have an integer at the end of the slug
+                        // title because we will be appending an integer
+                        const afterChars = slug.substring(
+                            slug.indexOf(defaultSlug) + defaultSlug.length, slug.length);
+                        if (afterChars) {
+                            result.push(parseInt(afterChars));
+                        }
+                    } catch (e) {
+                        console.log('Error while parsing int', e);
+                    }
+                }
+                return result
+            }, []);
+            // We found articles with the same articleSlug prefix so now we append the max
+            // + 1 slug ending
+            console.log('here 5');
+            if (articleSlugEndings.length) {
+                const ending = (Math.max(articleSlugEndings) + 1);
+                return cb(defaultSlug + ending);
+            }
+            // didn't find an articleSlugs with the same prefix so we are okay to use this one
+            // as the prefix
+            console.log('here 6', defaultSlug);
+            return cb(defaultSlug)
+        }
+    });
+};
+
+
+/*ArticleSchema.path('title').validate({
+ isAsync: true,
+ validator: function (title_val, cb) {
+ Article.find({},
+ function (err, articles) {
+ if(err) {
+ return cb(false, 'There was an error checking if article with that title already exists')
+ }
+ if(articles) {
+ const currentTitleSlug = Article.createArticleSlug(title_val);
+ articles.forEach((article) => {
+ if(Article.createArticleSlug(article.title) === currentTitleSlug) {
+ return cb(false, `An article with this title "${title_val}" => "${article.title}" already exists. Please choose a different one`);
+ }
+ });
+ // All articles found didn't have the same title so we are good
+ return cb(true)
+ } else {
+ // No articles found with this title
+ return cb(true)
+ }
+ });
+
+ },
+ message: 'An article with that title already exists. Please choose a different title'
+ });*/
+
+
+const Article = mongoose.model('Article', ArticleSchema);
 
 module.exports = Article;

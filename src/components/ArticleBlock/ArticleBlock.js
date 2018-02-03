@@ -3,6 +3,7 @@ import './ArticleBlock.less'
 import URLS from '../../shared/urls';
 import PropTypes from 'prop-types';
 import Slider from 'react-slick';
+import _ from 'lodash';
 import readArticle from '../../utils/read-article';
 
 class ArticleBlock extends Component {
@@ -11,24 +12,46 @@ class ArticleBlock extends Component {
         this.readArticle = this.readArticle.bind(this);
     }
 
+    setupSettings() {
+        let settings = {
+            infinite: true,
+            speed: 500,
+            className: 'ArticleBlockSlider',
+            slidesToShow: 5,
+            slidesToScroll:4,
+            arrows: true,
+            nextArrow: <Arrow right={true}/>,
+            prevArrow: <Arrow/>,
+        };
+        settings = _.merge(settings, this.props.settings);
+        console.log(settings);
+        // We want to scroll all of them if we scroll more than 1 at a time
+        if(settings.slidesToShow > 1) {
+            settings.slidesToScroll = settings.slidesToShow - 1;
+        } else {
+            // Just scroll one at a time
+            settings.slidesToScroll = settings.slidesToShow;
+        }
+        console.log(settings);
+        return settings;
+    }
+
     readArticle(article) {
         //readArticle(this.props.history, article)
     }
 
     render() {
         const self = this;
-        var settings = {
-            infinite: true,
-            speed: 500,
-            className: 'ArticleBlockSlider',
-            slidesToShow: 4,
-            slidesToScroll: 1,
-            arrows: true,
-            centerMode: true,
-            nextArrow: <Arrow right={true}/>,
-            prevArrow: <Arrow/>,
-        };
+        const settings = this.setupSettings();
         const ArticleUI = this.props.articleUI;
+        const articleBlocks = this.props.articles.map(function (article) {
+            return (
+                <div>
+
+                <ArticleUI article={article} onClick={self.props.onClick}/>
+                </div>
+            )
+        });
         return (
             <div className={"ArticleBlock " + this.props.orientation}>
                 {
@@ -40,55 +63,10 @@ class ArticleBlock extends Component {
                     {
                         this.props.slider ?
                             <Slider {...settings}>
-                                {
-
-                                    this.props.articles.map(function (article) {
-                                        if (article.title === "Untitled") {
-                                            return null;
-                                        }
-                                        return (
-                                            <div key={article._id} className="block" onClick={function (event) {
-                                                //this.readArticle(article); // TODO: make this the onclick default
-                                                this.props.onClick(event, article);
-                                            }}>
-                                                <div className="img-block">
-                                                    <img src={article.showcaseImage} alt={article.title}/>
-                                                    <div>{article.timeToReadInMin} min read</div>
-                                                </div>
-                                                <div className="details">
-                                                    <div className="title">{article.title}</div>
-                                                    <div className="excerpt">{article.excerpt}</div>
-                                                </div>
-                                            </div>
-                                        );
-                                    })
-                                    /*this.props.articles.map(function (article) {
-                                     return (
-                                     <ArticleUI article={article} onClick={self.props.onClick}/>
-                                     )
-                                     })*/
-                                }
-                            </Slider> :
-                            this.props.articles.map(function (article) {
-                                if (article.title === "Untitled") {
-                                    return null;
-                                }
-                                return (
-                                    <div key={article._id} className="block" onClick={function (event) {
-                                        //this.readArticle(article); // TODO: make this the onclick default
-                                        this.props.onClick(event, article);
-                                    }}>
-                                        <div className="img-block">
-                                            <img src={article.showcaseImage} alt={article.title}/>
-                                            <div>{article.timeToReadInMin} min read</div>
-                                        </div>
-                                        <div className="details">
-                                            <div className="title">{article.title}</div>
-                                            <div className="excerpt">{article.excerpt}</div>
-                                        </div>
-                                    </div>
-                                );
-                            })
+                                {articleBlocks}
+                            </Slider>
+                            :
+                            articleBlocks
                     }
                 </div>
             </div>
@@ -98,15 +76,16 @@ class ArticleBlock extends Component {
 
 ArticleBlock.defaultProps = {
     orientation: 'vertical',
+    // will do nothing if props.slider = false
     settings: {},
-    title: 'hello world',
+    title: '',
     slider: false,
     onClick: (event, article) => {
         return false;
     },
     // Default UI for an article
     articleUI: (props) => {
-        if (props.article.title === "Untitled") {
+        if(props.title === 'Untitled') {
             return null;
         }
         return (
@@ -125,7 +104,7 @@ ArticleBlock.defaultProps = {
             </div>
         );
     }
-}
+};
 
 ArticleBlock.proptypes = {
     articles: PropTypes.object.isRequired,

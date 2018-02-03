@@ -7,7 +7,8 @@ import Error from '../../components/Error/Error';
 import renderUtils from '../../utils/render-utils';
 import ArticleBlock from "../../components/ArticleBlock/ArticleBlock";
 import Loading from '../../components/Loading/Loading';
-import Slider from 'react-slick';
+import {withRouter} from 'react-router-dom';
+import readArticle from '../../utils/read-article';
 
 class Dashboard extends Component {
     constructor(props) {
@@ -74,6 +75,7 @@ class Dashboard extends Component {
     }
 
     render() {
+        const self = this;
         return (
             this.state.loading ? <Loading/> :
             renderUtils.renderIfError(this.state.error) ||
@@ -91,7 +93,7 @@ class Dashboard extends Component {
                     </div>
                     <div className="bio-and-editor">
                         <div className="bio">
-                            <div className="header">Biography <button className="edit-bio">Edit</button></div>
+                            <div className="header">What You've Written About You <button className="edit-bio">Edit</button></div>
                             <div className="text">
                                 sdkjfl ksdjfkl sdjfklsdj fkl;sdjf lksjflksdj fkljsd fkl
                                 sdkjfl ksdjfkl sdjfklsdj fkl;sdjf lksjflksdj fkljsd fkl
@@ -117,18 +119,24 @@ class Dashboard extends Component {
 
                     <div className="articles-by-category">
                         {
-                            /*[1,2,3,4].map((i) => {
+                            /* TODO: when # articles <= 4, don't use slider */
+                            /* TODO: make this ArticleBlock and the drafts into a single component that behave same */
+                            [1,2,3,4].map((i) => {
                                 return (
                                     <div key={i} className="articles-row category">
                                         <ArticleBlock
                                             title="Category Name"
                                             slider={true}
+                                            onClick={(event, article) => {
+                                                readArticle(self, article);
+                                            }}
+                                            settings={{slidesToShow: 3}}
                                             articles={this.state.articles}
                                             orientation="horizontal"
                                         />
                                     </div>
                                 )
-                            })*/
+                            })
                         }
                     </div>
                 </div>
@@ -137,4 +145,14 @@ class Dashboard extends Component {
     }
 }
 
-export default Dashboard;
+const DashboardArticleBlockUI = (props) => {
+    return (
+        <div className="DashboardArticleBlockUI">
+            <div style={{'background-image': props.article.showcaseImage}}>
+
+            </div>
+        </div>
+    )
+};
+
+export default withRouter(Dashboard);

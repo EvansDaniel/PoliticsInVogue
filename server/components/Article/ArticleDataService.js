@@ -200,12 +200,10 @@ const ArticleDataService = function (Article) {
         },
 
         create: function (articleData, cb) {
-            // Article data contains title, author, body
-            // hidden, draft, trashed
-            // TODO: look up validation stuff for mongoose
-            // Replace the category data with its id
             const newArticle = new Article(articleData);
+            // Create new Article slug from title
             newArticle.save(function (err, savedArticle, rowsAffected) {
+                console.log('in save');
                 return cb(err, savedArticle, rowsAffected);
             });
         },

@@ -11,6 +11,10 @@ const UserSchema = new Schema({
         index: {unique: true},
         trim: true
     },
+    biography: {
+        type: String,
+        trim: true
+    },
     password: {type: String, required: true}
 }, {
     timestamps: true
