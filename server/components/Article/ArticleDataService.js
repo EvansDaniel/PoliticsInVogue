@@ -42,7 +42,7 @@ const ArticleDataService = function (Article) {
             const bodyToPlainText = $(constants.ALL_TEXT_TAGS)
                 .text()
                 // make sure there are spaces after periods
-                .replace(/[.]\s*/g,". ");
+                .replace(/[.]\s*/g, ". ");
             const bodyWords = bodyToPlainText.split(" "),
                 maxExcerptLen = 100;
             let excerpt = '';
@@ -88,7 +88,7 @@ const ArticleDataService = function (Article) {
             const exclude = queryObj.exclude &&
                 [new Mongoose.Types.ObjectId(queryObj.exclude)] ||
                 [];
-            const amount = max % 2 === 0 ? max/2 : Math.floor(max/2) + 1;
+            const amount = max % 2 === 0 ? max / 2 : Math.floor(max / 2) + 1;
             let articles = [];
 
             Article
@@ -126,7 +126,7 @@ const ArticleDataService = function (Article) {
                         if (err || !arts) {
                             return cb(err, arts);
                         }
-                        const twoArts = arts.slice(0,max - articles.length);
+                        const twoArts = arts.slice(0, max - articles.length);
 
                         twoArts.forEach(function (article) {
                             articles.push(article);
@@ -215,11 +215,23 @@ const ArticleDataService = function (Article) {
                 articleData.hidden = false;
                 articleData.draft = false; // ??
             }
-            Article.update({_id: articleData._id}, articleData,
-                function (err, raw) {
-                    console.log('Mongo raw from update', raw);
-                    return cb(err, raw);
-                });
+            if (articleData.title) {
+                Article.getArticleSlug(function (slug) {
+                    articleData.articleSlug = slug;
+                    Article.update({_id: articleData._id}, articleData,
+                        function (err, raw) {
+                            console.log('Mongo raw from update', raw);
+                            return cb(err, raw);
+                        });
+                }, articleData.title, Article);
+            } else {
+                Article.update({_id: articleData._id}, articleData,
+                    function (err, raw) {
+                        console.log('Mongo raw from update', raw);
+                        return cb(err, raw);
+                    });
+            }
+
         },
 
         delete: function (id, cb) {
