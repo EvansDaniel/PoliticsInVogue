@@ -33,7 +33,7 @@ class Article extends Component {
                 });
             },
             error: function () {
-                // TODO:
+                // TODO: log errors
                 self.setState({
                     loading: false,
                     articleData: articleData,
@@ -49,7 +49,6 @@ class Article extends Component {
 
     getData() {
         const slug = this.props.match.params.articleSlug;
-        console.log(slug);
         const queryParams = {
                 articleSlug: slug
             },
@@ -76,8 +75,7 @@ class Article extends Component {
             return false;
         }
 
-        if (prevState.articleData &&
-            prevState.articleData._id !== this.props.location.state._id) {
+        if (prevProps.match.params.articleSlug !== this.props.match.params.articleSlug) {
             this.getData();
         }
     }

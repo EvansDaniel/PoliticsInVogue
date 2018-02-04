@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import './ArticleCarousel.less'
 import PropTypes from 'prop-types';
+import {Link} from 'react-router-dom';
+import readArticle from '../../utils/read-article';
 import $ from 'jquery';
 import {withRouter} from 'react-router-dom';
 import URLS from '../../shared/urls';
@@ -28,16 +30,29 @@ class ArticleCarousel extends Component {
     }
 
     render() {
-        // TODO: carousel does not load properly when only one item
+        console.log(this.props.carouselData.length === 1);
+        // TODO: carousel does not load properly when only one item, see temp fix below
         return (
             <div className="ArticleCarousel">
-                <Carousel {...this.props}>
-                    {
-                        this.props.carouselData.map((carouselData) => {
-                            return <CarouselItem {...carouselData} />
-                        })
-                    }
-                </Carousel>
+                {this.props.carouselData.length === 1 ?
+                    <Carousel {...this.props}>
+                        {
+                            this.props.carouselData.map((carouselData) => {
+                                return <CarouselItem {...carouselData} />
+                            })
+                        }
+                        {
+                            <div style={{display: 'none'}}></div>
+                        }
+                    </Carousel> :
+                    <Carousel {...this.props}>
+                        {
+                            this.props.carouselData.map((carouselData) => {
+                                return <CarouselItem {...carouselData} />
+                            })
+                        }
+                    </Carousel>
+                }
             </div>
         );
     }
@@ -48,11 +63,14 @@ let CarouselItem = (props) => {
         backgroundImage: `url(${props.showcaseImage})`
     };
     return (
-        <div className="carousel-image" style={carouselImageStyle} onClick={function () {
-            props.history.push(URLS.transform(URLS.ROUTES.article, {
-                articleSlug: props.articleSlug, year: props.year, month: props.month
-            }));
-        }}>
+        <div className="carousel-image"
+             style={carouselImageStyle}
+             onClick={function () {
+                 props.history.push(URLS.transform(URLS.ROUTES.article, {
+                     articleSlug: props.articleSlug, year: props.year, month: props.month
+                 }));
+             }}
+        >
             <div className="article-info">
                 <div className="title">
                     {props.title}

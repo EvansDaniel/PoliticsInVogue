@@ -2,16 +2,29 @@ import React, {Component} from 'react';
 import {Link} from "react-router-dom";
 import './NavBar.less';
 import Auth from '../../services/auth';
+import API from '../../shared/api-v1';
 import SocialShare from "../SocialShare/SocialShare";
 
 // TODO: add hamburger menu with transitions like leetcode.com
 class NavBar extends Component {
     constructor(props) {
         super(props);
+        // so we can check to show dashboard link or not
         this.auth = new Auth();
+        this.state = {
+            categories: []
+        }
     }
-    componentDidMount() {
 
+    componentDidMount() {
+        const self = this;
+        API.getAllCategories({
+            success: function (res) {
+                self.setState({
+                    categories: res.data,
+                });
+            }
+        })
     }
 
     render() {
@@ -32,7 +45,7 @@ class NavBar extends Component {
                     <li>
                         <Link to="/">Categories</Link>
                         <i className="fa fa-caret-down"></i>
-                        <SubMenu categories={categories}/>
+                        <SubMenu categories={this.state.categories}/>
                     </li>
                     {
                         loggedIn ? <li><Link to="/dashboard">Dashboard</Link></li> : null
@@ -55,29 +68,31 @@ class NavBar extends Component {
 }
 
 const SubMenu = (props) => {
-  //TODO: Will need to add category href to <a> tag
-  let categories = props.categories;
-  for(let i  = 0; i < categories.length; i++) {
-      categories[i]['href'] = categories[i].category
-                // replace all non-alphanumeric characters
-                // that isn't space
-                .replace(/[^a-zA-Z\d\s:]/g, '')
-                // replace space with "-"
-                .replace(new RegExp(" ", 'g'), '-')
-                .toLowerCase();
-
-  }
-  return (
-      <ul>
-          {categories.map((category) =>
-              <Link key={category.id} to={`/category/${category.href}`}>
-                  <li>
-                      {category.category}
-                  </li>
-              </Link>)
-          }
-      </ul>
-  )
+    let categories = props.categories.map(function (category) {
+        // TODO: slug will be provided
+        const href = category
+        // replace all non-alphanumeric characters
+        // that isn't space
+            .replace(/[^a-zA-Z\d\s:]/g, '')
+            // replace space with "-"
+            .replace(new RegExp(" ", 'g'), '-')
+            .toLowerCase();
+        return {
+            href: href,
+            name: category
+        }
+    });
+    return (
+        <ul>
+            {categories.map((category, i) =>
+                <Link key={i} to={`/category/${category.href}`}>
+                    <li>
+                        {category.name}
+                    </li>
+                </Link>)
+            }
+        </ul>
+    )
 };
 
 export default NavBar;

@@ -126,7 +126,7 @@ class Dashboard extends Component {
                                             title="Category Name"
                                             slider={true}
                                             onClick={(event, article) => {
-                                                readArticle(self, article);
+                                                self.props.history(URLS.transform(URLS.ROUTES.article, {...article}))
                                             }}
                                             settings={{slidesToShow: 3}}
                                             articles={this.state.articles}

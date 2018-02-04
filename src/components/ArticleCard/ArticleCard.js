@@ -14,6 +14,7 @@ class ArticleCard extends Component {
         const style = {
             'backgroundImage': `url('${cardData.showcaseImage}')`,
         };
+        console.log(cardData);
         return (
             <div className={`ArticleCard ${cardData.className}`} style={style}>
                 <Link to={{
@@ -26,7 +27,7 @@ class ArticleCard extends Component {
                         <div>
                             <div>
                                 <div className="article-name">{cardData.title}</div>
-                                <div className="article-date">May 25 2017</div>
+                                <div className="article-date">{new Date(cardData.createdAt).toDateString()}</div>
                             </div>
                         </div>
                     </div>

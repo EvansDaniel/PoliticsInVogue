@@ -30,6 +30,11 @@
         border-top: 1px solid black;
         border-bottom: 1px solid black;
       }
+
+      .block {
+        // https://stackoverflow.com/questions/25066214/flexbox-not-giving-equal-width-to-elements
+        flex: 1 1 0;
+      }
     }
   }
 
@@ -64,10 +69,13 @@
   // Each article div is direct child
   .block {
     .flex();
+    // we want each block to be have width equal to width of other blocks
     flex-direction: row;
     padding-bottom: @articleBottomPadding;
     cursor: pointer;
 
+    // TODO: there is a bug where one image is larger than another
+    // in some (unknown) cases (but only when it is horizontal)
     .img-block {
       max-width: 50%;
 

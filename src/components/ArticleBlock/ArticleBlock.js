@@ -25,7 +25,6 @@ class ArticleBlock extends Component {
             prevArrow: <Arrow/>,
         };
         settings = _.merge(settings, this.props.settings);
-        console.log(settings);
         // We want to scroll all of them if we scroll more than 1 at a time
         if(settings.slidesToShow > 1) {
             settings.slidesToScroll = settings.slidesToShow - 1;
@@ -33,7 +32,6 @@ class ArticleBlock extends Component {
             // Just scroll one at a time
             settings.slidesToScroll = settings.slidesToShow;
         }
-        console.log(settings);
         return settings;
     }
 
@@ -47,9 +45,7 @@ class ArticleBlock extends Component {
         const ArticleUI = this.props.articleUI;
         const articleBlocks = this.props.articles.map(function (article) {
             return (
-                <div>
-                    <ArticleUI article={article} onClick={self.props.onClick}/>
-                </div>
+                <ArticleUI article={article} onClick={self.props.onClick}/>
             )
         });
         return (

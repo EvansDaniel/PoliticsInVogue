@@ -7,11 +7,9 @@ import empty from 'is-empty';
 import Comments from "../Comments/Comments";
 import ArticleBlock from "../ArticleBlock/ArticleBlock";
 import PropTypes from 'prop-types';
-import API from '../../shared/api-v1';
 import BodyHtml from "../BodyHtml/BodyHtml";
 import URLS from '../../shared/urls';
 import {withRouter} from 'react-router';
-import readArticle from '../../utils/read-article';
 
 class ArticleContent extends Component {
     constructor(props) {
@@ -31,6 +29,7 @@ class ArticleContent extends Component {
     }
 
     changeArticleMeterWidth() {
+        // currently broken for some reason, but I actually like it better this way
         const articleBody = $('.article-body'),
             bodyOffset = articleBody.offset();
 
@@ -46,6 +45,7 @@ class ArticleContent extends Component {
         }
 
         this.articleMeter.style.width = newWidth + "%";
+        console.log(this.articleMeter.style.width);
     }
 
     getTimeInMin(body) {
@@ -107,7 +107,13 @@ class ArticleContent extends Component {
                                                             title={'Other Articles You Might Like'}
                                                             orientation="vertical"
                                                             onClick={function (event, article) {
-                                                                readArticle(self.props.history, article);
+                                                                self.props.history.push(URLS.transform(URLS.ROUTES.article,
+                                                                    {
+                                                                        articleSlug: article.articleSlug,
+                                                                        year: article.year,
+                                                                        month: article.month
+                                                                    }));
+                                                                $('html').animate({ scrollTop: '0px' });
                                                             }}
                                                         /> :
                                                         <p style={{color: 'lightgrey'}}>Suggested articles will go here
@@ -132,7 +138,13 @@ class ArticleContent extends Component {
                                                           title={"Other Articles You Might Enjoy"}
                                                           rowBorder={true}
                                                           onClick={function (event, article) {
-                                                              readArticle(self.props.history, article);
+                                                              self.props.history.push(URLS.transform(URLS.ROUTES.article,
+                                                                  {
+                                                                      articleSlug: article.articleSlug,
+                                                                      year: article.year,
+                                                                      month: article.month
+                                                                  }));
+                                                              $('html').animate({ scrollTop: '0px' });
                                                           }}
                                                           orientation="horizontal"
                                             /> : null

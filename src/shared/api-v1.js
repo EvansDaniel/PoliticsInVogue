@@ -64,9 +64,18 @@ let get = function (url, options) {
 };
 
 module.exports = {
+    getAllCategories: function (options) {
+        options = options || {};
+        get(URLS.APP.categories, {
+            success: options.success,
+            error: options.error,
+            queryParams: options.params
+        });
+    },
+
     getArticle: function (options) {
-        options = options || {}
-        // TODO: check for the necessary query params
+        options = options || {};
+        // TODO: check for the necessary query params??
         get(URLS.APP.article, {
             success: options.success,
             error: options.error,

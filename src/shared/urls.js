@@ -28,7 +28,6 @@ let URLS = {
 
 URLS.transform = function (url, params) {
     params = params || {};
-    console.log('here', params);
     // Strip param values of leading slash
     Object.keys(params).forEach((paramKey) => {
         const paramVal = params[paramKey];

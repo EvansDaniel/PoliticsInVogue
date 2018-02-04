@@ -58,8 +58,7 @@ const ArticleDataService = function (Article) {
                 excerpt: excerpt.trim(),
                 timeToReadInMin: Article.timeToReadInMin(article.body),
                 year: year,
-                month: month,
-                articleSlug: slugTitle
+                month: month
             });
         };
         // check for array of articles and handle properly
@@ -183,6 +182,7 @@ const ArticleDataService = function (Article) {
                 }
 
                 let placedArticles = {};
+                // get all possible placements for home page
                 const placementVals = Article.schema.path('placement').enumValues;
 
                 // add empty array for each placement value that isn't none
@@ -200,6 +200,7 @@ const ArticleDataService = function (Article) {
                     placedArticles[article.placement].push(modifiedArticle);
                 });
 
+                console.log(placedArticles);
                 return cb(false, placedArticles);
             });
         },

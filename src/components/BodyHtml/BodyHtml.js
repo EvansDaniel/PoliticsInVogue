@@ -6,7 +6,6 @@ import renderHTML from 'react-render-html';
 class BodyHtml extends Component {
 
 	render() {
-        console.log(this.props.body);
         return (
             <div className="BodyHtml">
                 {renderHTML(this.props.body)}
