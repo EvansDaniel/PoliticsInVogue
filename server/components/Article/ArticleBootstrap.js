@@ -3,7 +3,7 @@ const URLS = require('../../../src/shared/urls');
 const routeUtils = require('../../utils/route-utils');
 
 const ArticleBootstrap = function (app) {
-    const Article = require('./Article');
+    const Article = require('./Article').Article;
     const ArticleDataService = require('./ArticleDataService')(Article);
     const ArticleRoutes = require('./ArticleRoutes')(ArticleDataService);
 

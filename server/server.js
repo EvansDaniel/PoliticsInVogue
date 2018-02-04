@@ -31,7 +31,7 @@ process.env.isTest = process.env.NODE_ENV === 'test';
 
 // configuration ===============================================================
 // TODO: check for prod. Connect to prodUrl
-const dbUrl = `mongodb://${process.env.DB_HOST}/${process.env.DB_NAME}`
+const dbUrl = `mongodb://${process.env.DB_HOST}/${process.env.DB_NAME}`;
 mongoose.connect(dbUrl,
     {useMongoClient: true}
 );
@@ -91,6 +91,5 @@ app.use(cors({
 
 // Bootstrap the app VERY LAST
 require('./bootstrap.js')(app);
-
 app.listen(port);
 console.log("App listening on port " + port);

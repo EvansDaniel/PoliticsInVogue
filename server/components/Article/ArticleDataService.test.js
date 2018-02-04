@@ -1,6 +1,6 @@
 const assert = require('chai').assert,
     sinon = require('sinon'),
-    Article = require('./Article'),
+    Article = require('./Article').Article,
     ArticleDataService = require('./ArticleDataService')(Article);
 
 describe('ArticleDataService', function () {
@@ -15,7 +15,12 @@ describe('ArticleDataService', function () {
 
         it('should only yield categories from articles with categories', function () {
             ArticleDataService.getAllCategories(() => false);
-            sinon.assert.calledWith(Article.find, {category: {$exists: true}});
+            sinon.assert.calledWith(Article.find,
+                {
+                    category: {$exists: true},
+                    draft: false,
+                    hidden: false
+                });
         });
 
         it('calls user callback w/ categories and no errors', function () {
