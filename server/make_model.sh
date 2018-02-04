@@ -45,7 +45,15 @@ const ${MODEL}Schema = new Schema({
 
 const ${MODEL} = Mongoose.model('${MODEL}', ${MODEL}Schema);
 
-module.exports = ${MODEL};
+if(process.env.NODE_ENV !== 'test') {
+    module.exports = {
+        ${MODEL}: ${MODEL}
+    };
+} else {
+    module.exports = {
+        ${MODEL}: ${MODEL},
+    }
+}
 " > ${MODEL_FILE}
 
 else
@@ -93,7 +101,7 @@ const API_URLS = require('../../../src/shared/api-urls');
 const routeUtils = require('../../utils/route-utils');
 
 const ${BOOTSTRAP} = function (app) {
-    const ${MODEL} = require('./${MODEL}');
+    const ${MODEL} = require('./${MODEL}').${MODEL};
     const ${SERVICE} = require('./${SERVICE}')(${MODEL});
     const ${ROUTES} = require('./${ROUTES}')(${SERVICE});
 
