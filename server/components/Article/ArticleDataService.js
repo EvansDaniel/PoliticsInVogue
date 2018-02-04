@@ -57,7 +57,9 @@ const ArticleDataService = function (Article) {
             return Object.assign(article.toObject && article.toObject() || article, {
                 excerpt: excerpt.trim(),
                 timeToReadInMin: Article.timeToReadInMin(article.body),
-                articleSlug: `/${year}/${month}/${slugTitle}`
+                year: year,
+                month: month,
+                articleSlug: slugTitle
             });
         };
         // check for array of articles and handle properly
@@ -73,6 +75,9 @@ const ArticleDataService = function (Article) {
         } else if (queryObj.hasOwnProperty('category')) {
             filter.category = queryObj.category;
             findFunc = Article.find.bind(Article);
+        } else if(queryObj.hasOwnProperty('articleSlug')) {
+            filter.articleSlug = queryObj.articleSlug;
+            findFunc = Article.findOne.bind(Article);
         }
 
         findFunc(filter, function (err, article) {
@@ -189,7 +194,7 @@ const ArticleDataService = function (Article) {
 
                 // add each article to its respective placement
                 articles.forEach(function (article) {
-                    const modifiedArticle = _buildMinimumArticle(_postFindArticleModification(article));
+                    const modifiedArticle = _postFindArticleModification(article);
                     // remove body because it is not needed for a minimum article
                     //delete modifiedArticle.body;
                     placedArticles[article.placement].push(modifiedArticle);

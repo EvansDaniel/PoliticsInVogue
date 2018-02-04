@@ -9,6 +9,7 @@ class ArticleCard extends Component {
     }
 
     render() {
+        // article data for the card
         const cardData = this.props.cardData;
         const style = {
             'backgroundImage': `url('${cardData.showcaseImage}')`,
@@ -16,8 +17,9 @@ class ArticleCard extends Component {
         return (
             <div className={`ArticleCard ${cardData.className}`} style={style}>
                 <Link to={{
-                    pathname: URLS.transform(URLS.ROUTES.article, {articleSlug: cardData.articleSlug}),
-                    state: {_id: cardData._id}
+                    pathname: URLS.transform(URLS.ROUTES.article, {
+                        articleSlug: cardData.articleSlug, year: cardData.year, month: cardData.month
+                    })
                 }}
                 >
                     <div className="article-info">

@@ -6,13 +6,18 @@ import PropTypes from 'prop-types';
 import Loading from '../../components/Loading/Loading';
 import {Helmet} from 'react-helmet';
 import CONSTANTS from '../../shared/constants';
+import renderUtils from '../../utils/render-utils';
+import errorUtils from '../../utils/error-utils';
 const API = require('../../shared/api-v1');
 
 class Article extends Component {
     constructor(props) {
         super(props);
+        // TODO: possibly make loading an object that specifies different parts of the page that are loading
+        // possibly do that rather than have to go get all the data before rendering anything
         this.state = {
             loading: true,
+            error: false,
             articleMeterWidth: 0,
         };
     }
@@ -29,6 +34,11 @@ class Article extends Component {
             },
             error: function () {
                 // TODO:
+                self.setState({
+                    loading: false,
+                    articleData: articleData,
+                    suggestedArticles: []
+                });
             },
             params: {
                 category: articleData.category,
@@ -38,28 +48,31 @@ class Article extends Component {
     }
 
     getData() {
-        if (!this.props.articleData) {
-            const queryParams = {
-                    // TODO: fix this, check that state is defined
-                    _id: this.props.location.state._id
-                },
-                self = this;
+        const slug = this.props.match.params.articleSlug;
+        console.log(slug);
+        const queryParams = {
+                articleSlug: slug
+            },
+            self = this;
 
-            API.getArticle({
-                success: function (res) {
-                    self.getSuggestedArticles(res.data);
-                },
-                params: queryParams
-            });
-        } else {
-            this.setState({
-                loading: false,
-            });
-        }
+        // get the article with the slug in the queryParams
+        API.getArticle({
+            success: function (res) {
+                self.getSuggestedArticles(res.data);
+            },
+            error: function (res) {
+                if (res.status === 404) {
+                    self.setState({
+                        error: errorUtils.buildRenderError(true, res)
+                    });
+                }
+            },
+            params: queryParams
+        });
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if(!prevProps || !prevState) {
+        if (!prevProps || !prevState) {
             return false;
         }
 
@@ -76,6 +89,10 @@ class Article extends Component {
     render() {
         // For previewing the article
         const articleData = this.state.articleData;
+        if(this.state.error) {
+            // add link to redirect home
+            return renderUtils.renderIfError(this.state.error, true);
+        }
         return (
             <div className="Article">
                 <Helmet>
@@ -93,8 +110,6 @@ class Article extends Component {
     }
 }
 
-Article.proptypes = {
-
-};
+Article.proptypes = {};
 
 export default Article;

@@ -20,6 +20,7 @@ const ArticleSchema = new Schema({
     },
     articleSlug: {
         type: String,
+        trim: true,
     },
     showcaseImage: {
         // TODO: write an image url validator

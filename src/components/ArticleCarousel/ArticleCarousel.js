@@ -49,9 +49,9 @@ let CarouselItem = (props) => {
     };
     return (
         <div className="carousel-image" style={carouselImageStyle} onClick={function () {
-            props.history.push(URLS.transform(URLS.ROUTES.article, {articleSlug: props.articleSlug}),
-                {_id: props._id} // state
-            );
+            props.history.push(URLS.transform(URLS.ROUTES.article, {
+                articleSlug: props.articleSlug, year: props.year, month: props.month
+            }));
         }}>
             <div className="article-info">
                 <div className="title">

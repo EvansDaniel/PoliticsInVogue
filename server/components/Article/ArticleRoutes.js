@@ -3,7 +3,7 @@ const HttpError = require('http-error');
 
 const ArticleRoutes = function (ArticleDataService) {
 
-    const getArticleHandle = function (req, res, next) {
+    const getArticlesByHandle = function (req, res, next) {
         routeUtils.debuggingHelper(req, res, next, function (req, res, next) {
             ArticleDataService.getArticle(req.query,function (err, article) {
                 // Check for errors, send default response for errors
@@ -101,7 +101,7 @@ const ArticleRoutes = function (ArticleDataService) {
         });
     };
 
-    const getArticlesHandle = function (req, res, next) {
+    const getArticlesByCategoryHandle = function (req, res, next) {
         routeUtils.debuggingHelper(req, res, next, function (req, res, next) {
             ArticleDataService.getArticlesByCategory(req.query.category, function (err, articles) {
                 if(err) {
@@ -114,8 +114,8 @@ const ArticleRoutes = function (ArticleDataService) {
     };
 
     return {
-        getArticleHandle: getArticleHandle,
-        getArticlesHandle: getArticlesHandle,
+        getArticlesByHandle: getArticlesByHandle,
+        getArticlesByCategoryHandle: getArticlesByCategoryHandle,
         getSuggestedArticlesHandle: getSuggestedArticlesHandle,
         getPlacementArticleHandle: getPlacementArticleHandle,
         postCreateArticleHandle: postCreateArticleHandle,

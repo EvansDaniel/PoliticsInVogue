@@ -4,6 +4,7 @@ import './NavBar.less';
 import Auth from '../../services/auth';
 import SocialShare from "../SocialShare/SocialShare";
 
+// TODO: add hamburger menu with transitions like leetcode.com
 class NavBar extends Component {
     constructor(props) {
         super(props);

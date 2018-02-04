@@ -3,8 +3,8 @@ import './Dashboard.less'
 import PropTypes from 'prop-types';
 import API from '../../shared/api-v1';
 import URLS from '../../shared/urls';
-import Error from '../../components/Error/Error';
 import renderUtils from '../../utils/render-utils';
+import errorUtils from '../../utils/error-utils';
 import ArticleBlock from "../../components/ArticleBlock/ArticleBlock";
 import Loading from '../../components/Loading/Loading';
 import {withRouter} from 'react-router-dom';
@@ -59,10 +59,8 @@ class Dashboard extends Component {
             },
             error: () => function () {
                 self.setState({
-                    error: {
-                        val: true,
-                        message: 'There was an error while setting up your new article.'
-                    }
+                    error: errorUtils.buildRenderError(true, null,
+                        'There was an error while setting up your new article')
                 });
             }, // TODO:
             data: {

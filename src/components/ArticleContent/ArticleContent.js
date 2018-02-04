@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom';
 import './ArticleContent.less';
 import SocialMediaBlock from "../SocialMediaBlock/SocialMediaBlock";
 import $ from 'jquery';
+import empty from 'is-empty';
 import Comments from "../Comments/Comments";
 import ArticleBlock from "../ArticleBlock/ArticleBlock";
 import PropTypes from 'prop-types';
@@ -97,7 +98,7 @@ class ArticleContent extends Component {
                             <div className="lower-article">
                                 <div className="article-main">
                                     {
-                                        this.props.suggestedArticles || this.props.preview ?
+                                        !empty(this.props.suggestedArticles) ?
                                             <div className="suggested">
                                                 {
                                                     !this.props.preview ?
@@ -126,7 +127,7 @@ class ArticleContent extends Component {
                                 </div>
                                 <div className="mobile-suggested-articles">
                                     {
-                                        this.props.suggestedArticles ?
+                                        empty(this.props.suggestedArticles) ?
                                             <ArticleBlock articles={this.props.suggestedArticles.slice(0, 2)}
                                                           title={"Other Articles You Might Enjoy"}
                                                           onClick={function (event, article) {

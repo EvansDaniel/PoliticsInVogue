@@ -7,7 +7,7 @@
 @midTabletAndSmaller: ~'only screen and (max-width : 700px)';
 @smallTabletAndSmaller: ~'only screen and (max-width: 600px)';
 @stickyTopPosition: 100px;
-@leftColumnIncrease: 10%;
+@leftColumnIncrease: 5%;
 
 .ArticleContent {
   width: 100%;
@@ -180,6 +180,7 @@
             letter-spacing: .01em;
             padding-left: 2.5%;
             padding-right: 10%;
+            width: 95%;
             max-width: 500*@pixel;
             // text-align: justify????
 
@@ -194,20 +195,18 @@
 
             // The below media queries ensure that the social media
             // block is pushed to the right
-            @media @largerThanLaptop, @laptopOrSmaller {
-              min-width: 50%;
-            }
-
-            @media @smallTabletAndSmaller {
-              min-width: 80%;
-            }
           }
 
           .social-media-block {
 
             .social-media-icons {
+              margin-right: @medium;
               position: sticky;
               top: @stickyTopPosition;
+
+              @media @smartphones {
+                margin-right: 0;
+              }
             }
 
             @media @tabletOrSmaller {

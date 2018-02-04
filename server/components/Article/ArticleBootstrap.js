@@ -8,7 +8,7 @@ const ArticleBootstrap = function (app) {
     const ArticleRoutes = require('./ArticleRoutes')(ArticleDataService);
 
     app.get(URLS.API.article,
-        ArticleRoutes.getArticleHandle
+        ArticleRoutes.getArticlesByHandle
     );
 
     app.get(URLS.API.suggestedArticles,
@@ -16,7 +16,7 @@ const ArticleBootstrap = function (app) {
     );
 
     app.get(URLS.API.articles,
-        ArticleRoutes.getArticlesHandle
+        ArticleRoutes.getArticlesByCategoryHandle
     );
 
     app.get(URLS.API.editArticle,

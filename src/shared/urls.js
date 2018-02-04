@@ -1,5 +1,6 @@
 const CONSTANTS = require('./constants'),
-    API_VERSION = CONSTANTS.API_VERSION;
+    API_VERSION = CONSTANTS.API_VERSION,
+    empty = require('is-empty');
 
 let URLS = {
     API: {
@@ -19,7 +20,7 @@ let URLS = {
         editArticle: '/dashboard/article/:_id/edit',
         dashboard: '/dashboard',
         about: '/about',
-        article: '/articles/:articleSlug',
+        article: '/articles/:year/:month/:articleSlug',
         category: '/category/:category',
         login: '/auth/login'
     }
@@ -27,6 +28,7 @@ let URLS = {
 
 URLS.transform = function (url, params) {
     params = params || {};
+    console.log('here', params);
     // Strip param values of leading slash
     Object.keys(params).forEach((paramKey) => {
         const paramVal = params[paramKey];
@@ -44,7 +46,7 @@ URLS.transform = function (url, params) {
         if (pathPart && pathPart.length > 0 && pathPart[0] === ':') {
             const urlParam = pathPart.substring(1, pathPart.length);
             // if not passed params has correct property and truthy value
-            if (!params.hasOwnProperty(urlParam) || !params[urlParam].trim()) {
+            if (!params.hasOwnProperty(urlParam) || empty(params[urlParam])) {
                 throw new Error(`Invalid parameters for ${url}. ${urlParam} is required.` +
                     `\nGot ${JSON.stringify(params, null, 2)}`
                 );
