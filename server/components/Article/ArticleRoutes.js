@@ -91,7 +91,7 @@ const ArticleRoutes = function (ArticleDataService) {
 
     const postEditArticleHandle = function (req, res, next) {
         routeUtils.debuggingHelper(req, res, next, function (req, res, next) {
-            ArticleDataService.update(req.body.data, function (err, raw) {
+            ArticleDataService.update(req.body.data, function (err, articleData, raw) {
                 if(err) {
                     return next(err);
                 }

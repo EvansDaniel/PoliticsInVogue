@@ -220,23 +220,21 @@ const ArticleDataService = function (Article) {
                 articleData.hidden = false;
                 articleData.draft = false; // ??
             }
-            if (articleData.title) {
-                Article.getArticleSlug(function (slug) {
-                    articleData.articleSlug = slug;
-                    Article.update({_id: articleData._id}, articleData,
-                        function (err, raw) {
-                            console.log('Mongo raw from update', raw);
-                            return cb(err, raw);
-                        });
-                }, articleData.title, Article);
-            } else {
+            const updateFunc = function (articleData) {
                 Article.update({_id: articleData._id}, articleData,
                     function (err, raw) {
                         console.log('Mongo raw from update', raw);
-                        return cb(err, raw);
+                        return cb(err, articleData, raw);
                     });
+            };
+            if (articleData.title) {
+                Article.getArticleSlug(function (slug) {
+                    articleData.articleSlug = slug;
+                    updateFunc(articleData);
+                }, articleData.title, Article);
+            } else {
+                updateFunc(articleData);
             }
-
         },
 
         delete: function (id, cb) {

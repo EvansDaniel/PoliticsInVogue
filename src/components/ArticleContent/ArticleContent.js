@@ -104,7 +104,7 @@ class ArticleContent extends Component {
                                                     !this.props.preview ?
                                                         <ArticleBlock
                                                             articles={this.props.suggestedArticles}
-                                                            title={'Articles You Might Like'}
+                                                            title={'Other Articles You Might Like'}
                                                             orientation="vertical"
                                                             onClick={function (event, article) {
                                                                 readArticle(self.props.history, article);
@@ -127,9 +127,10 @@ class ArticleContent extends Component {
                                 </div>
                                 <div className="mobile-suggested-articles">
                                     {
-                                        empty(this.props.suggestedArticles) ?
+                                        !empty(this.props.suggestedArticles) ?
                                             <ArticleBlock articles={this.props.suggestedArticles.slice(0, 2)}
                                                           title={"Other Articles You Might Enjoy"}
+                                                          rowBorder={true}
                                                           onClick={function (event, article) {
                                                               readArticle(self.props.history, article);
                                                           }}

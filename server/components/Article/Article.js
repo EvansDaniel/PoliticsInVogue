@@ -18,6 +18,12 @@ const ArticleSchema = new Schema({
             return !this.draft;
         }, 'You must provide a category prior to publishing the article'],
     },
+    categorySlug: {
+        type: String,
+        require: [function () {
+            return !this.draft;
+        }, 'Need a category slug to go with the category']
+    },
     articleSlug: {
         type: String,
         trim: true,

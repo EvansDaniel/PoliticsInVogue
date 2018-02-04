@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import './ArticleBlock.less'
 import URLS from '../../shared/urls';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import Slider from 'react-slick';
 import _ from 'lodash';
@@ -47,8 +48,7 @@ class ArticleBlock extends Component {
         const articleBlocks = this.props.articles.map(function (article) {
             return (
                 <div>
-
-                <ArticleUI article={article} onClick={self.props.onClick}/>
+                    <ArticleUI article={article} onClick={self.props.onClick}/>
                 </div>
             )
         });
@@ -59,7 +59,7 @@ class ArticleBlock extends Component {
                         <div className="articles-title">{this.props.title}</div>
                         : null
                 }
-                <div className="content-articles">
+                <div className={classNames('content-articles', {'row-border': this.props.rowBorder})}>
                     {
                         this.props.slider ?
                             <Slider {...settings}>
@@ -80,6 +80,8 @@ ArticleBlock.defaultProps = {
     settings: {},
     title: '',
     slider: false,
+    // shows black borders around horizontal article blocks when true
+    rowBorder: false,
     onClick: (event, article) => {
         return false;
     },
@@ -111,6 +113,7 @@ ArticleBlock.proptypes = {
     orientation: PropTypes.string,
     settings: PropTypes.object,
     slider: PropTypes.bool,
+    rowBorder: PropTypes.bool,
     articleTransform: PropTypes.func,
     onClick: PropTypes.func,
 };

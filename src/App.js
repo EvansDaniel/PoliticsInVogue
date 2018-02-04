@@ -24,6 +24,7 @@ require('./shared/api-v1');
 
 class App extends Component {
     componentDidMount() {
+        console.log('loading facebook sdk');
         window.fbAsyncInit = function () {
             window.FB.init({
                 appId: constants.FB_APP_ID,

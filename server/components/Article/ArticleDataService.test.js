@@ -132,4 +132,11 @@ describe('ArticleDataService', function () {
             });
         });
     });
+
+    describe('update', function () {
+        // update: function (articleData, cb)
+        it('should add a new slug prefix when the title is being update', function () {
+            // TODO:
+        });
+    });
 });
