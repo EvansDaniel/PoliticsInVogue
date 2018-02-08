@@ -45,7 +45,9 @@ class ArticleBlock extends Component {
         const ArticleUI = this.props.articleUI;
         const articleBlocks = this.props.articles.map(function (article) {
             return (
-                <ArticleUI article={article} onClick={self.props.onClick}/>
+                <div className="block-wrapper">
+                    <ArticleUI article={article} onClick={self.props.onClick}/>
+                </div>
             )
         });
         return (
@@ -83,6 +85,7 @@ ArticleBlock.defaultProps = {
     },
     // Default UI for an article
     articleUI: (props) => {
+        // TODO: remove this check
         if(props.title === 'Untitled') {
             return null;
         }

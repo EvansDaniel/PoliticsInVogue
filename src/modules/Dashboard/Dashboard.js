@@ -128,7 +128,7 @@ class Dashboard extends Component {
                                             onClick={(event, article) => {
                                                 self.props.history(URLS.transform(URLS.ROUTES.article, {...article}))
                                             }}
-                                            settings={{slidesToShow: 3}}
+                                            settings={{slidesToShow: 4}}
                                             articles={this.state.articles}
                                             orientation="horizontal"
                                         />

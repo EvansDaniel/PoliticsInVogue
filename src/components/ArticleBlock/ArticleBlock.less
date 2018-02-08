@@ -30,10 +30,13 @@
         border-top: 1px solid black;
         border-bottom: 1px solid black;
       }
-
-      .block {
+      .block-wrapper {
         // https://stackoverflow.com/questions/25066214/flexbox-not-giving-equal-width-to-elements
         flex: 1 1 0;
+
+        .block {
+          padding-right: @small;
+        }
       }
     }
   }

@@ -56,9 +56,11 @@
             color: @primaryFontColor;
             padding-right: @medium;
             min-width: @articleInfoWidth;
+            max-width: @articleInfoWidth;
 
             @media @midTabletAndSmaller {
               min-width: @articleInfoWidth + @leftColumnIncrease;
+              max-width: @articleInfoWidth ;
             }
 
             & > div {
