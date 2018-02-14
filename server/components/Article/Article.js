@@ -49,7 +49,7 @@ const ArticleSchema = new Schema({
         default: true
     },
     draft: {
-        type: Boolean,
+        type: Object,
         default: true
     },
     placement: {
