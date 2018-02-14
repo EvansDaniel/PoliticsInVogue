@@ -55,11 +55,15 @@ let get = function (url, options) {
         },
         params: options.queryParams || {},
     }).then(response => {
-        console.log(url, response);
+        console.log('success', url, response);
         options.success && options.success(response)
     }).catch(error => {
-        console.log(`${url} request failed`, error.response);
-        options.error && options.error(error.response);
+        if(error.response) {
+            console.log(`${url} request failed`, error);
+        } else {
+            console.log(`successful request but error while calling success function`, error);
+        }
+        options.error && options.error(error);
     });
 };
 

@@ -2,13 +2,12 @@ import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
 import './EditArticle.less'
 import _ from 'lodash';
-import {waitBeforeCall} from '../../shared/utils';
+import {waitBeforeCall, rawToHTML, getEditorStateFromRaw} from '../../shared/utils';
 import previewIcon from '../../../src/img/preview.svg';
 import publishIcon from '../../../src/img/publish.svg';
 import API from '../../shared/api-v1';
 import Loading from '../../components/Loading/Loading';
-import {MegadraftEditor, editorStateFromRaw} from 'megadraft-denistsuman';
-import {stateToHTML} from 'draft-js-export-html';
+import {MegadraftEditor, editorStateFromRaw, editorStateToJSON} from 'megadraft-denistsuman';
 import '../../css/megadraft.css';
 import ArticleContent from "../../components/ArticleContent/ArticleContent";
 import validators from '../../utils/validators';
@@ -45,7 +44,6 @@ class EditArticle extends Component {
             existingCategory: 'or add to existing category',
             newCategory: 'or add to new category'
         };
-        const locationState = this.props.location.state;
         this.onEditorChange = this.onEditorChange.bind(this);
 
         this.state = {
@@ -54,40 +52,16 @@ class EditArticle extends Component {
             savingAction: this.SAVING_ACTIONS.changesSaved,
             addNewCategory: true,
             errorMsg: '',
-            loading: !(locationState && locationState.article),
+            loading: true,
             categoryAction: this.CATEGORY_ACTIONS.existingCategory,
-            articleData: locationState && locationState.article,
-            editorState: editorStateFromRaw(null),
+            articleData: {},
+            editorState: getEditorStateFromRaw(null),
             showModal: false
         };
     }
 
-    buildImageElementForBody(src, caption, rightsHolder) {
-        const rightsHolderHtml = empty(rightsHolder) ?
-            '' : '<div className="img-credit">Credit:' + rightsHolder + '</div>';
-        return [
-            '<div className="body-image-wrapper">',
-            '<img className="body-img" src="' + src + '"/>',
-            empty(caption) ? '' : '<div className="img-caption">' + caption + rightsHolderHtml + '</div>',
-            '</div>'
-        ].join('');
-    }
-
     onEditorChange(editorState) {
-        let options = {
-            defaultBlockTag: 'p',
-            blockRenderers: {
-                atomic: (block) => {
-                    let data = block.getData();
-                    if (data.get('type') === 'image') {
-                        return this.buildImageElementForBody(data.get('src'),
-                            data.get('caption'),
-                            data.get('rightsHolder'))
-                    }
-                },
-            },
-        };
-        this.changeArticleData({body: stateToHTML(editorState.getCurrentContent(), options)})
+        this.changeArticleData({body: editorStateToJSON(editorState)});
         this.setState({
             editorState: editorState
         });
@@ -142,6 +116,7 @@ class EditArticle extends Component {
             });
         }, this.uiWaitTime / 2);
 
+        console.log('here i am', articleData);
         API.editArticle({
             success: (response) => {
                 waitAfterSave(self.SAVING_ACTIONS.changesSaved)
@@ -233,7 +208,8 @@ class EditArticle extends Component {
                 // TODO: make this better
                 if (response.status === 200) {
                     self.setState({
-                        articleData: response.data
+                        articleData: response.data,
+                        editorState: getEditorStateFromRaw(response.data.body)
                     })
                 }
             },
@@ -252,8 +228,14 @@ class EditArticle extends Component {
         }
 
         if (this.props.match.params._id) {
+            // TODO: go back to dashboard if there is no article with this _id
             this.getArticleData();
         }
+    }
+
+    getPreviewArticleData(articleData) {
+        return _.merge(articleData,
+            {body: rawToHTML(articleData.body)});
     }
 
     render() {
@@ -387,7 +369,8 @@ class EditArticle extends Component {
                     </div>
                     {
                         this.state.showPreview ? <div className="preview">
-                            <ArticleContent preview={this.state.showPreview} articleData={this.state.articleData}/>
+                            <ArticleContent preview={this.state.showPreview}
+                                            articleData={this.getPreviewArticleData(this.state.articleData)}/>
                         </div> : null
                     }
                 </div>

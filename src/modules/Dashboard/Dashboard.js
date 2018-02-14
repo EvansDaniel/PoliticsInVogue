@@ -89,7 +89,6 @@ class Dashboard extends Component {
         const self = this;
         API.updateMe({
             success: function () {
-                console.log('success updated');
                 self.setState({
                     me: updatedMe
                 });
