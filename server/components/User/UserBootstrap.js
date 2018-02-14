@@ -40,6 +40,14 @@ const UserBootstrap = function (app) {
     app.get(URLS.API.checkAuthenticated,
         UserRoutes.getCheckAuthenticated
     );
+
+    app.get(URLS.API.me,
+        UserRoutes.getMeHandle
+    );
+
+    app.post(URLS.API.editMe,
+        UserRoutes.postEditMeHandle
+    );
 };
 
 module.exports = UserBootstrap;

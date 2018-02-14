@@ -3,7 +3,6 @@ const passport = require('passport'),
 
 // https://stackoverflow.com/questions/15711127/express-passport-node-js-error-handling
 const PassportConfig = function(User) {
-    console.log('Passport config');
     passport.use(new LocalStrategy({
             usernameField: 'email',
         },
@@ -18,16 +17,14 @@ const PassportConfig = function(User) {
                 }
                 if (!user) {
                     console.log('user not found');
-                    return done(null, false, {message: 'Incorrect email.'});
+                    return done(null, false, {message: 'Incorrect email or password'});
                 }
                 user.comparePassword(password, function (err, isMatch) {
                     if (err) throw err;
                     if (isMatch) {
-                        console.log('matching pass');
                         return done(null, user);
                     } else {
-                        console.log('unmatching pass');
-                        return done(null, false, {message: 'Incorrect password.'});
+                        return done(null, false, {message: 'Incorrect email or password'});
                     }
                 });
             });
@@ -42,10 +39,12 @@ const PassportConfig = function(User) {
     });
 
     // Called on subsequent requests after logging in
-    passport.deserializeUser(function (user, done) {
-        User.findById(user._id)
+    passport.deserializeUser(function (userFromSession, done) {
+        User.findById(userFromSession._id)
             .then((user) => {
                 // TODO: remove password from user object
+                user = user.toObject();
+                delete user.password;
                 done(null, user);
             })
             .catch((error) => {

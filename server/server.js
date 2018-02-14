@@ -49,7 +49,7 @@ store.on('error', function (error) {
 });
 
 
-app.use(require('express-session')({
+app.use(session({
     secret: process.env.EXPRESS_SESSION_SECRET,
     cookie: {
         maxAge: CONSTANTS.SESSION_COOKIE_TIME,

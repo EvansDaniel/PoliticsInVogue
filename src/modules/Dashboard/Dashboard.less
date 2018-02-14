@@ -24,7 +24,7 @@
         margin-top: @large;
 
         .create-article {
-          .default-button();
+          .default-button(@transition: true);
         }
 
         .edit-img-link {
@@ -88,7 +88,7 @@
   }
 }
 
-.default-button() {
+.default-button(@transition: false) {
   color: white;
   font-weight: bold;
   display: inline-flex;
@@ -100,10 +100,7 @@
   cursor: pointer;
   background-color: @contrastColor;
   .default-box-shadow();
-  .bottom-transition(@height: 3px, @time: .2s);
-}
-
-.ArticleBlockSlider {
-  button {
+  & when (@transition = true) {
+    .bottom-transition(@height: 3px, @time: .2s);
   }
 }

@@ -1,6 +1,8 @@
 const routeUtils = require('../../utils/route-utils');
 const constants = require('../../../src/shared/constants');
+const HttpError = require('http-error');
 const uuidv4 = require('uuid/v4');
+const _ = require('lodash');
 
 const UserRoutes = function (UserDataService) {
 
@@ -26,7 +28,24 @@ const UserRoutes = function (UserDataService) {
         });
     };
 
+    const getMeHandle = function (req, res, next) {
+        return res.json(req.user);
+    };
+
+    const postEditMeHandle = function (req, res, next) {
+        routeUtils.debuggingHelper(req, res, next, function (req, res, next) {
+            UserDataService.update(req.body.data, function (err, raw) {
+                if(err) {
+                    next(err);
+                }
+                return res.json({});
+            });
+        })
+    };
+
     return {
+        getMeHandle: getMeHandle,
+        postEditMeHandle: postEditMeHandle,
         postLogin: postLogin,
         getCheckAuthenticated: getCheckAuthenticated
     };

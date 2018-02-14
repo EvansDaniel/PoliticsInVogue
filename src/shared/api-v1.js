@@ -64,6 +64,7 @@ let get = function (url, options) {
 };
 
 module.exports = {
+    // TODO: use object destructuring / pass options object to minimize code duplication here
     getAllCategories: function (options) {
         options = options || {};
         get(URLS.APP.categories, {
@@ -73,11 +74,29 @@ module.exports = {
         });
     },
 
+    updateMe: function (options) {
+        options = options || {};
+        post(URLS.APP.editMe, {
+            success: options.success,
+            error: options.error,
+            data: options.data
+        });
+    },
+
+    getMe: function (options) {
+        options = options || {};
+        get(URLS.APP.me, {
+            success: options.success,
+            error: options.error,
+        });
+    },
+
     getDashboardArticles: function (options) {
         options = options || {};
         get(URLS.APP.dashboardArticles, {
             success: options.success,
-            error: options.error
+            error: options.error,
+            data: options.data
         });
     },
 
