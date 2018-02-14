@@ -26,6 +26,10 @@
         .create-article {
           .default-button();
         }
+
+        .edit-img-link {
+          .default-button();
+        }
       }
     }
 
@@ -65,6 +69,7 @@
   }
 
   .articles {
+    margin-top: @medium;
 
     .articles-row {
       .default-box-shadow();
@@ -96,4 +101,9 @@
   background-color: @contrastColor;
   .default-box-shadow();
   .bottom-transition(@height: 3px, @time: .2s);
+}
+
+.ArticleBlockSlider {
+  button {
+  }
 }

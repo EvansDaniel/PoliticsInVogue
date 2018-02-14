@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import './Dashboard.less'
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 import API from '../../shared/api-v1';
 import URLS from '../../shared/urls';
 import renderUtils from '../../utils/render-utils';
@@ -19,7 +20,7 @@ class Dashboard extends Component {
                 val: false
             },
             loading: true,
-            articles: null
+            dashboardArticles: null
         }
     }
 
@@ -28,8 +29,7 @@ class Dashboard extends Component {
         API.getArticle({
             success: (response) => {
                 self.setState({
-                    articles: response.data,
-                    loading: false
+                    articles: response.data
                 })
             },
             error: (response) => {
@@ -41,6 +41,25 @@ class Dashboard extends Component {
                 });
             }
         });
+        this.loadDashboardArticles();
+    }
+
+    loadDashboardArticles() {
+        const self = this;
+        API.getDashboardArticles({
+            success: (response) => {
+                self.setState({
+                    dashboardArticles: response.data,
+                    loading: false
+                });
+            },
+            error: () => function () {
+                self.setState({
+                    error: errorUtils.buildRenderError(true, null,
+                        'There was an error fetching your articles')
+                });
+            },
+        });
     }
 
     createNewArticle(event) {
@@ -51,10 +70,7 @@ class Dashboard extends Component {
                 self.props.history.push({
                     pathname: URLS.transform(URLS.ROUTES.editArticle, {
                         _id: data._id
-                    }),
-                    state: {
-                        _id: data._id
-                    }
+                    })
                 });
             },
             error: () => function () {
@@ -68,8 +84,6 @@ class Dashboard extends Component {
                 draft: true,
             }
         });
-        // call create article api
-        // redirect to edit page (with created article state?)
     }
 
     render() {
@@ -81,12 +95,13 @@ class Dashboard extends Component {
                 <div className="about-info">
                     <div className="image-and-create-article">
                         <div className="image">
-                            <img src="https://static.pexels.com/photos/248797/pexels-photo-248797.jpeg"
+                            <img src=""
                                  alt="Image of you"/>
                         </div>
                         <div className="create-article-container">
                             <button className="create-article" onClick={this.createNewArticle}>Write a New Article
                             </button>
+                            <button className="edit-img-link" onClick={() => {}}>Edit Image</button>
                         </div>
                     </div>
                     <div className="bio-and-editor">
@@ -107,11 +122,19 @@ class Dashboard extends Component {
                 </div>
                 <div className="articles">
                     <div className="articles-row drafts">
-                        <ArticleBlock
+                        <DashboardArticleBlock
                             title="Your Drafts"
-                            slider={true}
-                            articles={this.state.articles}
-                            orientation="horizontal"
+                            onClick={(event, article) => {
+                                self.props.history(URLS.transform(URLS.ROUTES.article, {...article}))
+                            }}
+                            articles={this.state.dashboardArticles.drafts}
+                        />
+                    </div>
+
+                    <div className="articles-row hidden">
+                        <DashboardArticleBlock
+                            title="Your Hidden Articles"
+                            articles={this.state.dashboardArticles.hidden}
                         />
                     </div>
 
@@ -119,22 +142,21 @@ class Dashboard extends Component {
                         {
                             /* TODO: when # articles <= 4, don't use slider */
                             /* TODO: make this ArticleBlock and the drafts into a single component that behave same */
-                            [1,2,3,4].map((i) => {
-                                return (
-                                    <div key={i} className="articles-row category">
-                                        <ArticleBlock
-                                            title="Category Name"
-                                            slider={true}
-                                            onClick={(event, article) => {
-                                                self.props.history(URLS.transform(URLS.ROUTES.article, {...article}))
-                                            }}
-                                            settings={{slidesToShow: 4}}
-                                            articles={this.state.articles}
-                                            orientation="horizontal"
-                                        />
-                                    </div>
-                                )
-                            })
+                            this.state.dashboardArticles.categories ?
+                                Object.keys(this.state.dashboardArticles.categories).map(function (category, index) {
+                                    return (
+                                        <div key={index} className="articles-row category">
+                                            <DashboardArticleBlock
+                                                title={category}
+                                                onClick={(event, article) => {
+                                                    self.props.history(URLS.transform(URLS.ROUTES.article, {...article}))
+                                                }}
+                                                articles={self.state.dashboardArticles.categories[category]}
+                                            />
+                                        </div>
+                                    )
+                                })
+                                : null
                         }
                     </div>
                 </div>
@@ -142,6 +164,18 @@ class Dashboard extends Component {
         );
     }
 }
+
+const DashboardArticleBlock = (props) => {
+  return (
+      props.articles ? <ArticleBlock
+          slider={true}
+          settings={{slidesToShow: 4}}
+          articles={props.articles}
+          orientation="horizontal"
+          {...props}
+      /> : null
+  );
+};
 
 const DashboardArticleBlockUI = (props) => {
     return (

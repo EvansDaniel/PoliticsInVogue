@@ -73,6 +73,14 @@ module.exports = {
         });
     },
 
+    getDashboardArticles: function (options) {
+        options = options || {};
+        get(URLS.APP.dashboardArticles, {
+            success: options.success,
+            error: options.error
+        });
+    },
+
     getArticle: function (options) {
         options = options || {};
         // TODO: check for the necessary query params??

@@ -29,7 +29,7 @@ class EditArticle extends Component {
         this.changeCategoryAction = this.changeCategoryAction.bind(this);
 
         this.SAVING_ACTIONS = {
-            changesSaved: 'All changes saved',
+            changesSaved: 'All changes saved as draft',
             savingChanges: 'Saving latest changes...',
             errorSaving: 'There was an error saving changes. If this persists, try again later.'
         };
@@ -110,14 +110,14 @@ class EditArticle extends Component {
             showModal: false
         });
 
+        const self = this;
         this.changeArticleData({
             draft: false,
         });
-
-        this.props.history.push(URLS.ROUTES.dashboard);
     }
 
     initialPublishArticle() {
+        // TODO: remove this and check if everything works
         /*const valid = validators.publishValidateArticleData(this.state.articleData, 'Can\'t publish yet');
          if (!valid.valid) {
          this.setState({
@@ -149,11 +149,18 @@ class EditArticle extends Component {
             error: (error) => {
                 waitAfterSave(self.SAVING_ACTIONS.errorSaving);
             },
-            data: this.state.articleData
+            // Since we have made an edit to the article, we always want to
+            // save the article as a draft until it is published or republished
+            data: articleData
         });
     }
 
     changeArticleData(articleData) {
+        if(!articleData.hasOwnProperty('draft')) {
+            // Unless otherwise specified, all edits to the article
+            // will be a draft. When we publish, we will specify that draft is false
+            articleData.draft = true;
+        }
         const mergedArticleData = _.merge(this.state.articleData, articleData);
 
         const valid = validators.prePublishValidateArticleData(mergedArticleData);
@@ -170,7 +177,7 @@ class EditArticle extends Component {
 
         const self = this;
         waitBeforeCall(function () {
-            self.saveChanges(articleData);
+            self.saveChanges(mergedArticleData);
         }, this.uiWaitTime);
 
         this.setState({

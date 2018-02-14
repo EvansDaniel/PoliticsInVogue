@@ -46,7 +46,7 @@ class ArticleBlock extends Component {
         const articleBlocks = this.props.articles.map(function (article) {
             return (
                 <div className="block-wrapper">
-                    <ArticleUI article={article} onClick={self.props.onClick}/>
+                    <ArticleUI {...self.props} article={article} onClick={self.props.onClick}/>
                 </div>
             )
         });
@@ -95,8 +95,9 @@ ArticleBlock.defaultProps = {
                 props.onClick(event, props.article);
             }}>
                 <div className="img-block">
-                    <img src={props.article.showcaseImage} alt={props.article.title}/>
-                    <div>{props.article.timeToReadInMin} min read</div>
+                    {props.article.showcaseImage ? [<img src={props.article.showcaseImage} alt={props.article.title}/>,
+                    props.timeToRead ? <div>{props.article.timeToReadInMin} min read</div> : null]
+                        : null}
                 </div>
                 <div className="details">
                     <div className="title">{props.article.title}</div>
@@ -119,8 +120,11 @@ ArticleBlock.proptypes = {
 
 const Arrow = (props) => {
     const {className, style, ...other} = props;
+    const margin = props.right ? {
+        'margin-left': '10px'
+    } : {'margin-right': '10px'};
     return (
-        <button {...other} style={{
+        <button {...other} style={_.merge({
             border: '0px',
             background: 'rgba(0, 0, 0, 0.8)',
             color: 'white',
@@ -130,7 +134,7 @@ const Arrow = (props) => {
             cursor: 'pointer',
             display: 'inline',
             flex: '1 0 auto'
-        }}>
+        }, margin)}>
             {
                 props.right ? <i className="fa fa-chevron-right" aria-hidden="true"></i>
                     : <i className="fa fa-chevron-left" aria-hidden="true"></i>

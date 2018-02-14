@@ -19,6 +19,10 @@ const ArticleBootstrap = function (app) {
         ArticleRoutes.getArticlesByCategoryHandle
     );
 
+    app.get(URLS.API.dashboardArticles,
+        ArticleRoutes.getDraftsAndCategoriesHandle
+    );
+
     app.get(URLS.API.editArticle,
         routeUtils.isAuthenticated,
         ArticleRoutes.getEditArticleHandle

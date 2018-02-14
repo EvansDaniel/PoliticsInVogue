@@ -9,6 +9,7 @@ let URLS = {
         createArticle: 'article/create',
         editArticle: 'article/edit',
         suggestedArticles: 'articles/suggested',
+        dashboardArticles: 'articles/dashboard',
         articlePlacement: 'article/placement',
         categories: 'articles/categories',
         login: 'login',

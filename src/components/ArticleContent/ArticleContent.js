@@ -105,6 +105,7 @@ class ArticleContent extends Component {
                                                         <ArticleBlock
                                                             articles={this.props.suggestedArticles}
                                                             title={'Other Articles You Might Like'}
+                                                            timeToRead={true}
                                                             orientation="vertical"
                                                             onClick={function (event, article) {
                                                                 self.props.history.push(URLS.transform(URLS.ROUTES.article,
@@ -137,6 +138,7 @@ class ArticleContent extends Component {
                                             <ArticleBlock articles={this.props.suggestedArticles.slice(0, 2)}
                                                           title={"Other Articles You Might Enjoy"}
                                                           rowBorder={true}
+                                                          timeToRead={true}
                                                           onClick={function (event, article) {
                                                               self.props.history.push(URLS.transform(URLS.ROUTES.article,
                                                                   {

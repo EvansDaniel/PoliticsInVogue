@@ -141,6 +141,54 @@ const ArticleDataService = function (Article) {
                 });
         },
 
+        // Will be used on Dashboard page
+        /**
+         * Returns cb with argument for articles as
+         * {
+         * drafts: [{},...{}], this key only if there is drafts
+         * hidden: [{},...{}], this key only if there is hidden
+         * categories: [{},...{}] this key only if there are some articles in a category
+         * returns {} when no articles
+         * @param cb
+         */
+        getDraftsAndCategories: function(cb) {
+            Article.find({}, function(err, articles) {
+                if(err) {
+                    return (cb(err));
+                }
+                if(!articles) {
+                    return cb(err, articles);
+                }
+                const articlesByCategory = {};
+                const returnedArticles = {};
+                articles.forEach(function (article) {
+                   if(!article.draft && !article.hidden) {
+                       const cat = article.category;
+                       // Check if we've already created array for this category
+                       if(!articlesByCategory.hasOwnProperty(cat)) {
+                           articlesByCategory[cat] = [];
+                       }
+                       articlesByCategory[cat].push(_postFindArticleModification(article));
+                       // when article is published it is assumed to be non-hidden
+                   } else if(article.draft) {
+                       if(!returnedArticles.hasOwnProperty('drafts')) {
+                           returnedArticles['drafts'] = []
+                       }
+                       returnedArticles['drafts'].push(_postFindArticleModification(article));
+                       // after published and then hidden
+                   } else if(article.hidden) {
+                       if(!returnedArticles.hasOwnProperty('hidden')) {
+                           returnedArticles['hidden'] = []
+                       }
+                       returnedArticles['hidden'].push(_postFindArticleModification(article));
+                   }
+                });
+                returnedArticles['categories'] = articlesByCategory;
+
+                return cb(err, returnedArticles);
+            });
+        },
+
         getAllCategories: function (cb) {
             Article.find({
                 category: {$exists: true},

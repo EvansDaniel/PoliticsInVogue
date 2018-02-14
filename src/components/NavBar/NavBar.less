@@ -81,7 +81,8 @@
         border: 1*@pixel solid #cbd6e2;
         overflow-y: scroll;
         max-height: 225*@pixel;
-        width: 150*@rPixel;
+        // Fix this for very long category names
+        min-width: 150*@rPixel;
         .border-radius(@radius: 2*@pixel);
 
         // Just submenu a tags
@@ -113,9 +114,9 @@
 
         // Items of submenus
         & > li {
-          padding-top: 5*@pixel;
           text-align: left;
-          padding-left: @small;
+          padding: @large;
+          line-height: @small*2;
         }
       }
     }

@@ -101,6 +101,17 @@ const ArticleRoutes = function (ArticleDataService) {
         });
     };
 
+    const getDraftsAndCategoriesHandle = function (req, res, next) {
+        routeUtils.debuggingHelper(req, res, next, function (req, res, next) {
+            ArticleDataService.getDraftsAndCategories(function (err, articles) {
+                if(err) {
+                    return next(err);
+                }
+                return res.json(articles);
+            });
+        });
+    };
+
     const getArticlesByCategoryHandle = function (req, res, next) {
         routeUtils.debuggingHelper(req, res, next, function (req, res, next) {
             ArticleDataService.getArticlesByCategory(req.query.category, function (err, articles) {
@@ -116,6 +127,7 @@ const ArticleRoutes = function (ArticleDataService) {
     return {
         getArticlesByHandle: getArticlesByHandle,
         getArticlesByCategoryHandle: getArticlesByCategoryHandle,
+        getDraftsAndCategoriesHandle: getDraftsAndCategoriesHandle,
         getSuggestedArticlesHandle: getSuggestedArticlesHandle,
         getPlacementArticleHandle: getPlacementArticleHandle,
         postCreateArticleHandle: postCreateArticleHandle,
