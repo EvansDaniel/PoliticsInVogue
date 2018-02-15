@@ -12,7 +12,7 @@ const UserSchema = new Schema({
         trim: true
     },
     biography: {
-        type: String,
+        type: Object,
         trim: true
     },
     photograph: {

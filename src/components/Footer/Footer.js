@@ -30,7 +30,7 @@ class Footer extends Component {
                             </div>
                         </div>
                         <div className="column">
-                            <div className="title">Get Fashion In Vogue delivered to your inbox
+                            <div className="title">Get Politics In Vogue delivered to your inbox
                                 <div className="underline"></div>
                             </div>
                             <div className="list">

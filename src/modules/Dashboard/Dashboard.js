@@ -11,6 +11,8 @@ import ArticleBlock from "../../components/ArticleBlock/ArticleBlock";
 import Loading from '../../components/Loading/Loading';
 import {withRouter} from 'react-router-dom';
 import validators from '../../utils/validators';
+import {MegadraftEditor} from 'megadraft-denistsuman';
+import {getJSONFromEditorState, getEditorStateFromRaw, JSONToHTML} from '../../utils/editor-utils';
 import ButtonInput from "../../components/ButtonInput/ButtonInput";
 
 class Dashboard extends Component {
@@ -18,6 +20,7 @@ class Dashboard extends Component {
         super(props);
         this.createNewArticle = this.createNewArticle.bind(this);
         this.setImageLink = this.setImageLink.bind(this);
+        this.setBiography = this.setBiography.bind(this);
         this.state = {
             error: {
                 val: false
@@ -108,6 +111,10 @@ class Dashboard extends Component {
         }
     }
 
+    setBiography() {
+
+    }
+
     createNewArticle(event) {
         const self = this;
         API.createArticle({
@@ -153,24 +160,22 @@ class Dashboard extends Component {
                                 </button>
                                 <ButtonInput onDone={this.setImageLink}
                                              classRoot="edit-img-link"
+                                             title="Edit Image"
                                              defaultInputVal={this.state.me.photograph}
                                 />
                             </div>
                         </div>
                         <div className="bio-and-editor">
                             <div className="bio">
-                                <div className="header">What You've Written About You
-                                    <button className="edit-bio">Edit</button>
-                                </div>
+                                <div className="header">What You've Written About You</div>
                                 <div className="text">
-                                    sdkjfl ksdjfkl sdjfklsdj fkl;sdjf lksjflksdj fkljsd fkl
-                                    sdkjfl ksdjfkl sdjfklsdj fkl;sdjf lksjflksdj fkljsd fkl
-                                    sdkjfl ksdjfkl sdjfklsdj fkl;sdjf lksjflksdj fkljsd fkl
-                                    sdkjfl ksdjfkl sdjfklsdj fkl;sdjf lksjflksdj fkljsd fkl
-                                    sdkjfl ksdjfkl sdjfklsdj fkl;sdjf lksjflksdj fkljsd fkl
-                                    sdkjfl ksdjfkl sdjfklsdj fkl;sdjf lksjflksdj fkljsd fkl
-                                    sdkjfl ksdjfkl sdjfklsdj fkl;sdjf lksjflksdj fkljsd fkl
-                                    sdkjfl ksdjfkl sdjfklsdj fkl;sdjf lksjflksdj fkljsd fkl
+                                    <ButtonInput onDone={this.setBiography}
+                                                 component={Editor}
+                                                 classRoot="edit-bio"
+                                                 title="Edit"
+                                                 /* This should be a valid editorState */
+                                                 defaultInputVal={this.state.me.biography}
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -179,8 +184,9 @@ class Dashboard extends Component {
                         <div className="articles-row drafts">
                             <DashboardArticleBlock
                                 title="Your Drafts"
-                                onClick={(event, article) => {
-                                    self.props.history(URLS.transform(URLS.ROUTES.article, {...article}))
+                                onClick={function(event, article) {
+                                    console.log(URLS.ROUTES.article);
+                                    self.props.history.push(URLS.transform(URLS.ROUTES.article, {...article}))
                                 }}
                                 articles={this.state.dashboardArticles.drafts}
                             />
@@ -203,8 +209,8 @@ class Dashboard extends Component {
                                             <div key={index} className="articles-row category">
                                                 <DashboardArticleBlock
                                                     title={category}
-                                                    onClick={(event, article) => {
-                                                        self.props.history(URLS.transform(URLS.ROUTES.article, {...article}))
+                                                    onClick={function(event, article) {
+                                                        self.props.history.push(URLS.transform(URLS.ROUTES.article, {...article}))
                                                     }}
                                                     articles={self.state.dashboardArticles.categories[category]}
                                                 />
@@ -221,15 +227,27 @@ class Dashboard extends Component {
 }
 
 const DashboardArticleBlock = (props) => {
+    const toShow = 2;
     return (
         props.articles ? <ArticleBlock
-            slider={true}
-            settings={{slidesToShow: 4}}
+            slider={props.articles.length > toShow}
+            settings={{slidesToShow: toShow}}
             articles={props.articles}
             orientation="horizontal"
             {...props}
         /> : null
     );
+};
+
+
+const Editor = (props) => {
+        /*<input type="text" value={props.value} onChange={props.onChange}/>*/
+    return (
+        <MegadraftEditor
+            editorState={props.value}
+            onChange={props.onChange}
+        />
+    )
 };
 
 const DashboardArticleBlockUI = (props) => {

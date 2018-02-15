@@ -2,12 +2,13 @@ import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
 import './EditArticle.less'
 import _ from 'lodash';
-import {waitBeforeCall, rawToHTML, getEditorStateFromRaw} from '../../shared/utils';
+import {waitBeforeCall} from '../../shared/utils';
+import {JSONToHTML, getEditorStateFromRaw, getJSONFromEditorState} from '../../utils/editor-utils'
 import previewIcon from '../../../src/img/preview.svg';
 import publishIcon from '../../../src/img/publish.svg';
 import API from '../../shared/api-v1';
 import Loading from '../../components/Loading/Loading';
-import {MegadraftEditor, editorStateFromRaw, editorStateToJSON} from 'megadraft-denistsuman';
+import {MegadraftEditor} from 'megadraft-denistsuman';
 import '../../css/megadraft.css';
 import ArticleContent from "../../components/ArticleContent/ArticleContent";
 import validators from '../../utils/validators';
@@ -61,7 +62,7 @@ class EditArticle extends Component {
     }
 
     onEditorChange(editorState) {
-        this.changeArticleData({body: editorStateToJSON(editorState)});
+        this.changeArticleData({body: getJSONFromEditorState(editorState)});
         this.setState({
             editorState: editorState
         });
@@ -88,6 +89,7 @@ class EditArticle extends Component {
         this.changeArticleData({
             draft: false,
         });
+        this.props.history.push(URLS.ROUTES.dashboard);
     }
 
     initialPublishArticle() {
@@ -235,7 +237,7 @@ class EditArticle extends Component {
 
     getPreviewArticleData(articleData) {
         return _.merge(articleData,
-            {body: rawToHTML(articleData.body)});
+            {body: JSONToHTML(articleData.body)});
     }
 
     render() {
