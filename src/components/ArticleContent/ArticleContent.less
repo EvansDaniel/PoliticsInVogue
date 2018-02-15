@@ -63,6 +63,11 @@
               max-width: @articleInfoWidth ;
             }
 
+            @media @smartphones {
+              max-width: 100%;
+              width: 100%;
+            }
+
             & > div {
               line-height: @em + @emMedium;
 
@@ -72,6 +77,8 @@
             }
 
             .title {
+              // TODO: ask her if she likes this?????????
+              font-family: "Bitter";
               .word-break();
               margin-top: @large;
               text-align: left;
@@ -181,7 +188,6 @@
             line-height: 1.58em;
             letter-spacing: .01em;
             padding-left: 2.5%;
-            padding-right: 10%;
             width: 95%;
             max-width: 500*@pixel;
             // text-align: justify????
@@ -193,6 +199,7 @@
             // When this happens left side suggested articles will disappear as well
             @media @smallTabletAndSmaller {
               padding-left: 0;
+              font-size: 16*@pixel;
             }
 
             // The below media queries ensure that the social media

@@ -5,11 +5,12 @@ import renderHTML from 'react-render-html';
 
 const _buildImageElementForBody = function(src, caption, rightsHolder) {
     const rightsHolderHtml = empty(rightsHolder) ?
-        '' : '<div className="img-credit">Credit:' + rightsHolder + '</div>';
+        '' : `<div className="img-credit">(Credit: ${rightsHolder})</div>`;
+    const captionHtml = `<div className="img-caption">${caption} ${rightsHolderHtml}</div>`;
     return [
         '<div className="body-image-wrapper">',
-        '<img className="body-img" src="' + src + '"/>',
-        empty(caption) ? '' : '<div className="img-caption">' + caption + rightsHolderHtml + '</div>',
+        `<img className="body-img" src="${src}"/>`,
+        empty(caption) ? '' : captionHtml,
         '</div>'
     ].join('');
 };

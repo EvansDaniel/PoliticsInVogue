@@ -2,5 +2,37 @@
 @import "../../shared/vars.less";
 
 .About {
+  .flex();
+  justify-content: center;
+  margin-top: @large;
 
+  @media @laptopOrLarger {
+    font-size: @pixel*21;
+  }
+  @media @tablet {
+    font-size: @pixel*18;
+  }
+  @media @smartphones {
+    font-size: @pixel*16;
+  }
+
+  .text-wrapper {
+    width: 725px;
+    padding: 0 @xxlarge 0 @xxlarge;
+
+    .photograph-wrapper {
+      width: 100%;
+      text-align: center;
+      margin-bottom: @xxlarge;
+
+      .photograph {
+        .border-radius(@radius: 3*@pixel);
+        width: 100%;
+      }
+    }
+
+    .biography {
+
+    }
+  }
 }

@@ -2,28 +2,34 @@
 @import "../../shared/vars.less";
 
 .BodyHtml {
+  font-family: 'Taviraj', sans-serif;
 
   p {
+    line-height: 1.6em;
     margin-top: 0;
   }
 
   .body-image-wrapper {
+    margin-top: @xxlarge;
+    margin-bottom: @xxlarge;
+
     .body-img {
       max-width: 100%;
       .border-radius(@radius: 3*@pixel);
     }
+
     .img-caption {
-      border: 1px solid rgba(100, 100, 100, .2);;
       font-size: 12*@pixel;
-      font-style: italic;
       text-align: center;
-      line-height: 1em;
+      color: rgba(20,20,20, .85);
+      line-height: 1.25em;
       padding: @xsmall;
     }
 
     .img-credit {
       margin-top: @small;
-      display: block;
+      font-style: italic;
+      display: inline;
     }
 
   }
