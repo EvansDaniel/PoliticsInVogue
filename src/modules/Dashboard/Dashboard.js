@@ -172,7 +172,7 @@ class Dashboard extends Component {
                                     <ButtonInput onDone={this.setBiography}
                                                  component={Editor}
                                                  classRoot="edit-bio"
-                                                 title="Edit"
+                                                 title="Edit Bio"
                                                  /* This should be a valid editorState */
                                                  defaultInputVal={this.state.me.biography}
                                     />
@@ -241,7 +241,6 @@ const DashboardArticleBlock = (props) => {
 
 
 const Editor = (props) => {
-        /*<input type="text" value={props.value} onChange={props.onChange}/>*/
     return (
         <MegadraftEditor
             editorState={props.value}

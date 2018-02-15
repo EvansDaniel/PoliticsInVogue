@@ -1,6 +1,6 @@
-import {convertToRaw} from 'draft-js';
 import {editorStateFromRaw, editorStateToJSON} from 'megadraft-denistsuman';
 import {stateToHTML} from 'draft-js-export-html';
+import empty from 'is-empty';
 
 const _buildImageElementForBody = function(src, caption, rightsHolder) {
     const rightsHolderHtml = empty(rightsHolder) ?
