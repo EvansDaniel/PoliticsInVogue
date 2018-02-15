@@ -1,7 +1,7 @@
 const mongoose = require('mongoose'),
     Schema = mongoose.Schema,
     bcrypt = require('bcrypt'),
-    SALT_WORK_FACTOR = 18;
+    SALT_WORK_FACTOR = 14;
 
 // TODO: DeprecationWarning: Mongoose: mpromise (mongoose's default promise library) is deprecated, plug in your own promise library instead: http://mongoosejs.com/docs/promises.html
 const UserSchema = new Schema({
@@ -13,7 +13,7 @@ const UserSchema = new Schema({
     },
     biography: {
         type: Object,
-        trim: true
+        trim: true,
     },
     photograph: {
         type: String,

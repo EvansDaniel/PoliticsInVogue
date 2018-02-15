@@ -7,11 +7,12 @@ const _ = require('lodash');
 const UserRoutes = function (UserDataService) {
 
     const postLogin = function (req, res, next) {
+        // we successfully authenticated so cache a cookie and send back user info
         routeUtils.debuggingHelper(req, res, next, function (req, res, next) {
             if (req.cookies.hasOwnProperty(constants.CACHED_AUTH_COOKIE)) {
                 console.log('Cached auth cookie saved');
             } else {
-                console.log('Not saved, building');
+                console.log('Cached auth cookie not saved, building a new one for authenticated user');
                 res.cookie(constants.CACHED_AUTH_COOKIE,
                     uuidv4(), {
                         maxAge: constants.SESSION_COOKIE_TIME
@@ -24,7 +25,7 @@ const UserRoutes = function (UserDataService) {
 
     const getCheckAuthenticated = function (req, res, next) {
         return res.json({
-            authenticated: req.isAuthenticated && req.isAuthenticated()
+            authenticated: !!req.isAuthenticated && req.isAuthenticated()
         });
     };
 

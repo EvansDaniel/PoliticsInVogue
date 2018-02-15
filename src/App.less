@@ -55,7 +55,18 @@ a {
   background-color: @dimmedColor !important;
 }
 
-// Makes it so that paragraphs show up closer together in the megadraft editor
-.megadraft-editor .paragraph + .paragraph {
-  margin-top: 0px;
+// Global megadraft-editor styles
+.megadraft-editor {
+  .public-DraftEditor-content {
+    figure {
+      // makes images (probably videos) closer to surrounding text in editor
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+  }
+
+  .paragraph + .paragraph {
+    // Makes it so that paragraphs show up closer together in the megadraft editor
+    margin-top: 0;
+  }
 }

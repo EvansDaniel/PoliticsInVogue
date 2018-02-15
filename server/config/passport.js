@@ -7,9 +7,9 @@ const PassportConfig = function(User) {
             usernameField: 'email',
         },
         function (email, password, done) {
-            console.log(email, password);
-
+            console.log('here1');
             User.findOne({email: email}, function (err, user) {
+                console.log('here2');
                 // TODO: what happens on err?
                 if (err) {
                     console.log('error finding user and authenticating');
@@ -19,9 +19,12 @@ const PassportConfig = function(User) {
                     console.log('user not found');
                     return done(null, false, {message: 'Incorrect email or password'});
                 }
+                console.log('here3')
                 user.comparePassword(password, function (err, isMatch) {
+                    console.log('here5')
                     if (err) throw err;
                     if (isMatch) {
+                        console.log('here6');
                         return done(null, user);
                     } else {
                         return done(null, false, {message: 'Incorrect email or password'});

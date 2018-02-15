@@ -2,4 +2,16 @@
 @import "../../shared/vars.less";
 
 .ButtonInput {
+
+  .default-input {
+
+  }
+
+  .done-button {
+    // When there is the default input,
+    // make done button slightly to the right of it
+    &.has-default-input {
+      margin-left: @xxsmall;
+    }
+  }
 }

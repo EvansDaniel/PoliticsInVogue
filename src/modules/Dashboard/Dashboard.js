@@ -12,8 +12,9 @@ import Loading from '../../components/Loading/Loading';
 import {withRouter} from 'react-router-dom';
 import validators from '../../utils/validators';
 import {MegadraftEditor} from 'megadraft-denistsuman';
-import {getJSONFromEditorState, getEditorStateFromJSON, jsonToHTML} from '../../utils/editor-utils';
+import {getJSONFromEditorState, getEditorStateFromJSON, renderJSON} from '../../utils/editor-utils';
 import ButtonInput from "../../components/ButtonInput/ButtonInput";
+import BodyHtml from "../../components/BodyHtml/BodyHtml";
 
 class Dashboard extends Component {
     constructor(props) {
@@ -28,6 +29,7 @@ class Dashboard extends Component {
             info: {},
             loading: true,
             dashboardArticles: null,
+            showBioText: true,
             me: null
         }
     }
@@ -111,8 +113,15 @@ class Dashboard extends Component {
         }
     }
 
-    setBiography() {
+    setBiography(value) {
+        // Value will be an editor state
+        const newMeData = _.merge(this.state.me, {biography: getJSONFromEditorState(value)});
+        this.setState({
+            showBioText: true,
+            me: newMeData
+        });
 
+        this.updateMeInfo(newMeData);
     }
 
     createNewArticle(event) {
@@ -168,14 +177,23 @@ class Dashboard extends Component {
                         <div className="bio-and-editor">
                             <div className="bio">
                                 <div className="header">What You've Written About You</div>
-                                <div className="text">
+                                <div className="bio-editor-text-wrapper">
                                     <ButtonInput onDone={this.setBiography}
                                                  component={Editor}
                                                  classRoot="edit-bio"
                                                  title="Edit Bio"
+                                                 onEditClicked={function () {
+                                                     self.setState({showBioText: false});
+                                                 }}
                                                  /* This should be a valid editorState */
-                                                 defaultInputVal={this.state.me.biography}
+                                                 defaultInputVal={getEditorStateFromJSON(this.state.me.biography)}
                                     />
+                                    {
+                                        this.state.showBioText ?
+                                            <div className="bio-text">
+                                            <BodyHtml body={this.state.me.biography}/>
+                                        </div> : null
+                                    }
                                 </div>
                             </div>
                         </div>

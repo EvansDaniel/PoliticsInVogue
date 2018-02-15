@@ -27,8 +27,12 @@
           .default-button(@transition: true);
         }
 
+        // Hook for ButtonInput
         .edit-img-link {
-          .default-button();
+          .edit-button, .done-button {
+            margin-top: @medium;
+            .default-button();
+          }
         }
       }
     }
@@ -49,16 +53,21 @@
           font-size: 18*@pixel;
           font-weight: bold;
           margin-bottom: @small;
-
-          .edit-bio {
-            margin-left: @small;
-            .default-button();
-          }
         }
 
-        .text {
+        .bio-editor-text-wrapper {
           line-height: 1.5em;
           color: @black;
+
+          // Hook for ButtonInput component
+          .edit-bio {
+            .edit-button, .done-button {
+              .default-button();
+            }
+            .edit-button {
+              margin-bottom: @small;
+            }
+          }
         }
 
         .editor {

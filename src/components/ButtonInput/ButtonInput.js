@@ -21,6 +21,7 @@ class ButtonInput extends Component {
             // show button
             showInput: false
         });
+        console.log(this.state.inputVal);
         this.props.onDone(this.state.inputVal);
     }
 
@@ -44,6 +45,7 @@ class ButtonInput extends Component {
     }
 
     onEditButtonClicked() {
+        this.props.onEditClicked();
         // Switch to input
         this.setState({
             showInput: true,
@@ -58,11 +60,14 @@ class ButtonInput extends Component {
                     this.state.showInput ?
                         <div>
                             {
+                                /* Add a className to Component ??? */
                                 Component ? <Component onChange={this.onInputChange} value={this.state.inputVal}/> :
-                                    <input className="input" onChange={this.onInputChange}
+                                    <input className="default-input" onChange={this.onInputChange}
                                            value={this.state.inputVal} type="text"/>
                             }
-                            <button className="done-button" onClick={this.onDoneClicked}>Done</button>
+                            <button className={
+                                classNames('done-button', {'has-default-input': !this.props.component})
+                            } onClick={this.onDoneClicked}>Done</button>
                         </div>
                         :
                         <div>
@@ -77,10 +82,13 @@ class ButtonInput extends Component {
 ButtonInput.defaultProps = {
     defaultInputVal: '',
     classRoot: '',
+    // Defaults to noop
+    onEditClicked: () => {}
 };
 
 ButtonInput.proptypes = {
     onDone: PropTypes.func.isRequired,
+    onEditClicked: PropTypes.func,
     defaultInputVal: PropTypes.string,
     classRoot: PropTypes.string,
     title: PropTypes.string.isRequired,

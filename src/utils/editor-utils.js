@@ -1,6 +1,7 @@
 import {editorStateFromRaw, editorStateToJSON} from 'megadraft-denistsuman';
 import {stateToHTML} from 'draft-js-export-html';
 import empty from 'is-empty';
+import renderHTML from 'react-render-html';
 
 const _buildImageElementForBody = function(src, caption, rightsHolder) {
     const rightsHolderHtml = empty(rightsHolder) ?
@@ -14,14 +15,15 @@ const _buildImageElementForBody = function(src, caption, rightsHolder) {
 };
 
 const getEditorStateFromJSON = function (editorStateJSON) {
-    if(!empty(raw)) {
+    if(!empty(editorStateJSON)) {
         try {
             return editorStateFromRaw(JSON.parse(editorStateJSON));
         } catch(e) {
-            // TODO: return empty editor state
+            // TODO: return empty editor state????
             return editorStateFromRaw(null); // ???
         }
     } else {
+        // we have empty var, return empty editor state
         return editorStateFromRaw(null);
     }
 };
@@ -64,6 +66,12 @@ const jsonToHTML = function (rawString) {
             }
         }
     }
+    return '';
+};
+
+const renderJSON = function (editorStateJSON) {
+    const html = jsonToHTML(editorStateJSON);
+    return renderHTML(html);
 };
 
 const getJSONFromEditorState = function (editorState) {
@@ -73,5 +81,6 @@ const getJSONFromEditorState = function (editorState) {
 export {
     jsonToHTML,
     getEditorStateFromJSON,
-    getJSONFromEditorState
+    getJSONFromEditorState,
+    renderJSON
 }
