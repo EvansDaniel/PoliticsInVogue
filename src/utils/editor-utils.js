@@ -11,16 +11,13 @@ const _buildImageElementForBody = function(src, caption, rightsHolder) {
         empty(caption) ? '' : '<div className="img-caption">' + caption + rightsHolderHtml + '</div>',
         '</div>'
     ].join('');
-}
+};
 
-const getEditorStateFromRaw = function (raw) {
-    console.log('raw', raw);
+const getEditorStateFromJSON = function (editorStateJSON) {
     if(!empty(raw)) {
         try {
-            console.log('here');
-            return editorStateFromRaw(JSON.parse(raw));
+            return editorStateFromRaw(JSON.parse(editorStateJSON));
         } catch(e) {
-            console.log('here1');
             // TODO: return empty editor state
             return editorStateFromRaw(null); // ???
         }
@@ -32,7 +29,7 @@ const getEditorStateFromRaw = function (raw) {
 
 // takes any of rawString, rawObject, editorState,
 // or HTML and returns HTML version of the input
-const JSONToHTML = function (rawString) {
+const jsonToHTML = function (rawString) {
     let options = {
         defaultBlockTag: 'p',
         blockRenderers: {
@@ -50,22 +47,18 @@ const JSONToHTML = function (rawString) {
         try {
             let raw = JSON.parse(rawString);
             let editorState = editorStateFromRaw(raw);
-            console.log('here1')
             return stateToHTML(editorState.getCurrentContent(), options);
         } catch(e) {
             console.log(e);
             try {
                 const editorState = editorStateFromRaw(rawString);
-                console.log('here2')
                 return stateToHTML(editorState.getCurrentContent(), options);
             } catch(e1) {
                 console.log(e1);
                 try {
-                    console.log('here3')
                     return stateToHTML(rawString, options);
                 } catch(e2) {
                     console.log(e2);
-                    console.log('here4')
                     return rawString
                 }
             }
@@ -78,7 +71,7 @@ const getJSONFromEditorState = function (editorState) {
 };
 
 export {
-    JSONToHTML,
-    getEditorStateFromRaw,
+    jsonToHTML,
+    getEditorStateFromJSON,
     getJSONFromEditorState
 }

@@ -2,14 +2,15 @@ import React, {Component} from 'react';
 import './BodyHtml.less'
 import PropTypes from 'prop-types';
 import renderHTML from 'react-render-html';
-import {JSONToHTML} from '../../utils/editor-utils';
+import {jsonToHTML} from '../../utils/editor-utils';
 
+// TODO: change names, etc. to component that renders editorState???
 class BodyHtml extends Component {
 
 	render() {
         return (
             <div className="BodyHtml">
-                {renderHTML(JSONToHTML(this.props.body))}
+                {renderHTML(jsonToHTML(this.props.body))}
             </div>
         );
     }

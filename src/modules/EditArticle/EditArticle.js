@@ -3,7 +3,7 @@ import {withRouter} from 'react-router-dom';
 import './EditArticle.less'
 import _ from 'lodash';
 import {waitBeforeCall} from '../../shared/utils';
-import {JSONToHTML, getEditorStateFromRaw, getJSONFromEditorState} from '../../utils/editor-utils'
+import {jsonToHTML, getEditorStateFromJSON, getJSONFromEditorState} from '../../utils/editor-utils'
 import previewIcon from '../../../src/img/preview.svg';
 import publishIcon from '../../../src/img/publish.svg';
 import API from '../../shared/api-v1';
@@ -56,7 +56,7 @@ class EditArticle extends Component {
             loading: true,
             categoryAction: this.CATEGORY_ACTIONS.existingCategory,
             articleData: {},
-            editorState: getEditorStateFromRaw(null),
+            editorState: getEditorStateFromJSON(null),
             showModal: false
         };
     }
@@ -211,7 +211,7 @@ class EditArticle extends Component {
                 if (response.status === 200) {
                     self.setState({
                         articleData: response.data,
-                        editorState: getEditorStateFromRaw(response.data.body)
+                        editorState: getEditorStateFromJSON(response.data.body)
                     })
                 }
             },
@@ -237,7 +237,7 @@ class EditArticle extends Component {
 
     getPreviewArticleData(articleData) {
         return _.merge(articleData,
-            {body: JSONToHTML(articleData.body)});
+            {body: jsonToHTML(articleData.body)});
     }
 
     render() {

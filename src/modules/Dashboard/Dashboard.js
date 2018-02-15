@@ -12,7 +12,7 @@ import Loading from '../../components/Loading/Loading';
 import {withRouter} from 'react-router-dom';
 import validators from '../../utils/validators';
 import {MegadraftEditor} from 'megadraft-denistsuman';
-import {getJSONFromEditorState, getEditorStateFromRaw, JSONToHTML} from '../../utils/editor-utils';
+import {getJSONFromEditorState, getEditorStateFromJSON, jsonToHTML} from '../../utils/editor-utils';
 import ButtonInput from "../../components/ButtonInput/ButtonInput";
 
 class Dashboard extends Component {
