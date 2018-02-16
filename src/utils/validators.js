@@ -29,8 +29,11 @@ function publishValidateArticleData(articleData, prefix) {
         return invalidData(message + 'Must provide a category');
     }
 
-    console.log(editorUtils.default.editorStateIsEmpty);
-    if(empty(articleData.body) && true) {
+    if(empty(articleData.title)) {
+        return invalidData(message + 'Must provide a title');
+    }
+
+    if(empty(articleData.body) || editorUtils.editorStateIsEmpty(articleData.body)) {
         return invalidData(message + 'Article body is empty');
     }
 

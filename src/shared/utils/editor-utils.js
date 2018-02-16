@@ -32,7 +32,7 @@ const getEditorStateFromJSON = function (editorStateJSON) {
 
 const editorStateIsEmpty = (editorStateJSON) => {
     const editorState = getEditorStateFromJSON(editorStateJSON);
-    return editorState.getCurrentContent().hasText();
+    return !editorState.getCurrentContent().hasText();
 };
 
 

@@ -4,6 +4,7 @@ const queryString = require('query-string');
 const axios = require('axios');
 const CONSTANTS = require('./constants'),
     API_DOMAIN = CONSTANTS.API_DOMAIN;
+const _ = require('lodash');
 
 
 // TODO: add the app version of the api urls from the URLS module
@@ -27,7 +28,7 @@ let post = (url, options) => {
     const data = {
         data: options.data || options
     };
-    console.log(options);
+
     axios({
         url: url,
         method: 'POST',
@@ -58,7 +59,7 @@ let get = function (url, options) {
         console.log('success', url, response);
         options.success && options.success(response)
     }).catch(error => {
-        if(error.response) {
+        if (error.response) {
             console.log(`${url} request failed`, error);
         } else {
             console.log(`successful request but error while calling success function`, error);
@@ -68,6 +69,42 @@ let get = function (url, options) {
 };
 
 module.exports = {
+
+    // utility function for safely loading multiple fetchables
+    /**
+     *
+     * @param fetchables an array of functions that take a function to be called when the API call returns
+     * @param onLoaded
+     */
+    asynchronousSafeFetch(fetchables, onLoaded) {
+        if (fetchables) {
+            let amount = fetchables.length;
+            fetchables.forEach(function (fetchable, i) {
+                const oldSuccess = fetchable.obj.success.bind({});
+                fetchable.func(_.merge(fetchable.obj, {
+                    success: function (response) {
+                        --amount;
+                        oldSuccess(response);
+                    }
+                }));
+            });
+            let interval = setInterval(function () {
+                if (!amount) {
+                    onLoaded && onLoaded();
+                    console.log('safe asynchronous load', onLoaded);
+                    clearInterval(interval);
+                }
+            });
+            // This will stop polling for loaded data in 20 seconds
+            // at this point (or sooner) we should tell the user there was an issue
+            /*setTimeout(function () {
+                clearInterval(interval);
+            }, 20000);*/
+        } else {
+            console.error('Fetchables is empty!');
+        }
+    },
+
     // TODO: use object destructuring / pass options object to minimize code duplication here
     getAllCategories: function (options) {
         options = options || {};
@@ -158,7 +195,7 @@ module.exports = {
         });
     },
 
-    login: function (callback: (response: {}) => void, options: {email: string, password: string}) {
+    login: function (callback: (response: {}) => void, options: { email: string, password: string }) {
         axios({
             url: URLS.APP.login,
             method: 'POST',

@@ -2,6 +2,7 @@ const serviceUtils = require('../../utils/service-utils');
 const Mongoose = require('mongoose');
 const cheerio = require('cheerio');
 const constants = require('../../../src/shared/constants');
+const editorUtils = require('../../../src/shared/utils/editor-utils');
 
 const ArticleDataService = function (Article) {
     const minimumArticleFields = ['_id', 'title', 'createdAt', 'updatedAt',
@@ -16,6 +17,27 @@ const ArticleDataService = function (Article) {
             }
         }
         return minArticle;
+    };
+
+    // converts jsonEditorState (stored state of article.body) to excerpt from html body
+    const parseText = function (articleBody) {
+        const articleBodyHtml = editorUtils.jsonToHTML(articleBody),
+            $ = cheerio.load(articleBodyHtml),
+            bodyToPlainText = $(constants.ALL_TEXT_TAGS)
+                .text()
+                // make sure there are spaces after periods
+                .replace(/[.]\s*/g, ". ");
+        const bodyWords = bodyToPlainText.split(" "),
+            maxExcerptLen = 100;
+        let excerpt = '';
+
+        bodyWords.forEach(function (word, i) {
+            // always add first word, else check if we are less than length limit
+            if (i === 0 || excerpt.length + word.length < maxExcerptLen) {
+                excerpt += ' ' + word
+            }
+        });
+        return excerpt;
     };
 
     const _postFindArticleModification = function (articles) {
@@ -38,21 +60,7 @@ const ArticleDataService = function (Article) {
                 year = createdAt.getFullYear(),
                 month = createdAt.getMonth() + 1;
 
-            const $ = cheerio.load(article.body);
-            const bodyToPlainText = $(constants.ALL_TEXT_TAGS)
-                .text()
-                // make sure there are spaces after periods
-                .replace(/[.]\s*/g, ". ");
-            const bodyWords = bodyToPlainText.split(" "),
-                maxExcerptLen = 100;
-            let excerpt = '';
-
-            bodyWords.forEach(function (word, i) {
-                // always add first word, else check if we are less than length limit
-                if (i === 0 || excerpt.length + word.length < maxExcerptLen) {
-                    excerpt += ' ' + word
-                }
-            });
+            const excerpt = parseText(article.body);
 
             return Object.assign(article.toObject && article.toObject() || article, {
                 excerpt: excerpt.trim(),
@@ -74,7 +82,7 @@ const ArticleDataService = function (Article) {
         } else if (queryObj.hasOwnProperty('category')) {
             filter.category = queryObj.category;
             findFunc = Article.find.bind(Article);
-        } else if(queryObj.hasOwnProperty('articleSlug')) {
+        } else if (queryObj.hasOwnProperty('articleSlug')) {
             filter.articleSlug = queryObj.articleSlug;
             findFunc = Article.findOne.bind(Article);
         }
@@ -151,37 +159,37 @@ const ArticleDataService = function (Article) {
          * returns {} when no articles
          * @param cb
          */
-        getDraftsAndCategories: function(cb) {
-            Article.find({}, function(err, articles) {
-                if(err) {
+        getDraftsAndCategories: function (cb) {
+            Article.find({}, function (err, articles) {
+                if (err) {
                     return (cb(err));
                 }
-                if(!articles) {
+                if (!articles) {
                     return cb(err, articles);
                 }
                 const articlesByCategory = {};
                 const returnedArticles = {};
                 articles.forEach(function (article) {
-                   if(!article.draft && !article.hidden) {
-                       const cat = article.category;
-                       // Check if we've already created array for this category
-                       if(!articlesByCategory.hasOwnProperty(cat)) {
-                           articlesByCategory[cat] = [];
-                       }
-                       articlesByCategory[cat].push(_postFindArticleModification(article));
-                       // when article is published it is assumed to be non-hidden
-                   } else if(article.draft) {
-                       if(!returnedArticles.hasOwnProperty('drafts')) {
-                           returnedArticles['drafts'] = []
-                       }
-                       returnedArticles['drafts'].push(_postFindArticleModification(article));
-                       // after published and then hidden
-                   } else if(article.hidden) {
-                       if(!returnedArticles.hasOwnProperty('hidden')) {
-                           returnedArticles['hidden'] = []
-                       }
-                       returnedArticles['hidden'].push(_postFindArticleModification(article));
-                   }
+                    if (!article.draft && !article.hidden) {
+                        const cat = article.category;
+                        // Check if we've already created array for this category
+                        if (!articlesByCategory.hasOwnProperty(cat)) {
+                            articlesByCategory[cat] = [];
+                        }
+                        articlesByCategory[cat].push(_postFindArticleModification(article));
+                        // when article is published it is assumed to be non-hidden
+                    } else if (article.draft) {
+                        if (!returnedArticles.hasOwnProperty('drafts')) {
+                            returnedArticles['drafts'] = []
+                        }
+                        returnedArticles['drafts'].push(_postFindArticleModification(article));
+                        // after published and then hidden
+                    } else if (article.hidden) {
+                        if (!returnedArticles.hasOwnProperty('hidden')) {
+                            returnedArticles['hidden'] = []
+                        }
+                        returnedArticles['hidden'].push(_postFindArticleModification(article));
+                    }
                 });
                 returnedArticles['categories'] = articlesByCategory;
 

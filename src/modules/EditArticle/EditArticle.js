@@ -13,6 +13,8 @@ import ArticleContent from "../../components/ArticleContent/ArticleContent";
 import validators from '../../utils/validators';
 import PopUpModal from '../../components/PopUpModal/PopUpModal';
 import '../../css/pretty-checkbox.css';
+import renderUtils from '../../utils/render-utils';
+import errorUtils from '../../utils/error-utils';
 const empty = require('is-empty');
 const URLS = require('../../shared/urls');
 const constants = require('../../shared/constants');
@@ -27,6 +29,9 @@ class EditArticle extends Component {
         this.initialPublishArticle = this.initialPublishArticle.bind(this);
         this.finishPublishing = this.finishPublishing.bind(this);
         this.changeCategoryAction = this.changeCategoryAction.bind(this);
+
+        this.getArticleData = this.getArticleData.bind(this);
+        this.getAllCategories = this.getAllCategories.bind(this);
 
         this.SAVING_ACTIONS = {
             changesSaved: 'All changes saved as draft',
@@ -53,7 +58,9 @@ class EditArticle extends Component {
             savingAction: this.SAVING_ACTIONS.changesSaved,
             addNewCategory: true,
             errorMsg: '',
+            error: false,
             loading: true,
+            allCategories: null,
             categoryAction: this.CATEGORY_ACTIONS.existingCategory,
             articleData: {},
             editorState: editorUtils.getEditorStateFromJSON(null),
@@ -118,10 +125,9 @@ class EditArticle extends Component {
             });
         }, this.uiWaitTime / 2);
 
-        console.log('here i am', articleData);
         API.editArticle({
             success: (response) => {
-                waitAfterSave(self.SAVING_ACTIONS.changesSaved)
+                waitAfterSave(self.SAVING_ACTIONS.changesSaved);
             },
             error: (error) => {
                 waitAfterSave(self.SAVING_ACTIONS.errorSaving);
@@ -205,23 +211,55 @@ class EditArticle extends Component {
     getArticleData() {
         const self = this;
         // make ajax call to get data
-        API.getArticle({
-            success: function (response) {
-                // TODO: make this better
-                if (response.status === 200) {
+        return {
+            obj: {
+                success: function (response) {
+                    // TODO: make this better
+                    if (response.status === 200) {
+                        self.setState({
+                            articleData: response.data,
+                            editorState: editorUtils.getEditorStateFromJSON(response.data.body)
+                        });
+                    }
+                },
+                error: function (error) {
                     self.setState({
-                        articleData: response.data,
-                        editorState: editorUtils.getEditorStateFromJSON(response.data.body)
-                    })
+                        error: errorUtils.buildRenderError(true, error.response, 'There was an error loading article related data')
+                    });
+                },
+                params: {
+                    _id: self.props.match.params._id
                 }
             },
-            error: function (error) {
+            func: API.getArticle
+        }
+    }
 
-            },
-            params: {
-                _id: self.props.match.params._id
+    getAllCategories() {
+        const self = this;
+        /*API.getAllCategories({
+         success: function (response) {
+         self.setState({
+         allCategories: response.data,
+         });
+         },
+         error: function (error) {
+         // TODO:
+         }
+         })*/
+        return {
+            func: API.getAllCategories,
+            obj: {
+                success: function (response) {
+                    self.setState({
+                        allCategories: response.data,
+                    });
+                },
+                error: function (error) {
+                    // TODO:
+                }
             }
-        });
+        }
     }
 
     componentDidMount() {
@@ -231,7 +269,10 @@ class EditArticle extends Component {
 
         if (this.props.match.params._id) {
             // TODO: go back to dashboard if there is no article with this _id
-            this.getArticleData();
+            const self = this;
+            API.asynchronousSafeFetch([this.getArticleData(), this.getAllCategories()], function () {
+                self.setState({loading: false});
+            });
         }
     }
 
@@ -243,140 +284,147 @@ class EditArticle extends Component {
     render() {
         const self = this;
         return (
-            !this.state.articleData ? <Loading/> :
-                <div className="EditArticle">
-                    <div id="modal"></div>
-                    <PopUpModal
-                        contentLabel="Final Details"
-                        isOpen={this.state.showModal}
-                        onRequestClose={() => self.setState({showModal: false})}
-                        shouldCloseOnOverlayClick={true}
-                        portalClassName="FinishPublishingModalPortal"
-                        className="FinishPublishingModalContent"
-                    >
-                        <h4 className="title">Final Details</h4>
-                        <div className="inner-content">
-                            <div className="allow-comments">
-                                <div class="pretty p-default p-round">
-                                    <input type="checkbox"
-                                           name="allowComments"
-                                           onChange={this.handleInputChange}
-                                           value={this.state.articleData.allowComments}
-                                    />
-                                    <div class="state p-primary-o">
-                                        <label className="label">Allow comments for this article?</label>
+            renderUtils.renderIfError(this.state.error) || <div className="EditArticle">
+                {
+                    this.state.loading ? <Loading/> :
+                        <div>
+                            <div id="modal"></div>
+                            <PopUpModal
+                                contentLabel="Final Details"
+                                isOpen={this.state.showModal}
+                                onRequestClose={() => self.setState({showModal: false})}
+                                shouldCloseOnOverlayClick={true}
+                                portalClassName="FinishPublishingModalPortal"
+                                className="FinishPublishingModalContent"
+                            >
+                                <h4 className="title">Final Details</h4>
+                                <div className="inner-content">
+                                    <div className="allow-comments">
+                                        <div class="pretty p-default p-round">
+                                            <input type="checkbox"
+                                                   name="allowComments"
+                                                   onChange={this.handleInputChange}
+                                                   checked={this.state.articleData.allowComments}
+                                            />
+                                            <div class="state p-primary-o">
+                                                <label className="label">Allow comments for this article?</label>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                            <div className="placement">
-                                <label>Where do you want it placed?</label>
-                                <select name="placement"
-                                        className="placement"
-                                        value={this.state.placement}
-                                        onChange={this.handleInputChange}
-                                >
-                                    <option value="featured">featured</option>
-                                    <option value="carousel">carousel</option>
-                                    <option value="none">none</option>
-                                </select>
-                                <ul>
-                                    <li>Put "none" if you don't want it to show up on the home page</li>
-                                    <li>"carousel" if you want it to show up on the slider on the home page</li>
-                                    <li>"featured" if you want it to show up in the featured section on the home page
-                                    </li>
-                                </ul>
-                            </div>
-                            <button onClick={this.finishPublishing}>Finish publishing</button>
-                        </div>
-                    </PopUpModal>
-                    <div className="edit-article-container">
-                        <input className="title-input" type="text"
-                               placeholder="What is the article title?"
-                               ref={(input) => {
-                                   this.titleInput = input;
-                               }}
-                               name="title"
-                               onChange={this.handleInputChange}
-                               value={this.state.articleData.title}
-                        />
-                        <div className="showcase-image-wrapper">
-                            <input className="showcase-image-input"
-                                   type="text"
-                                   placeholder="Enter the url for the image that will go at the top of the article"
-                                   name="showcaseImage"
-                                   onChange={this.handleInputChange}
-                                   value={this.state.articleData.showcaseImage}
-                            />
-                            {
-                                validators.checkImageUrl(this.state.articleData.showcaseImage) ?
-                                    <img className="image-preview" src={this.state.articleData.showcaseImage}/> : null
-                            }
-                        </div>
-                        <div className="category-control">
-                            {
-                                !this.state.addNewCategory ?
-                                    <div>
-                                        <label className="category-select-label">Choose an existing category</label>
-                                        <select className="category-select"
-                                                name="category"
-                                                ref={(select) => {
-                                                    this.categorySelect = select
-                                                }}
-                                                value={this.state.category} /*Select 1st by default*/
+                                    <div className="placement">
+                                        <label>Where do you want it placed?</label>
+                                        <select name="placement"
+                                                className="placement"
+                                                value={this.state.articleData.placement}
                                                 onChange={this.handleInputChange}
                                         >
-                                            <option value="Option 1">Option 1</option>
-                                            <option value="Option 2">Option 2</option>
-                                            <option value="Option 3">Option 3</option>
+                                            <option value="featured">featured</option>
+                                            <option value="carousel">carousel</option>
+                                            <option value="none">none</option>
                                         </select>
-                                    </div> :
-                                    <input className="category-input" type="text"
-                                           placeholder="Add new category"
-                                           ref={(input) => {
-                                               this.categoryInput = input
-                                           }}
-                                           name="category"
-                                           onChange={this.handleInputChange}
-                                           value={this.state.articleData.category}
-                                    />
-                            }
-                            <button onClick={this.changeCategoryAction}>{this.state.categoryAction}</button>
-                        </div>
-                        <div className="editor-controls">
-                            <button onClick={this.changeView} className="view-button">
-                                <img src={previewIcon} alt=""/>
-                                <span>{this.state.buttonViewText}</span>
-                            </button>
-
-                            <button onClick={this.initialPublishArticle} className="publish-article">
-                                <img src={publishIcon}/>
-                                <span>Publish article</span>
-                            </button>
-                            <div className="saving-actions">
-                                {this.state.savingAction}
-                            </div>
-                            <div className="error-msg">
-                                {this.state.errorMsg}
-                            </div>
-                        </div>
-                        {
-                            !this.state.showPreview ?
-                                <div className="editing">
-                                    <MegadraftEditor
-                                        editorState={this.state.editorState}
-                                        onChange={this.onEditorChange}
-                                    />
+                                        <ul>
+                                            <li>Put "none" if you don't want it to show up on the home page</li>
+                                            <li>"carousel" if you want it to show up on the slider on the home page</li>
+                                            <li>"featured" if you want it to show up in the featured section on the home
+                                                page
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <button onClick={this.finishPublishing}>Finish publishing</button>
                                 </div>
-                                : null
-                        }
-                    </div>
-                    {
-                        this.state.showPreview ? <div className="preview">
-                            <ArticleContent preview={this.state.showPreview}
-                                            articleData={this.getPreviewArticleData(this.state.articleData)}/>
-                        </div> : null
-                    }
-                </div>
+                            </PopUpModal>
+                            <div className="edit-article-container">
+                                <input className="title-input" type="text"
+                                       placeholder="What is the article title?"
+                                       ref={(input) => {
+                                           this.titleInput = input;
+                                       }}
+                                       name="title"
+                                       onChange={this.handleInputChange}
+                                       value={this.state.articleData.title}
+                                />
+                                <div className="showcase-image-wrapper">
+                                    <input className="showcase-image-input"
+                                           type="text"
+                                           placeholder="Enter the url for the image that will go at the top of the article"
+                                           name="showcaseImage"
+                                           onChange={this.handleInputChange}
+                                           value={this.state.articleData.showcaseImage}
+                                    />
+                                    {
+                                        validators.checkImageUrl(this.state.articleData.showcaseImage) ?
+                                            <img className="image-preview"
+                                                 src={this.state.articleData.showcaseImage}/> : null
+                                    }
+                                </div>
+                                <div className="category-control">
+                                    {
+                                        !this.state.addNewCategory ?
+                                            <div>
+                                                <label className="category-select-label">Choose an existing
+                                                    category</label>
+                                                <select className="category-select"
+                                                        name="category"
+                                                        ref={(select) => {
+                                                            this.categorySelect = select
+                                                        }}
+                                                        value={this.state.articleData.category} /*Select 1st by default*/
+                                                        onChange={this.handleInputChange}
+                                                >
+                                                    <option value="Option 1">Option 1</option>
+                                                    <option value="Option 2">Option 2</option>
+                                                    <option value="Option 3">Option 3</option>
+                                                </select>
+                                            </div> :
+                                            <input className="category-input" type="text"
+                                                   placeholder="Add new category"
+                                                   ref={(input) => {
+                                                       this.categoryInput = input
+                                                   }}
+                                                   name="category"
+                                                   onChange={this.handleInputChange}
+                                                   value={this.state.articleData.category}
+                                            />
+                                    }
+                                    <button onClick={this.changeCategoryAction}>{this.state.categoryAction}</button>
+                                </div>
+                                <div className="editor-controls">
+                                    <button onClick={this.changeView} className="view-button">
+                                        <img src={previewIcon} alt=""/>
+                                        <span>{this.state.buttonViewText}</span>
+                                    </button>
+
+                                    <button onClick={this.initialPublishArticle} className="publish-article">
+                                        <img src={publishIcon}/>
+                                        <span>Publish article</span>
+                                    </button>
+                                    <div className="saving-actions">
+                                        {this.state.savingAction}
+                                    </div>
+                                    <div className="error-msg">
+                                        {this.state.errorMsg}
+                                    </div>
+                                </div>
+                                {
+                                    !this.state.showPreview ?
+                                        <div className="editing">
+                                            <MegadraftEditor
+                                                editorState={this.state.editorState}
+                                                onChange={this.onEditorChange}
+                                            />
+                                        </div>
+                                        : null
+                                }
+                            </div>
+                            {
+                                this.state.showPreview ? <div className="preview">
+                                    <ArticleContent preview={this.state.showPreview}
+                                                    articleData={this.getPreviewArticleData(this.state.articleData)}/>
+                                </div> : null
+                            }
+                        </div>
+                }
+            </div>
         );
     }
 }

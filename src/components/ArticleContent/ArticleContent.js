@@ -45,7 +45,6 @@ class ArticleContent extends Component {
         }
 
         this.articleMeter.style.width = newWidth + "%";
-        console.log(this.articleMeter.style.width);
     }
 
     getTimeInMin(body) {

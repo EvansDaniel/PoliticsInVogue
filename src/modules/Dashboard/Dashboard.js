@@ -201,7 +201,7 @@ class Dashboard extends Component {
                                         this.state.showBioText ?
                                             <ShowMore>
                                                 <div className="bio-text">
-                                                    {editorUtils.editorStateIsEmpty(this.state.me.biography) ?
+                                                    {!editorUtils.editorStateIsEmpty(this.state.me.biography) ?
                                                         <BodyHtml body={this.state.me.biography}/>
                                                         : "Write about yourself here, and it will show up in the About page"}
                                                 </div>
@@ -212,7 +212,7 @@ class Dashboard extends Component {
                         </div>
                     </div>
                     <div className="articles">
-                        {/*<div className="articles-row drafts">
+                        <div className="articles-row drafts">
                             <DashboardArticleBlock
                                 title="Your Drafts"
                                 onClick={function (event, article) {
@@ -222,7 +222,7 @@ class Dashboard extends Component {
                                 }}
                                 articles={this.state.dashboardArticles.drafts}
                             />
-                        </div>*/}
+                        </div>
 
                         <div className="articles-row hidden">
                             {/*<DashboardArticleBlock

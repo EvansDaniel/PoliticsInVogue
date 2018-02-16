@@ -60,11 +60,10 @@ class Article extends Component {
                 self.getSuggestedArticles(res.data);
             },
             error: function (res) {
-                if (res.status === 404) {
-                    self.setState({
-                        error: errorUtils.buildRenderError(true, res)
-                    });
-                }
+                self.setState({
+                    error: errorUtils.buildRenderError(true, res,
+                        'Sorry there was an error fetching the the selected article')
+                });
             },
             params: queryParams
         });
@@ -87,12 +86,8 @@ class Article extends Component {
     render() {
         // For previewing the article
         const articleData = this.state.articleData;
-        if(this.state.error) {
-            // add link to redirect home
-            return renderUtils.renderIfError(this.state.error, true);
-        }
         return (
-            <div className="Article">
+            renderUtils.renderIfError(this.state.error) || <div className="Article">
                 <Helmet>
                     <title>{CONSTANTS.APP_NAME} | TITLE</title>
                     <meta property="og:image" content={articleData && articleData.showcaseImage}/>

@@ -5,6 +5,7 @@ import {Link} from 'react-router-dom';
 import URLS from '../../shared/urls';
 import Modal from '../PopUpModal/PopUpModal';
 import errorIcon from "../../../src/img/error.jpg";
+import {withRouter} from 'react-router-dom';
 
 // Handles server errors (404, 400, 401, 500, etc)
 class Error extends Component {
@@ -17,8 +18,7 @@ class Error extends Component {
     }
 
     render() {
-        const error = this.props.error,
-            self = this;
+        const self = this;
         return (
             <div className="Error">
                 <Modal
@@ -35,7 +35,9 @@ class Error extends Component {
                     <img src={errorIcon}/>
                     <p>{this.props.error}</p>
                     {
-                        this.props.addHomeLink ? <Link to={URLS.ROUTES.home}>Go back to home page?</Link> : null
+                        this.props.goBackLink ? <div onClick={function () {
+                            self.props.history.goBack();
+                        }} className="go-back">Go back?</div> : null
                     }
                 </Modal>
             </div>
@@ -48,12 +50,12 @@ Error.defaultProps = {
     requestClose: () => {
         return false;
     },
-    addHomeLink: false
+    goBackLink: true
 };
 
 Error.proptypes = {
     error: PropTypes.object.isRequired,
-    addHomeLink: PropTypes.bool
+    goBackLink: PropTypes.bool
 };
 
-export default Error;
+export default withRouter(Error);
