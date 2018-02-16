@@ -38,21 +38,6 @@ class Dashboard extends Component {
 
     componentDidMount() {
         const self = this;
-        API.getArticle({
-            success: (response) => {
-                self.setState({
-                    articles: response.data
-                })
-            },
-            error: (response) => {
-                self.setState({
-                    error: {
-                        val: true,
-                        message: 'There was an error while fetching your articles'
-                    }
-                });
-            }
-        });
         // TODO: race condition, me might not be loaded until
         // after dashboard articles are loaded, me might be undefined
         this.loadMe();

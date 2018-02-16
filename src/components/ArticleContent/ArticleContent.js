@@ -102,7 +102,7 @@ class ArticleContent extends Component {
                                                 {
                                                     !this.props.preview ?
                                                         <ArticleBlock
-                                                            articles={this.props.suggestedArticles}
+                                                            articles={this.props.suggestedArticles.slice(0,4)}
                                                             title={'Other Articles You Might Like'}
                                                             timeToRead={true}
                                                             orientation="vertical"

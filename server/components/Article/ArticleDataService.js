@@ -88,66 +88,90 @@ const ArticleDataService = function (Article) {
         }
 
         findFunc(filter, function (err, article) {
-            return cb(err, _postFindArticleModification(article));
+            // if we are requesting a specific article (via articleSlug/_id
+            // and user requested suggested articles
+            if((queryObj.hasOwnProperty('_id') || queryObj.hasOwnProperty('articleSlug'))
+                && queryObj.suggestedArticles) {
+                console.log('here i am');
+                getSuggestedArticles({
+                    category: article.category,
+                    exclude: article._id
+                }, 5, function (err, suggestedArticles) {
+                    return cb(err, {
+                        suggestedArticles: suggestedArticles,
+                        article: article
+                    });
+                });
+            } else {
+                return cb(err, _postFindArticleModification(article));
+            }
         });
+    };
+
+    const getSuggestedArticles = function (queryObj, max, cb) {
+        if(!queryObj.hasOwnProperty('category') || max === 0) {
+            return cb && cb(null, []);
+        }
+        if(!cb) {
+            return null;
+        }
+        const category = queryObj.category;
+        const exclude = queryObj.exclude &&
+            [new Mongoose.Types.ObjectId(queryObj.exclude)] ||
+            [];
+        const amount = max % 2 === 0 ? max / 2 : Math.floor(max / 2) + 1;
+        let articles = [];
+
+        Article
+            .aggregate([
+                {
+                    $match: {
+                        _id: {$nin: exclude},
+                        category: category,
+                        draft: false,
+                        hidden: false
+                    }
+                },
+            ])
+            .sample(amount)
+            .cursor({})
+            .exec()
+            .on('data', doc => {
+                articles.push(doc);
+            })
+            .on('end', () => {
+                // find 2 more articles that aren't in given category
+                // and that aren't the article to be excluded
+                Article.find({
+                    _id: {
+                        $nin: articles.map((article) =>
+                            Mongoose.Types.ObjectId(article._id))
+                            .concat(exclude),
+                    },
+                    category: {
+                        $nin: [category]
+                    },
+                    draft: false,
+                    hidden: false,
+                }).exec(function (err, arts) {
+                    if (err || !arts) {
+                        return cb(err, arts);
+                    }
+                    const twoArts = arts.slice(0, max - articles.length);
+
+                    twoArts.forEach(function (article) {
+                        articles.push(article);
+                    });
+
+                    return cb(err, _postFindArticleModification(articles));
+                });
+            });
     };
 
     return {
         getArticle: getArticle,
 
-        getSuggestedArticles: function (queryObj, max, cb) {
-            const category = queryObj.category;
-            const exclude = queryObj.exclude &&
-                [new Mongoose.Types.ObjectId(queryObj.exclude)] ||
-                [];
-            const amount = max % 2 === 0 ? max / 2 : Math.floor(max / 2) + 1;
-            let articles = [];
-
-            Article
-                .aggregate([
-                    {
-                        $match: {
-                            _id: {$nin: exclude},
-                            category: category,
-                            draft: false,
-                            hidden: false
-                        }
-                    },
-                ])
-                .sample(amount)
-                .cursor({})
-                .exec()
-                .on('data', doc => {
-                    articles.push(doc);
-                })
-                .on('end', () => {
-                    // find 2 more articles that aren't in given category
-                    // and that aren't the article to be excluded
-                    Article.find({
-                        _id: {
-                            $nin: articles.map((article) =>
-                                Mongoose.Types.ObjectId(article._id))
-                                .concat(exclude),
-                        },
-                        category: {
-                            $nin: [category]
-                        },
-                        draft: false,
-                        hidden: false,
-                    }).exec(function (err, arts) {
-                        if (err || !arts) {
-                            return cb(err, arts);
-                        }
-                        const twoArts = arts.slice(0, max - articles.length);
-
-                        twoArts.forEach(function (article) {
-                            articles.push(article);
-                        });
-
-                        return cb(err, _postFindArticleModification(articles));
-                    });
-                });
-        },
+        getSuggestedArticles: getSuggestedArticles,
 
         // Will be used on Dashboard page
         /**

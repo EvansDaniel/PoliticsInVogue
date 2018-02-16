@@ -22,52 +22,33 @@ class Article extends Component {
         };
     }
 
-    getSuggestedArticles(articleData) {
-        const self = this;
-        API.getSuggestedArticles({
-            success: function (response) {
-                self.setState({
-                    loading: false,
-                    articleData: articleData,
-                    suggestedArticles: response.data
-                });
-            },
-            error: function () {
-                // TODO: log errors
-                self.setState({
-                    loading: false,
-                    articleData: articleData,
-                    suggestedArticles: []
-                });
-            },
-            params: {
-                category: articleData.category,
-                exclude: articleData._id,
-            }
-        });
-    }
-
-    getData() {
+    getArticle() {
         const slug = this.props.match.params.articleSlug;
         const queryParams = {
-                articleSlug: slug
+                articleSlug: slug,
+                //retrieve suggestedArticles as well
+                suggestedArticles: true
             },
             self = this;
 
         // get the article with the slug in the queryParams
-        API.getArticle({
-            success: function (res) {
-                self.getSuggestedArticles(res.data);
-            },
-            error: function (res) {
-                if (res.status === 404) {
+        return {
+            obj: {
+                success: function (res) {
+                    self.setState({
+                        articleData: res.data.article,
+                        suggestedArticles: res.data.suggestedArticles
+                    });
+                },
+                error: function (res) {
                     self.setState({
                         error: errorUtils.buildRenderError(true, res)
                     });
-                }
+                },
+                params: queryParams
             },
-            params: queryParams
-        });
+            func: API.getArticle
+        }
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -76,18 +57,22 @@ class Article extends Component {
         }
 
         if (prevProps.match.params.articleSlug !== this.props.match.params.articleSlug) {
-            this.getData();
+            API.asynchronousSafeFetch([this.getArticle()], (function () {
+                this.setState({loading: false})
+            })).bind(this);
         }
     }
 
     componentDidMount() {
-        this.getData();
+        API.asynchronousSafeFetch([this.getArticle()], (function () {
+            this.setState({loading: false});
+        }).bind(this));
     }
 
     render() {
         // For previewing the article
         const articleData = this.state.articleData;
-        if(this.state.error) {
+        if (this.state.error) {
             // add link to redirect home
             return renderUtils.renderIfError(this.state.error, true);
         }

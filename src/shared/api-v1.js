@@ -78,6 +78,9 @@ module.exports = {
      */
     asynchronousSafeFetch(fetchables, onLoaded) {
         if (fetchables) {
+            if(!_.isFunction(onLoaded)) {
+                throw new Error('onLoaded is required and must be a function')
+            }
             let amount = fetchables.length;
             fetchables.forEach(function (fetchable, i) {
                 const oldSuccess = fetchable.obj.success.bind({});
@@ -90,7 +93,7 @@ module.exports = {
             });
             let interval = setInterval(function () {
                 if (!amount) {
-                    onLoaded && onLoaded();
+                    onLoaded();
                     console.log('safe asynchronous load', onLoaded);
                     clearInterval(interval);
                 }
