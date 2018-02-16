@@ -2,6 +2,7 @@ const validUrl = require('valid-url');
 const empty = require('is-empty');
 const cheerio = require('cheerio');
 const constants = require('../shared/constants');
+const editorUtils = require('../shared/utils/editor-utils');
 
 
 function checkImageUrl(url) {
@@ -28,8 +29,8 @@ function publishValidateArticleData(articleData, prefix) {
         return invalidData(message + 'Must provide a category');
     }
 
-    const $ = cheerio.load(articleData.body);
-    if(empty(articleData.body) || empty($(constants.ALL_TEXT_TAGS).text())) {
+    console.log(editorUtils.default.editorStateIsEmpty);
+    if(empty(articleData.body) && true) {
         return invalidData(message + 'Article body is empty');
     }
 

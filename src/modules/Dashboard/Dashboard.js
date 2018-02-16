@@ -11,10 +11,12 @@ import ArticleBlock from "../../components/ArticleBlock/ArticleBlock";
 import Loading from '../../components/Loading/Loading';
 import {withRouter} from 'react-router-dom';
 import validators from '../../utils/validators';
+import classNames from 'classnames';
 import {MegadraftEditor} from 'megadraft-denistsuman';
-import {getJSONFromEditorState, getEditorStateFromJSON, renderJSON} from '../../utils/editor-utils';
 import ButtonInput from "../../components/ButtonInput/ButtonInput";
 import BodyHtml from "../../components/BodyHtml/BodyHtml";
+import ShowMore from "../../components/ShowMore/ShowMore";
+const editorUtils = require('../../shared/utils/editor-utils');
 
 class Dashboard extends Component {
     constructor(props) {
@@ -51,6 +53,8 @@ class Dashboard extends Component {
                 });
             }
         });
+        // TODO: race condition, me might not be loaded until
+        // after dashboard articles are loaded, me might be undefined
         this.loadMe();
         this.loadDashboardArticles();
     }
@@ -115,7 +119,7 @@ class Dashboard extends Component {
 
     setBiography(value) {
         // Value will be an editor state
-        const newMeData = _.merge(this.state.me, {biography: getJSONFromEditorState(value)});
+        const newMeData = _.merge(this.state.me, {biography: editorUtils.getJSONFromEditorState(value)});
         this.setState({
             showBioText: true,
             me: newMeData
@@ -174,7 +178,12 @@ class Dashboard extends Component {
                                 />
                             </div>
                         </div>
-                        <div className="bio-and-editor">
+                        {/*
+                         If we are not showing the bio text, then we are editing the biography. Add extra margin-left
+                         So that the black + sign is in view
+                         */}
+                        <div
+                            className={classNames('bio-and-editor', {'margin-fix-bio-editor': !this.state.showBioText})}>
                             <div className="bio">
                                 <div className="header">What You've Written About You</div>
                                 <div className="bio-editor-text-wrapper">
@@ -185,36 +194,41 @@ class Dashboard extends Component {
                                                  onEditClicked={function () {
                                                      self.setState({showBioText: false});
                                                  }}
-                                                 /* This should be a valid editorState */
-                                                 defaultInputVal={getEditorStateFromJSON(this.state.me.biography)}
+                                        /* This should be a valid editorState */
+                                                 defaultInputVal={editorUtils.getEditorStateFromJSON(this.state.me.biography)}
                                     />
                                     {
                                         this.state.showBioText ?
-                                            <div className="bio-text">
-                                            <BodyHtml body={this.state.me.biography}/>
-                                        </div> : null
+                                            <ShowMore>
+                                                <div className="bio-text">
+                                                    {editorUtils.editorStateIsEmpty(this.state.me.biography) ?
+                                                        <BodyHtml body={this.state.me.biography}/>
+                                                        : "Write about yourself here, and it will show up in the About page"}
+                                                </div>
+                                            </ShowMore> : null
                                     }
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div className="articles">
-                        <div className="articles-row drafts">
+                        {/*<div className="articles-row drafts">
                             <DashboardArticleBlock
                                 title="Your Drafts"
-                                onClick={function(event, article) {
-                                    console.log(URLS.ROUTES.article);
-                                    self.props.history.push(URLS.transform(URLS.ROUTES.article, {...article}))
+                                onClick={function (event, article) {
+                                    console.log('here i am lksdjf dklsjf sdf');
+                                    //self.props.history.push(URLS.transform(URLS.ROUTES.editArticle, {...article}))
+                                    //self.props.history.push(URLS.transform(URLS.ROUTES.article, {...article}))
                                 }}
                                 articles={this.state.dashboardArticles.drafts}
                             />
-                        </div>
+                        </div>*/}
 
                         <div className="articles-row hidden">
-                            <DashboardArticleBlock
+                            {/*<DashboardArticleBlock
                                 title="Your Hidden Articles"
                                 articles={this.state.dashboardArticles.hidden}
-                            />
+                            />*/}
                         </div>
 
                         <div className="articles-by-category">
@@ -227,8 +241,8 @@ class Dashboard extends Component {
                                             <div key={index} className="articles-row category">
                                                 <DashboardArticleBlock
                                                     title={category}
-                                                    onClick={function(event, article) {
-                                                        self.props.history.push(URLS.transform(URLS.ROUTES.article, {...article}))
+                                                    onClick={function (event, article) {
+                                                        //self.props.history.push(URLS.transform(URLS.ROUTES.article, {...article}))
                                                     }}
                                                     articles={self.state.dashboardArticles.categories[category]}
                                                 />

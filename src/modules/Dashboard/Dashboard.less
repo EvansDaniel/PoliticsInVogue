@@ -9,9 +9,12 @@
   .about-info {
     .flex();
     height: 50%;
+    @media @tabletOrSmaller {
+      flex-direction: column;
+    }
 
     .image-and-create-article {
-      width: 50%;
+      flex: 1;
 
       .image {
         img {
@@ -21,7 +24,9 @@
       }
 
       .create-article-container {
+        .flex();
         margin-top: @large;
+        flex-wrap: wrap;
 
         .create-article {
           .default-button(@transition: true);
@@ -30,7 +35,6 @@
         // Hook for ButtonInput
         .edit-img-link {
           .edit-button, .done-button {
-            margin-top: @medium;
             .default-button();
           }
         }
@@ -38,16 +42,24 @@
     }
 
     .bio-and-editor {
-      width: 80%;
+      .flex();
+      .default-box-shadow();
+      flex: 1;
+      background-color: white;
+      flex-direction: column;
+      margin-left: @large;
+      padding: @small;
+
+      @media @tabletOrSmaller {
+        margin-left: 0;
+        margin-top: @medium;
+
+        &.margin-fix-bio-editor {
+          margin-left: @xxlarge;
+        }
+      }
 
       .bio {
-        background-color: white;
-        .flex();
-        width: 80%;
-        flex-direction: column;
-        margin-left: @large;
-        padding: @small;
-        .default-box-shadow();
 
         .header {
           font-size: 18*@pixel;
@@ -67,11 +79,14 @@
             .edit-button {
               margin-bottom: @small;
             }
+            .done-button {
+              margin-top: @small;
+            }
           }
-        }
 
-        .editor {
-          // TODO:
+          .bio-text {
+            margin-top: @xxsmall;
+          }
         }
       }
     }

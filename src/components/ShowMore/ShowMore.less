@@ -1,0 +1,19 @@
+@import "../../shared/mixins.less";
+@import "../../shared/vars.less";
+
+.ShowMore {
+  &.show {
+    height: auto;
+  }
+
+  &.hide {
+    font-size: inherit !important;
+    line-height: inherit !important;
+    .truncate(@fontSize: 1em, @lineHeight: 1em, @linesToShow: 3);
+    height: auto;
+  }
+
+  .show-text {
+    cursor: pointer;
+  }
+}

@@ -3,7 +3,6 @@ import {withRouter} from 'react-router-dom';
 import './EditArticle.less'
 import _ from 'lodash';
 import {waitBeforeCall} from '../../shared/utils';
-import {jsonToHTML, getEditorStateFromJSON, getJSONFromEditorState} from '../../utils/editor-utils'
 import previewIcon from '../../../src/img/preview.svg';
 import publishIcon from '../../../src/img/publish.svg';
 import API from '../../shared/api-v1';
@@ -17,6 +16,7 @@ import '../../css/pretty-checkbox.css';
 const empty = require('is-empty');
 const URLS = require('../../shared/urls');
 const constants = require('../../shared/constants');
+const editorUtils = require('../../shared/utils/editor-utils');
 
 class EditArticle extends Component {
 
@@ -56,13 +56,13 @@ class EditArticle extends Component {
             loading: true,
             categoryAction: this.CATEGORY_ACTIONS.existingCategory,
             articleData: {},
-            editorState: getEditorStateFromJSON(null),
+            editorState: editorUtils.getEditorStateFromJSON(null),
             showModal: false
         };
     }
 
     onEditorChange(editorState) {
-        this.changeArticleData({body: getJSONFromEditorState(editorState)});
+        this.changeArticleData({body: editorUtils.getJSONFromEditorState(editorState)});
         this.setState({
             editorState: editorState
         });
@@ -94,13 +94,13 @@ class EditArticle extends Component {
 
     initialPublishArticle() {
         // TODO: remove this and check if everything works
-        /*const valid = validators.publishValidateArticleData(this.state.articleData, 'Can\'t publish yet');
-         if (!valid.valid) {
-         this.setState({
-         errorMsg: valid.message
-         });
-         return false;
-         }*/
+        const valid = validators.publishValidateArticleData(this.state.articleData, 'Can\'t publish yet');
+        if (!valid.valid) {
+            this.setState({
+                errorMsg: valid.message
+            });
+            return false;
+        }
 
         this.setState({
             showModal: true
@@ -133,7 +133,7 @@ class EditArticle extends Component {
     }
 
     changeArticleData(articleData) {
-        if(!articleData.hasOwnProperty('draft')) {
+        if (!articleData.hasOwnProperty('draft')) {
             // Unless otherwise specified, all edits to the article
             // will be a draft. When we publish, we will specify that draft is false
             articleData.draft = true;
@@ -211,7 +211,7 @@ class EditArticle extends Component {
                 if (response.status === 200) {
                     self.setState({
                         articleData: response.data,
-                        editorState: getEditorStateFromJSON(response.data.body)
+                        editorState: editorUtils.getEditorStateFromJSON(response.data.body)
                     })
                 }
             },
@@ -237,7 +237,7 @@ class EditArticle extends Component {
 
     getPreviewArticleData(articleData) {
         return _.merge(articleData,
-            {body: jsonToHTML(articleData.body)});
+            {body: editorUtils.jsonToHTML(articleData.body)});
     }
 
     render() {
@@ -282,7 +282,8 @@ class EditArticle extends Component {
                                 <ul>
                                     <li>Put "none" if you don't want it to show up on the home page</li>
                                     <li>"carousel" if you want it to show up on the slider on the home page</li>
-                                    <li>"featured" if you want it to show up in the featured section on the home page</li>
+                                    <li>"featured" if you want it to show up in the featured section on the home page
+                                    </li>
                                 </ul>
                             </div>
                             <button onClick={this.finishPublishing}>Finish publishing</button>

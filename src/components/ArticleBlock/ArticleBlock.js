@@ -92,7 +92,6 @@ ArticleBlock.defaultProps = {
         return (
             <div key={props.article._id} className="block" onClick={function (event) {
                 //this.readArticle(article); // TODO: make this the onclick default
-                console.log('here i am ');
                 props.onClick(event, props.article);
             }}>
                 <div className="img-block">

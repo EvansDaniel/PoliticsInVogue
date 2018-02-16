@@ -1,7 +1,8 @@
-import {editorStateFromRaw, editorStateToJSON} from 'megadraft-denistsuman';
-import {stateToHTML} from 'draft-js-export-html';
-import empty from 'is-empty';
-import renderHTML from 'react-render-html';
+// import {editorStateFromRaw, editorStateToJSON} from 'megadraft-denistsuman';
+const Megadraft = require('megadraft-denistsuman');
+const draftJSExport = require('draft-js-export-html');
+const empty = require('is-empty');
+const reactRender = require('react-render-html');
 
 const _buildImageElementForBody = function(src, caption, rightsHolder) {
     const rightsHolderHtml = empty(rightsHolder) ?
@@ -18,15 +19,20 @@ const _buildImageElementForBody = function(src, caption, rightsHolder) {
 const getEditorStateFromJSON = function (editorStateJSON) {
     if(!empty(editorStateJSON)) {
         try {
-            return editorStateFromRaw(JSON.parse(editorStateJSON));
+            return Megadraft.editorStateFromRaw(JSON.parse(editorStateJSON));
         } catch(e) {
             // TODO: return empty editor state????
-            return editorStateFromRaw(null); // ???
+            return Megadraft.editorStateFromRaw(null); // ???
         }
     } else {
         // we have empty var, return empty editor state
-        return editorStateFromRaw(null);
+        return Megadraft.editorStateFromRaw(null);
     }
+};
+
+const editorStateIsEmpty = (editorStateJSON) => {
+    const editorState = getEditorStateFromJSON(editorStateJSON);
+    return editorState.getCurrentContent().hasText();
 };
 
 
@@ -49,17 +55,17 @@ const jsonToHTML = function (rawString) {
     if (rawString) {
         try {
             let raw = JSON.parse(rawString);
-            let editorState = editorStateFromRaw(raw);
-            return stateToHTML(editorState.getCurrentContent(), options);
+            let editorState = Megadraft.editorStateFromRaw(raw);
+            return draftJSExport.stateToHTML(editorState.getCurrentContent(), options);
         } catch(e) {
             console.log(e);
             try {
-                const editorState = editorStateFromRaw(rawString);
-                return stateToHTML(editorState.getCurrentContent(), options);
+                const editorState = Megadraft.editorStateFromRaw(rawString);
+                return draftJSExport.stateToHTML(editorState.getCurrentContent(), options);
             } catch(e1) {
                 console.log(e1);
                 try {
-                    return stateToHTML(rawString, options);
+                    return draftJSExport.stateToHTML(rawString, options);
                 } catch(e2) {
                     console.log(e2);
                     return rawString
@@ -72,16 +78,17 @@ const jsonToHTML = function (rawString) {
 
 const renderJSON = function (editorStateJSON) {
     const html = jsonToHTML(editorStateJSON);
-    return renderHTML(html);
+    return reactRender.renderHTML(html);
 };
 
 const getJSONFromEditorState = function (editorState) {
-    return editorStateToJSON(editorState);
+    return Megadraft.editorStateToJSON(editorState);
 };
 
-export {
-    jsonToHTML,
-    getEditorStateFromJSON,
-    getJSONFromEditorState,
-    renderJSON
-}
+module.exports = {
+    jsonToHTML: jsonToHTML,
+    getEditorStateFromJSON: getEditorStateFromJSON,
+    getJSONFromEditorState: getJSONFromEditorState,
+    renderJSON: renderJSON,
+    editorStateIsEmpty: editorStateIsEmpty
+};
