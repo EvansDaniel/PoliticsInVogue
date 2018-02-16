@@ -14,7 +14,6 @@ class ArticleCard extends Component {
         const style = {
             'backgroundImage': `url('${cardData.showcaseImage}')`,
         };
-        console.log(cardData);
         return (
             <div className={`ArticleCard ${cardData.className}`} style={style}>
                 <Link to={{

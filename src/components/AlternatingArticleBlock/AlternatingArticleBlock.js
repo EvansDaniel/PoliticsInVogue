@@ -26,9 +26,9 @@ class AlternatingArticleBlock extends Component {
         return (
             <div className="AlternatingArticleBlock">
                 {
-                    classNames.map(function (name) {
+                    classNames.map(function (name, i) {
                         return (
-                            <SideBySideArticleBlock orientation={name}/>
+                            <SideBySideArticleBlock key={i} orientation={name}/>
                         )
                     })
                 }

@@ -38,7 +38,7 @@ class NavBar extends Component {
         ];
         const loggedIn = this.auth.isAuthenticated();
         return (
-            <nav className="NavBar" style={loggedIn ? {'font-size': '11px'} : {}}>
+            <nav className="NavBar" style={loggedIn ? {'fontSize': '11px'} : {}}>
                 <div className="inner-content">
                     <li><Link to="/">Home</Link></li>
                     <li><Link to="/about">About</Link></li>

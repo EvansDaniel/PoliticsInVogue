@@ -48,7 +48,7 @@ class ArticleContent extends Component {
     }
 
     getTimeInMin(body) {
-        return Math.ceil(body.split(" ").length / 250)
+        return Math.ceil(body.split(" ").length / 250);
     }
 
     render() {

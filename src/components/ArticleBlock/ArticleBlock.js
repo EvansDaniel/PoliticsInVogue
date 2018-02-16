@@ -19,14 +19,14 @@ class ArticleBlock extends Component {
             speed: 500,
             className: 'ArticleBlockSlider',
             slidesToShow: 5,
-            slidesToScroll:4,
+            slidesToScroll: 4,
             arrows: true,
             nextArrow: <Arrow right={true}/>,
             prevArrow: <Arrow/>,
         };
         settings = _.merge(settings, this.props.settings);
         // We want to scroll all of them if we scroll more than 1 at a time
-        if(settings.slidesToShow > 1) {
+        if (settings.slidesToShow > 1) {
             settings.slidesToScroll = settings.slidesToShow - 1;
         } else {
             // Just scroll one at a time
@@ -43,9 +43,9 @@ class ArticleBlock extends Component {
         const self = this;
         const settings = this.setupSettings();
         const ArticleUI = this.props.articleUI;
-        const articleBlocks = this.props.articles.map(function (article) {
+        const articleBlocks = this.props.articles.map(function (article, i) {
             return (
-                <div className="block-wrapper">
+                <div className="block-wrapper" key={i}>
                     <ArticleUI {...self.props} article={article} onClick={self.props.onClick}/>
                 </div>
             )
@@ -85,19 +85,18 @@ ArticleBlock.defaultProps = {
     },
     // Default UI for an article
     articleUI: (props) => {
-        // TODO: remove this check
-        if(props.title === 'Untitled') {
-            return null;
-        }
         return (
             <div key={props.article._id} className="block" onClick={function (event) {
                 //this.readArticle(article); // TODO: make this the onclick default
                 props.onClick(event, props.article);
             }}>
                 <div className="img-block">
-                    {props.article.showcaseImage ? [<img src={props.article.showcaseImage} alt={props.article.title}/>,
-                    props.timeToRead ? <div>{props.article.timeToReadInMin} min read</div> : null]
-                        : null}
+                    {
+                        props.article.showcaseImage ? [
+                            <img key={1} src={props.article.showcaseImage} alt={props.article.title}/>,
+                            props.timeToRead ? <div key={2}>{props.article.timeToReadInMin} min read</div> : null
+                        ] : null
+                    }
                 </div>
                 <div className="details">
                     <div className="title">{props.article.title}</div>

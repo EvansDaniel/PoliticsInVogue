@@ -216,7 +216,6 @@ class Dashboard extends Component {
                             <DashboardArticleBlock
                                 title="Your Drafts"
                                 onClick={function (event, article) {
-                                    console.log('here i am lksdjf dklsjf sdf');
                                     //self.props.history.push(URLS.transform(URLS.ROUTES.editArticle, {...article}))
                                     //self.props.history.push(URLS.transform(URLS.ROUTES.article, {...article}))
                                 }}

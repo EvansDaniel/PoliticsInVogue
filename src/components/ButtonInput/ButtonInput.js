@@ -21,7 +21,6 @@ class ButtonInput extends Component {
             // show button
             showInput: false
         });
-        console.log(this.state.inputVal);
         this.props.onDone(this.state.inputVal);
     }
 

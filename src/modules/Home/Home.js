@@ -3,7 +3,6 @@ import "./Home.less";
 import ArticleCards from "../../components/ArticleCards/ArticleCards";
 import ArticleCarousel from "../../components/ArticleCarousel/ArticleCarousel";
 import Loading from "../../components/Loading/Loading";
-import {Helmet} from 'react-helmet'
 const API = require('../../shared/api-v1');
 
 

@@ -30,15 +30,14 @@ class ArticleCarousel extends Component {
     }
 
     render() {
-        console.log(this.props.carouselData.length === 1);
         // TODO: carousel does not load properly when only one item, see temp fix below
         return (
             <div className="ArticleCarousel">
                 {this.props.carouselData.length === 1 ?
                     <Carousel {...this.props}>
                         {
-                            this.props.carouselData.map((carouselData) => {
-                                return <CarouselItem {...carouselData} />
+                            this.props.carouselData.map((carouselData, i) => {
+                                return <CarouselItem key={i} {...carouselData} />
                             })
                         }
                         {
@@ -47,8 +46,8 @@ class ArticleCarousel extends Component {
                     </Carousel> :
                     <Carousel {...this.props}>
                         {
-                            this.props.carouselData.map((carouselData) => {
-                                return <CarouselItem {...carouselData} />
+                            this.props.carouselData.map((carouselData, i) => {
+                                return <CarouselItem key={i} {...carouselData} />
                             })
                         }
                     </Carousel>
