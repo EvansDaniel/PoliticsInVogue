@@ -85,6 +85,7 @@ const CORS_ORIGINS_ALLOWED = [
 // Manual version: https://gist.github.com/cuppster/2344435
 app.use(cors({
     origin: CORS_ORIGINS_ALLOWED,
+    credentials: true,
     // Some old browsers choke on 204
     optionsSuccessStatus: 200,
 }));
