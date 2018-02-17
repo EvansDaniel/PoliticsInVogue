@@ -83,6 +83,14 @@ const CORS_ORIGINS_ALLOWED = [
 ];
 // https://github.com/expressjs/cors#configuring-cors
 // Manual version: https://gist.github.com/cuppster/2344435
+/*
+Requirements to set a cookie in browser from a subdomain (i.e. api.politicsinvogue.com)
+on the domain (i.e. politicsinvogue.com)
+ 1. Add the Access-Control-Allow-Credentials (via cors({credentials: true} below)
+ 2. Add withCredentials: true to axios api request (or similar option for other XMLHttpRequest lib)
+ 3. Add domain: DOMAIN_FOR_WHICH_YOU_ARE_SETTING_COOKIE (politicsinvogue.com in this case) on the cookie
+ -> ex: res.cookie({domain: politicsinvogue.com});
+ */
 app.use(cors({
     origin: CORS_ORIGINS_ALLOWED,
     credentials: true,

@@ -208,6 +208,7 @@ module.exports = {
             headers: {
                 'Content-Type': 'application/json'
             },
+            withCredentials: true,
             data: JSON.stringify(options)
         }).then((response) => {
             console.log(response);

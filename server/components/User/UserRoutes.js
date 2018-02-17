@@ -12,12 +12,12 @@ const UserRoutes = function (UserDataService) {
             console.log('Building cached auth cookie');
             res.cookie(constants.CACHED_AUTH_COOKIE,
                 uuidv4(), {
+                    domain: constants.HOST_DOMAIN,
                     maxAge: constants.SESSION_COOKIE_TIME
                 });
             const user = req.user.toObject();
             delete user.password;
-            console.log('password', user.password);
-            res.json(req.user);
+            res.json(user);
         });
     };
 
