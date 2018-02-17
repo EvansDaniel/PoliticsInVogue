@@ -9,16 +9,14 @@ const UserRoutes = function (UserDataService) {
     const postLogin = function (req, res, next) {
         // we successfully authenticated so cache a cookie and send back user info
         routeUtils.debuggingHelper(req, res, next, function (req, res, next) {
-            if (constants.CACHED_AUTH_COOKIE in req.cookies) {
-                console.log('Cached auth cookie saved');
-            } else {
-                console.log('Cached auth cookie not saved, building a new one for authenticated user');
-                res.cookie(constants.CACHED_AUTH_COOKIE,
-                    uuidv4(), {
-                        maxAge: constants.SESSION_COOKIE_TIME
-                    });
-            }
-
+            console.log('Building cached auth cookie');
+            res.cookie(constants.CACHED_AUTH_COOKIE,
+                uuidv4(), {
+                    maxAge: constants.SESSION_COOKIE_TIME
+                });
+            const user = req.user.toObject();
+            delete user.password;
+            console.log('password', user.password);
             res.json(req.user);
         });
     };
@@ -36,7 +34,7 @@ const UserRoutes = function (UserDataService) {
     const postEditMeHandle = function (req, res, next) {
         routeUtils.debuggingHelper(req, res, next, function (req, res, next) {
             UserDataService.update(req.body.data, function (err, raw) {
-                if(err) {
+                if (err) {
                     next(err);
                 }
                 return res.json({});
