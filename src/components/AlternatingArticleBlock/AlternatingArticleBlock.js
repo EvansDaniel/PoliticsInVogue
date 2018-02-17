@@ -1,34 +1,36 @@
 import React, {Component} from 'react';
 import './AlternatingArticleBlock.less'
-import readArticle from '../../utils/read-article';
+import PropTypes from 'prop-types';
 import {withRouter} from 'react-router-dom';
+import URLS from '../../shared/urls';
 
 class AlternatingArticleBlock extends Component {
 	constructor(props) {
         super(props);
-        this.readArticle = this.readArticle.bind(this);
     }
 
     componentDidMount() {
 
     }
 
-    readArticle(event) {
-	    // TODO: include article data here
-	    readArticle(this.props.history, {});
-    }
-
     render() {
 	    const classNames = [];
 	    for(let i = 0; i < 5; i++) {
-	        i % 2 === 0 ? classNames.push('') : classNames.push('reverse');
         }
+        const newArticles = this.props.articles.map((article, i) => {
+	        if(i % 2 === 0) {
+                article.orientation = '';
+            } else {
+                article.orientation = 'reverse';
+            }
+            return article;
+        });
         return (
             <div className="AlternatingArticleBlock">
                 {
-                    classNames.map(function (name, i) {
+                    newArticles.map(function (newArticle, i) {
                         return (
-                            <SideBySideArticleBlock key={i} orientation={name}/>
+                            <SideBySideArticleBlock key={i} orientation={newArticle.orientation} article={newArticle}/>
                         )
                     })
                 }
@@ -37,28 +39,40 @@ class AlternatingArticleBlock extends Component {
     }
 }
 
-const SideBySideArticleBlock = (props) => {
+let SideBySideArticleBlock = (props) => {
+    const article = props.article;
+    const readArticle = () => {
+        props.history.push(URLS.transform(URLS.ROUTES.article, {...article}))
+    };
     return (
         <div className="SideBySideArticleBlock">
             <div className="category-wrapper">
                 <div className={`article-flip ${props.orientation}`}>
                     <div className="article-info">
-                        <div className="title">WHY DO I TURN INTO A CHILD WHEN I'M HOME FOR CHRISTMAS?</div>
-                        <div className="date">25/12/2017</div>
-                        {/*<div className="excerpt">dsfhsd hsdjkh fdsfhsd hsdjkh fdsfhsd hsdjkh fdsfhsd hsdjkh f</div>*/}
-                        <button className="read-article-button" onClick={this.readArticle}>Read Article</button>
+                        <div className="title">{article.title}</div>
+                        <div className="date">{new Date(article.createdAt).toLocaleDateString()}</div>
+                        <button className="read-article-button" onClick={readArticle}>Read Article</button>
                     </div>
-                    <div className="article-image">
+                    <div className="article-image" onClick={readArticle}
+                         style={{'backgroundImage': `url(${article.showcaseImage})`}}>
                         <div className="image-content">
-                            <div className="excerpt">
-                                I am such a child, and I f**king love it. Can't wait to be home this Christmas
-                            </div>
+                            <div className="excerpt">{article.excerpt}</div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     );
+};
+
+SideBySideArticleBlock = withRouter(SideBySideArticleBlock);
+
+AlternatingArticleBlock.defaultProps = {
+
+};
+
+AlternatingArticleBlock.proptypes = {
+    articles: PropTypes.object.isRequired
 };
 
 export default withRouter(AlternatingArticleBlock);

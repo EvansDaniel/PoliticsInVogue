@@ -33,7 +33,7 @@ class Article extends Component {
 
         // get the article with the slug in the queryParams
         return {
-            obj: {
+            options: {
                 success: function (res) {
                     self.setState({
                         articleData: res.data.article,
@@ -47,7 +47,7 @@ class Article extends Component {
                 },
                 params: queryParams
             },
-            func: API.getArticle
+            apiFunc: API.getArticle
         }
     }
 

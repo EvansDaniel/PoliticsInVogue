@@ -32,6 +32,7 @@
       }
       .block-wrapper {
         // https://stackoverflow.com/questions/25066214/flexbox-not-giving-equal-width-to-elements
+        // could do flex: 1;
         flex: 1 1 0;
 
         .block {
@@ -46,9 +47,9 @@
   }
 
   .content-articles {
+    .flex();
     //border-top: 1*@pixel solid @dimmedColor;
     // direction depends on orientation prop passed
-    .flex();
 
     * {
       min-height: 0;

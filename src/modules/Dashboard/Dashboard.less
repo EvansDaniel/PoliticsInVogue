@@ -95,8 +95,18 @@
   .articles {
     margin-top: @medium;
 
+    // Class root hook for ArticleBlock
+    //TODO:
+    .dashboard-article-block {
+      .articles-title {
+        //border-bottom: 1px solid @favoriteColor;
+      }
+      .content-articles {
+        .default-box-shadow();
+      }
+    }
+
     .articles-row {
-      .default-box-shadow();
       margin-bottom: @medium;
     }
 
@@ -106,7 +116,10 @@
     }
 
     .articles-by-category {
-      .category {
+      .articles-by-category-title {
+        border-bottom: 1px solid black;
+        padding-bottom: @xxsmall/2;
+        margin-bottom: @medium;
       }
     }
   }

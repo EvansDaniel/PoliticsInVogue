@@ -16,8 +16,10 @@ class Footer extends Component {
                 <div className="footer-container">
                     <div className="site-link-row">
                         <div className="column">
-                            <div className="title">About
-                                <div className="underline"></div>
+                            <div className="title-wrapper">
+                                <div className="title">About
+                                    <div className="underline"></div>
+                                </div>
                             </div>
                             <div className="list">
                                 <div>Created by Daniel Evans</div>
@@ -30,8 +32,10 @@ class Footer extends Component {
                             </div>
                         </div>
                         <div className="column">
-                            <div className="title">Get Politics In Vogue delivered to your inbox
-                                <div className="underline"></div>
+                            <div className="title-wrapper">
+                                <div className="title">Get Politics In Vogue delivered to your inbox
+                                    <div className="underline"></div>
+                                </div>
                             </div>
                             <div className="list">
                                 <div className="footer-input">
@@ -42,8 +46,10 @@ class Footer extends Component {
                             </div>
                         </div>
                         <div className="column social-media">
-                            <div className="title">Share on Social Media
-                                <div className="underline"></div>
+                            <div className="title-wrapper">
+                                <div className="title">Share on Social Media
+                                    <div className="underline"></div>
+                                </div>
                             </div>
                             <div className="social-media-list">
                                 <SocialMediaList/>

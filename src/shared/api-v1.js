@@ -81,10 +81,13 @@ module.exports = {
             if(!_.isFunction(onLoaded)) {
                 throw new Error('onLoaded is required and must be a function')
             }
+            if(!_.isArray(fetchables)) {
+                fetchables = [fetchables];
+            }
             let amount = fetchables.length;
             fetchables.forEach(function (fetchable, i) {
-                const oldSuccess = fetchable.obj.success.bind({});
-                fetchable.func(_.merge(fetchable.obj, {
+                const oldSuccess = fetchable.options.success.bind({});
+                fetchable.apiFunc(_.merge(fetchable.options, {
                     success: function (response) {
                         --amount;
                         oldSuccess(response);

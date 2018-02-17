@@ -37,46 +37,51 @@ class Dashboard extends Component {
     }
 
     componentDidMount() {
-        const self = this;
         // TODO: race condition, me might not be loaded until
         // after dashboard articles are loaded, me might be undefined
-        this.loadMe();
-        this.loadDashboardArticles();
-    }
+        API.asynchronousSafeFetch([this.loadDashboardArticles(), this.loadMe()], (function () {
+            this.setState({loading: false});
+        }).bind(this));
+    };
 
     loadDashboardArticles() {
         const self = this;
-        API.getDashboardArticles({
-            success: (response) => {
-                self.setState({
-                    dashboardArticles: response.data,
-                    loading: false
-                });
+        return {
+            options: {
+                success: (response) => {
+                    self.setState({
+                        dashboardArticles: response.data,
+                    });
+                },
+                error: () => {
+                    self.setState({
+                        error: errorUtils.buildRenderError(true, null,
+                            'There was an error fetching your articles')
+                    });
+                },
             },
-            error: () => function () {
-                self.setState({
-                    error: errorUtils.buildRenderError(true, null,
-                        'There was an error fetching your articles')
-                });
-            },
-        });
+            apiFunc: API.getDashboardArticles
+        }
     }
 
     loadMe() {
         const self = this;
-        API.getMe({
-            success: (response) => {
-                self.setState({
-                    me: response.data,
-                });
+        return {
+            options: {
+                success: (response) => {
+                    self.setState({
+                        me: response.data,
+                    });
+                },
+                error: () => function () {
+                    self.setState({
+                        error: errorUtils.buildRenderError(true, null,
+                            'There was an error loading the data')
+                    });
+                },
             },
-            error: () => function () {
-                self.setState({
-                    error: errorUtils.buildRenderError(true, null,
-                        'There was an error loading the data')
-                });
-            },
-        })
+            apiFunc: API.getMe,
+        }
     }
 
     updateMeInfo(updatedMe) {
@@ -102,9 +107,9 @@ class Dashboard extends Component {
         }
     }
 
-    setBiography(value) {
-        // Value will be an editor state
-        const newMeData = _.merge(this.state.me, {biography: editorUtils.getJSONFromEditorState(value)});
+    // editorState is an instance of EditorState
+    setBiography(editorState) {
+        const newMeData = _.merge(this.state.me, {biography: editorUtils.getJSONFromEditorState(editorState)});
         this.setState({
             showBioText: true,
             me: newMeData
@@ -179,7 +184,7 @@ class Dashboard extends Component {
                                                  onEditClicked={function () {
                                                      self.setState({showBioText: false});
                                                  }}
-                                        /* This should be a valid editorState */
+                                        /* biography should be a valid editorStateJSON */
                                                  defaultInputVal={editorUtils.getEditorStateFromJSON(this.state.me.biography)}
                                     />
                                     {
@@ -201,8 +206,7 @@ class Dashboard extends Component {
                             <DashboardArticleBlock
                                 title="Your Drafts"
                                 onClick={function (event, article) {
-                                    //self.props.history.push(URLS.transform(URLS.ROUTES.editArticle, {...article}))
-                                    //self.props.history.push(URLS.transform(URLS.ROUTES.article, {...article}))
+                                    self.props.history.push(URLS.transform(URLS.ROUTES.editArticle, {...article}))
                                 }}
                                 articles={this.state.dashboardArticles.drafts}
                             />
@@ -216,6 +220,8 @@ class Dashboard extends Component {
                         </div>
 
                         <div className="articles-by-category">
+                            {!empty(this.state.dashboardArticles.categories) ?
+                                <div className="articles-by-category-title">Articles By Category</div> : null}
                             {
                                 /* TODO: when # articles <= 4, don't use slider */
                                 /* TODO: make this ArticleBlock and the drafts into a single component that behave same */
@@ -226,7 +232,7 @@ class Dashboard extends Component {
                                                 <DashboardArticleBlock
                                                     title={category}
                                                     onClick={function (event, article) {
-                                                        //self.props.history.push(URLS.transform(URLS.ROUTES.article, {...article}))
+                                                        self.props.history.push(URLS.transform(URLS.ROUTES.editArticle, {...article}))
                                                     }}
                                                     articles={self.state.dashboardArticles.categories[category]}
                                                 />
@@ -250,6 +256,7 @@ const DashboardArticleBlock = (props) => {
             settings={{slidesToShow: toShow}}
             articles={props.articles}
             orientation="horizontal"
+            classRoot="dashboard-article-block"
             {...props}
         /> : null
     );

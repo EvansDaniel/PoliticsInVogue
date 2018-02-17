@@ -1,11 +1,7 @@
 import Error from '../components/Error/Error';
 import React from 'react';
 
-const renderIfError = (error, addGoBackLink) => {
-    if(addGoBackLink !== false) {
-        addGoBackLink = true;
-    }
-
+const renderIfError = (error) => {
     if(error && error.val) {
         let msg = error.message || 'There was an error. Please try again later';
         // when res is provided, we check that status code to send a default message to user
@@ -16,7 +12,7 @@ const renderIfError = (error, addGoBackLink) => {
             }
         }
         return (
-            <Error error={msg} goBackLink={addGoBackLink}/>
+            <Error error={msg} goBackLink={true}/>
         );
     }
     return false;

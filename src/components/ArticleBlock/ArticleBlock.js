@@ -1,11 +1,9 @@
 import React, {Component} from 'react';
 import './ArticleBlock.less'
-import URLS from '../../shared/urls';
-import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import Slider from 'react-slick';
 import _ from 'lodash';
-import readArticle from '../../utils/read-article';
+import classNames from 'classnames';
 
 class ArticleBlock extends Component {
     constructor(props) {
@@ -51,10 +49,10 @@ class ArticleBlock extends Component {
             )
         });
         return (
-            <div className={"ArticleBlock " + this.props.orientation}>
+            <div className={classNames('ArticleBlock', this.props.orientation, this.props.classRoot)}>
                 {
                     this.props.title ?
-                        <div className="articles-title">{this.props.title}</div>
+                        <div className="articles-title-wrapper"><div className="articles-title">{this.props.title}</div></div>
                         : null
                 }
                 <div className={classNames('content-articles', {'row-border': this.props.rowBorder})}>
@@ -78,6 +76,8 @@ ArticleBlock.defaultProps = {
     settings: {},
     title: '',
     slider: false,
+    // root class to customize look
+    classRoot: '',
     // shows black borders around horizontal article blocks when true
     rowBorder: false,
     onClick: (event, article) => {
@@ -112,6 +112,7 @@ ArticleBlock.proptypes = {
     orientation: PropTypes.string,
     settings: PropTypes.object,
     slider: PropTypes.bool,
+    classRoot: PropTypes.string,
     rowBorder: PropTypes.bool,
     articleTransform: PropTypes.func,
     onClick: PropTypes.func,

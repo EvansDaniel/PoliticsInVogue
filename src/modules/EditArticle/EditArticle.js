@@ -56,7 +56,7 @@ class EditArticle extends Component {
             showPreview: false,
             buttonViewText: 'Show preview',
             savingAction: this.SAVING_ACTIONS.changesSaved,
-            addNewCategory: true,
+            addNewCategory: false,
             errorMsg: '',
             error: false,
             loading: true,
@@ -212,7 +212,7 @@ class EditArticle extends Component {
         const self = this;
         // make ajax call to get data
         return {
-            obj: {
+            options: {
                 success: function (response) {
                     // TODO: make this better
                     if (response.status === 200) {
@@ -231,25 +231,15 @@ class EditArticle extends Component {
                     _id: self.props.match.params._id
                 }
             },
-            func: API.getArticle
+            apiFunc: API.getArticle
         }
     }
 
     getAllCategories() {
         const self = this;
-        /*API.getAllCategories({
-         success: function (response) {
-         self.setState({
-         allCategories: response.data,
-         });
-         },
-         error: function (error) {
-         // TODO:
-         }
-         })*/
         return {
-            func: API.getAllCategories,
-            obj: {
+            apiFunc: API.getAllCategories,
+            options: {
                 success: function (response) {
                     self.setState({
                         allCategories: response.data,
@@ -274,11 +264,6 @@ class EditArticle extends Component {
                 self.setState({loading: false});
             });
         }
-    }
-
-    getPreviewArticleData(articleData) {
-        return _.merge(articleData,
-            {body: editorUtils.jsonToHTML(articleData.body)});
     }
 
     render() {
@@ -368,12 +353,26 @@ class EditArticle extends Component {
                                                         ref={(select) => {
                                                             this.categorySelect = select
                                                         }}
-                                                        value={this.state.articleData.category} /*Select 1st by default*/
+                                                        value={this.state.articleData.category}
                                                         onChange={this.handleInputChange}
                                                 >
-                                                    <option value="Option 1">Option 1</option>
-                                                    <option value="Option 2">Option 2</option>
-                                                    <option value="Option 3">Option 3</option>
+                                                    {
+                                                        /* Add an empty option so that it doesn't look like
+                                                        the category has been selected when it hasn't. This happens
+                                                        because when category is falsey it falls back to showing
+                                                        the first option but it isn't actually selected. This empty
+                                                        option must stay as FIRST option
+                                                         */
+                                                        this.state.articleData.category === undefined ?
+                                                            <option value=""></option> : null
+                                                    }
+                                                    {
+                                                        this.state.allCategories.map((category) => {
+                                                            return (
+                                                                <option value={category}>{category}</option>
+                                                            );
+                                                        })
+                                                    }
                                                 </select>
                                             </div> :
                                             <input className="category-input" type="text"
@@ -419,7 +418,7 @@ class EditArticle extends Component {
                             {
                                 this.state.showPreview ? <div className="preview">
                                     <ArticleContent preview={this.state.showPreview}
-                                                    articleData={this.getPreviewArticleData(this.state.articleData)}/>
+                                                    articleData={this.state.articleData}/>
                                 </div> : null
                             }
                         </div>

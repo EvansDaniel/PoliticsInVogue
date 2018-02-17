@@ -92,7 +92,6 @@ const ArticleDataService = function (Article) {
             // and user requested suggested articles
             if((queryObj.hasOwnProperty('_id') || queryObj.hasOwnProperty('articleSlug'))
                 && queryObj.suggestedArticles) {
-                console.log('here i am');
                 getSuggestedArticles({
                     category: article.category,
                     exclude: article._id
