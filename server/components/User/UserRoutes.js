@@ -9,7 +9,7 @@ const UserRoutes = function (UserDataService) {
     const postLogin = function (req, res, next) {
         // we successfully authenticated so cache a cookie and send back user info
         routeUtils.debuggingHelper(req, res, next, function (req, res, next) {
-            if (req.cookies.hasOwnProperty(constants.CACHED_AUTH_COOKIE)) {
+            if (constants.CACHED_AUTH_COOKIE in req.cookies) {
                 console.log('Cached auth cookie saved');
             } else {
                 console.log('Cached auth cookie not saved, building a new one for authenticated user');
