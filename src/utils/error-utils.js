@@ -1,6 +1,3 @@
-import Error from '../components/Error/Error';
-import React from 'react';
-
 /**
  *
  * @param val true if there is an error

@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import './Dashboard.less'
-import PropTypes from 'prop-types';
 import _ from 'lodash';
 import empty from 'is-empty';
 import API from '../../shared/api-v1';
@@ -152,8 +151,7 @@ class Dashboard extends Component {
                         <div className="image-and-create-article">
                             <div className="image">
                                 {this.state.me.photograph ?
-                                    <img src={this.state.me.photograph}
-                                         alt="Image of you"/>
+                                    <img src={this.state.me.photograph} alt=""/>
                                     : <div>Add a photograph of you below :) </div>
                                 }
                             </div>
@@ -269,16 +267,6 @@ const Editor = (props) => {
             editorState={props.value}
             onChange={props.onChange}
         />
-    )
-};
-
-const DashboardArticleBlockUI = (props) => {
-    return (
-        <div className="DashboardArticleBlockUI">
-            <div style={{'background-image': props.article.showcaseImage}}>
-
-            </div>
-        </div>
     )
 };
 

@@ -90,8 +90,7 @@ class ArticleContent extends Component {
                                     </div>
                                 </div>
                                 <div className="main-image">
-                                    <img
-                                        src={articleData.showcaseImage}/>
+                                    <img src={articleData.showcaseImage} alt=""/>
                                 </div>
                             </div>
                             <div className="lower-article">

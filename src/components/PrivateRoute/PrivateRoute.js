@@ -1,9 +1,7 @@
 import React, {Component} from 'react';
 import './PrivateRoute.less'
-import PropTypes from 'prop-types';
 import {Route} from 'react-router';
 import {withRouter} from 'react-router-dom';
-import API from '../../shared/api-v1';
 import URLS from '../../shared/urls';
 import Loading from '../Loading/Loading';
 import Auth from '../../services/auth';

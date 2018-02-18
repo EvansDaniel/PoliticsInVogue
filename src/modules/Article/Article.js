@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
 import './Article.less';
 import ArticleContent from "../../components/ArticleContent/ArticleContent";
-import Comments from "../../components/Comments/Comments";
-import PropTypes from 'prop-types';
 import Loading from '../../components/Loading/Loading';
 import {Helmet} from 'react-helmet';
 import CONSTANTS from '../../shared/constants';
@@ -18,7 +16,6 @@ class Article extends Component {
         this.state = {
             loading: true,
             error: false,
-            articleMeterWidth: 0,
         };
     }
 
@@ -65,6 +62,7 @@ class Article extends Component {
 
     componentDidMount() {
         API.asynchronousSafeFetch([this.getArticle()], (function () {
+            console.log('here i am');
             this.setState({loading: false});
         }).bind(this));
     }
@@ -76,6 +74,7 @@ class Article extends Component {
             // add link to redirect home
             return renderUtils.renderIfError(this.state.error, true);
         }
+        console.log(this.state.loading, this.state.error);
         return (
             <div className="Article">
                 <Helmet>
@@ -92,6 +91,7 @@ class Article extends Component {
         );
     }
 }
+
 
 Article.proptypes = {};
 

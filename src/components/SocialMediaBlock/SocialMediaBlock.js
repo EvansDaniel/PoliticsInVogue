@@ -3,14 +3,6 @@ import './SocialMediaBlock.less'
 import SocialShare from "../SocialShare/SocialShare";
 
 class SocialMediaBlock extends Component {
-    constructor(props) {
-        super(props);
-    }
-
-    componentDidMount() {
-
-    }
-
     render() {
         const socialMedias = [
             'facebook', 'twitter','linkedin',

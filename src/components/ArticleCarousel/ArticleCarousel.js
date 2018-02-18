@@ -1,18 +1,12 @@
 import React, {Component} from 'react';
 import './ArticleCarousel.less'
 import PropTypes from 'prop-types';
-import {Link} from 'react-router-dom';
-import readArticle from '../../utils/read-article';
 import $ from 'jquery';
 import {withRouter} from 'react-router-dom';
 import URLS from '../../shared/urls';
 const Carousel = require('nuka-carousel');
 
 class ArticleCarousel extends Component {
-    constructor(props) {
-        super(props);
-
-    }
 
     fixSliderArrows() {
         // TODO: Hack to get the buttons to have the correct inner html

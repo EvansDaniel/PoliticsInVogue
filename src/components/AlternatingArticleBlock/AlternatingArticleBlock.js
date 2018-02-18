@@ -5,18 +5,8 @@ import {withRouter} from 'react-router-dom';
 import URLS from '../../shared/urls';
 
 class AlternatingArticleBlock extends Component {
-	constructor(props) {
-        super(props);
-    }
-
-    componentDidMount() {
-
-    }
-
     render() {
-	    const classNames = [];
-	    for(let i = 0; i < 5; i++) {
-        }
+        // Add the alternating orientation to the article
         const newArticles = this.props.articles.map((article, i) => {
 	        if(i % 2 === 0) {
                 article.orientation = '';

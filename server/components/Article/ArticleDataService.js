@@ -64,7 +64,7 @@ const ArticleDataService = function (Article) {
 
             return Object.assign(article.toObject && article.toObject() || article, {
                 excerpt: excerpt.trim(),
-                timeToReadInMin: Article.timeToReadInMin(article.body),
+                timeToReadInMin: Article.timeToReadInMin(editorUtils.jsonToHTML(article.body)),
                 year: year,
                 month: month
             });
@@ -88,6 +88,7 @@ const ArticleDataService = function (Article) {
         }
 
         findFunc(filter, function (err, article) {
+            article = _postFindArticleModification(article);
             // if we are requesting a specific article (via articleSlug/_id
             // and user requested suggested articles
             if((queryObj.hasOwnProperty('_id') || queryObj.hasOwnProperty('articleSlug'))
@@ -102,7 +103,7 @@ const ArticleDataService = function (Article) {
                     });
                 });
             } else {
-                return cb(err, _postFindArticleModification(article));
+                return cb(err, article);
             }
         });
     };

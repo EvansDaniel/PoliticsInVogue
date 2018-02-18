@@ -1,6 +1,5 @@
 // @flow
 const URLS = require('./urls');
-const queryString = require('query-string');
 const axios = require('axios');
 const CONSTANTS = require('./constants'),
     API_DOMAIN = CONSTANTS.API_DOMAIN;

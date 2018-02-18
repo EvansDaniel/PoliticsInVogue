@@ -37,13 +37,13 @@ cd `git rev-parse --show-toplevel`
 create_templates() {
 	local FILE_NAME=$1
 	local CREATE_DIR=$2
-	check_answer "Are you sure you want to create $FILE_NAME.js and $FILE_NAME.less in $CREATE_DIR?"
+	check_answer "Are you sure you want to create ${FILE_NAME}.js and ${FILE_NAME}.less in ${CREATE_DIR}?"
 	if [[ $? == 0 ]]; then
 	echo "import React, {Component} from 'react';
-import './$FILE_NAME.less'
+import './${FILE_NAME}.less'
 import PropTypes from 'prop-types';
 
-class $FILE_NAME extends Component {
+class ${FILE_NAME} extends Component {
 	constructor(props) {
         super(props);
         
@@ -55,21 +55,29 @@ class $FILE_NAME extends Component {
 
     render() {
         return (
-            <div className="\"$FILE_NAME\"">
+            <div className="\"${FILE_NAME}\"">
                 
             </div>
         );
     }
 }
 
-export default $FILE_NAME;" > $FILE_NAME.js;
+${FILE_NAME}.defaultProps = {
+
+};
+
+${FILE_NAME}.proptypes = {
+
+};
+
+export default ${FILE_NAME};" > ${FILE_NAME}.js;
 echo "@import \""../../shared/mixins.less\"";
 @import \""../../shared/vars.less\"";
 
-.$FILE_NAME {
-}" > $FILE_NAME.less;
+.${FILE_NAME} {
+}" > ${FILE_NAME}.less;
 else
-	rm -rf $CREATE_DIR;
+	rm -rf ${CREATE_DIR};
 	echo "Exiting";
 fi
 }
@@ -85,12 +93,12 @@ check_answer() {
 }
 
 check_dir() {
-	ls | grep "$FILES_NAME" &> /dev/null
+	ls | grep "${FILES_NAME}" &> /dev/null
 	if [[ $? -eq 0 ]]; then
-		check_answer "Detected $FILES_NAME already created. Would you like to overwrite?"
+		check_answer "Detected ${FILES_NAME} already created. Would you like to overwrite?"
 		if [[ $? == 0 ]]; then
 			echo "Overwriting"
-			rm -rf $FILES_NAME;
+			rm -rf ${FILES_NAME};
 		else
 			echo "Exiting";
 			exit 1
@@ -101,11 +109,11 @@ check_dir() {
 create_files() {
 	local DIR=$1
 	local FILES_NAME=$2;
-	cd $DIR
+	cd ${DIR}
 	check_dir
-	mkdir $FILES_NAME;
-	cd $FILES_NAME;
-	create_templates $FILES_NAME $PWD;
+	mkdir ${FILES_NAME};
+	cd ${FILES_NAME};
+	create_templates ${FILES_NAME} $PWD;
 }
 
-create_files $CREATE_DIR $FILES_NAME
+create_files ${CREATE_DIR} ${FILES_NAME}

@@ -29,8 +29,7 @@ class ButtonInput extends Component {
         if (eventOrChangedState.target) {
 
             const target = eventOrChangedState.target,
-                value = target.type === 'checkbox' ? target.checked : target.value,
-                name = eventOrChangedState.target.name;
+                value = target.type === 'checkbox' ? target.checked : target.value;
 
             this.setState({
                 inputVal: value

@@ -42,7 +42,7 @@ class About extends Component {
                 <div className="About">
                     <div className="text-wrapper">
                         <div className="photograph-wrapper">
-                            <img className="photograph" src={this.state.me.photograph} alt="A picture of me"/>
+                            <img className="photograph" src={this.state.me.photograph} alt="Sophie Clark"/>
                         </div>
                         <div className="biography">
                             <BodyHtml body={this.state.me.biography}/>

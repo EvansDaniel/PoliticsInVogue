@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import './Login.less'
-import PropTypes from 'prop-types';
 const API = require('../../shared/api-v1');
 const URLS = require('../../shared/urls');
 
@@ -18,9 +17,7 @@ class Login extends Component {
         const locationState = this.props.location.state;
         const self = this;
         API.login(function (response) {
-            console.log(response);
-            console.log(self.props);
-            self.props.history.push(locationState && locationState.redirect || URLS.ROUTES.home);
+            self.props.history.push((locationState && locationState.redirect) || URLS.ROUTES.home);
         }, {
             email: 'clarksl0@sewanee.edu',
             password: 'password'
@@ -28,7 +25,6 @@ class Login extends Component {
     }
 
     render() {
-        console.log(this.props);
         return (
             <div className="Login">
                 <div className="login-container">

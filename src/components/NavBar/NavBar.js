@@ -28,14 +28,6 @@ class NavBar extends Component {
     }
 
     render() {
-        var categories = [
-            {id: 1, category: 'Politics'},
-            {id: 2, category: 'Workouts'},
-            {id: 3, category: 'Lifestyle'},
-            {id: 4, category: 'Good Books'},
-            {id: 5, category: 'Writing'},
-            {id: 6, category: 'Fashion'},
-        ];
         const loggedIn = this.auth.isAuthenticated();
         return (
             <nav className="NavBar" style={loggedIn ? {'fontSize': '11px'} : {}}>

@@ -1,8 +1,7 @@
 const validUrl = require('valid-url');
 const empty = require('is-empty');
-const cheerio = require('cheerio');
-const constants = require('../shared/constants');
 const editorUtils = require('../shared/utils/editor-utils');
+const _ = require('lodash');
 
 
 function checkImageUrl(url) {
@@ -20,7 +19,10 @@ const invalidData = (message) => {
 };
 
 function publishValidateArticleData(articleData, prefix) {
-    let message = prefix && prefix.trim() + ': ' || '';
+    if(!articleData) {
+        return invalidData('Data is invalid: Category, article image, and title are required');
+    }
+    let message = (_.isString(prefix) && prefix.trim() + ': ') || '';
     if (empty(articleData.showcaseImage) ||
         !checkImageUrl(articleData.showcaseImage)) {
         return invalidData(message + 'Url provided must be a valid image url (ends in jpg, jpeg, gif, or png)');

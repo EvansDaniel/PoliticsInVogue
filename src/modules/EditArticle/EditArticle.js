@@ -15,9 +15,7 @@ import PopUpModal from '../../components/PopUpModal/PopUpModal';
 import '../../css/pretty-checkbox.css';
 import renderUtils from '../../utils/render-utils';
 import errorUtils from '../../utils/error-utils';
-const empty = require('is-empty');
 const URLS = require('../../shared/urls');
-const constants = require('../../shared/constants');
 const editorUtils = require('../../shared/utils/editor-utils');
 
 class EditArticle extends Component {
@@ -92,7 +90,6 @@ class EditArticle extends Component {
             showModal: false
         });
 
-        const self = this;
         this.changeArticleData({
             draft: false,
         });
@@ -259,10 +256,9 @@ class EditArticle extends Component {
 
         if (this.props.match.params._id) {
             // TODO: go back to dashboard if there is no article with this _id
-            const self = this;
-            API.asynchronousSafeFetch([this.getArticleData(), this.getAllCategories()], function () {
-                self.setState({loading: false});
-            });
+            API.asynchronousSafeFetch([this.getArticleData(), this.getAllCategories()], (function () {
+                this.setState({loading: false});
+            }).bind(this));
         }
     }
 
@@ -339,7 +335,8 @@ class EditArticle extends Component {
                                     {
                                         validators.checkImageUrl(this.state.articleData.showcaseImage) ?
                                             <img className="image-preview"
-                                                 src={this.state.articleData.showcaseImage}/> : null
+                                                 src={this.state.articleData.showcaseImage}
+                                                 alt="Chosen photograph did not load. Choose a different one"/> : null
                                     }
                                 </div>
                                 <div className="category-control">
@@ -394,7 +391,7 @@ class EditArticle extends Component {
                                     </button>
 
                                     <button onClick={this.initialPublishArticle} className="publish-article">
-                                        <img src={publishIcon}/>
+                                        <img src={publishIcon} alt=""/>
                                         <span>Publish article</span>
                                     </button>
                                     <div className="saving-actions">

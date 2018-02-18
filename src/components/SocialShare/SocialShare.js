@@ -50,9 +50,9 @@ class SocialShare extends Component {
         const baseShareUrl = 'https://twitter.com/intent/tweet';
         const queryParams = {
             url: window.encodeURI(window.location.href),
-            text: `${articleData && articleData.title + ' by Sophie Clark' 
+            text: `${(articleData && articleData.title + ' by Sophie Clark') 
             || 'Politics In Vogue - A politics, fashion, and opinions blog by Sophie Clark'}`,
-            hashtags: `politicsinvogue,${articleData && articleData.categoryName || 'politics, fashion'}`,
+            hashtags: `politicsinvogue,${(articleData && articleData.categoryName) || 'politics, fashion'}`,
             via: 'politicsinvogue',
         };
         window.open(`${baseShareUrl}?${queryString.stringify(queryParams)}`);
@@ -67,7 +67,7 @@ class SocialShare extends Component {
         const baseShareUrl = 'https://www.linkedin.com/shareArticle';
         const queryParams = {
             url: window.encodeURI(window.location.href),
-            title: `${articleData && articleData.title + ' by Sophie Clark' || 'FashionInVogue'}`,
+            title: `${(articleData && articleData.title + ' by Sophie Clark') || 'FashionInVogue'}`,
             // summary: 'my description', TODO: include this maybe?
             mini: true,
             source: window.encodeURI(window.location.hostname)
@@ -99,7 +99,7 @@ class SocialShare extends Component {
             return (
                 <div className={`SocialShare ${this.props.transitionType}`}
                      onClick={socialMedia.shareFunc}>
-                    <img src={socialMedia.icon}/>
+                    <img src={socialMedia.icon} alt="Social Media"/>
                 </div>
             );
         }

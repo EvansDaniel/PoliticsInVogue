@@ -54,7 +54,7 @@ class Category extends Component {
                             {/* Since there must be at least one article w/ this category, this should work.
                                 Fall back to the params category though just in case
                             */}
-                            {this.state.articles[0] && this.state.articles[0].category || this.props.match.params.category}
+                            {(this.state.articles[0] && this.state.articles[0].category) || this.props.match.params.category}
                         </div>
                         <AlternatingArticleBlock articles={this.state.articles}/></div>
                 }

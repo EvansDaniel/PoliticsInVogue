@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
 import './Error.less'
 import PropTypes from 'prop-types';
-import {Link} from 'react-router-dom';
-import URLS from '../../shared/urls';
 import Modal from '../PopUpModal/PopUpModal';
 import errorIcon from "../../../src/img/error.jpg";
 import {withRouter} from 'react-router-dom';
@@ -32,7 +30,7 @@ class Error extends Component {
                     className="ErrorModalContent"
                     overlayClassName="ErrorModalOverlay"
                 >
-                    <img src={errorIcon}/>
+                    <img src={errorIcon} alt="There was an error :("/>
                     <p>{this.props.error}</p>
                     {
                         this.props.goBackLink ? <div onClick={function () {

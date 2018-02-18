@@ -1,17 +1,7 @@
 import React, {Component} from 'react';
 import './Comments.less'
-import fbIcon from '../../../src/img/facebook-app-symbol.svg';
-import pinIcon from '../../../src/img/pinterest.svg';
-import linkedinIcon from '../../../src/img/linkedin-logo.svg';
-import twitterIcon from '../../../src/img/twitter.svg';
-import emailIcon from '../../../src/img/email.svg';
-const CONSTANTS = require('../../shared/constants');
 
 class Comments extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     componentDidMount() {
         // If we clicked a link to direct us to a page that loads
         // comments, we need to run window.fbAsyncInit() to get facebook to reload them

@@ -1,14 +1,8 @@
 import React, {Component} from "react";
 import "./Footer.less";
-import {Link} from 'react-router-dom';
 import SocialShare from "../SocialShare/SocialShare";
-import $ from 'jquery';
 
 class Footer extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         return (
             <footer className="Footer" ref={(footer) => this.footer = footer}>

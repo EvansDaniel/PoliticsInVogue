@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import './ShowMore.less'
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 class ShowMore extends Component {
