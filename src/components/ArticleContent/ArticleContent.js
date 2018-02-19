@@ -8,6 +8,7 @@ import Comments from "../Comments/Comments";
 import ArticleBlock from "../ArticleBlock/ArticleBlock";
 import PropTypes from 'prop-types';
 import BodyHtml from "../BodyHtml/BodyHtml";
+import classNames from 'classnames';
 import URLS from '../../shared/urls';
 import {withRouter} from 'react-router';
 
@@ -64,29 +65,31 @@ class ArticleContent extends Component {
                         <div className="article">
                             <div className="article-top">
                                 <div className="article-info">
-                                    <div className="category">
-                                        <Link to={{
-                                            pathname: URLS.transform(URLS.ROUTES.category, {
-                                                category: this.props.preview ?
-                                                    articleData.category || 'Default Category' :
-                                                    articleData.category
-                                            })
-                                        }}>
-                                            {articleData.category}
-                                        </Link>
-                                    </div>
-                                    <div className="time-to-read">{
-                                        this.props.preview ? this.getTimeInMin(articleData.body) : articleData.timeToReadInMin
-                                    } min read
-                                    </div>
-                                    <div className="title">
-                                        {articleData.title}
-                                    </div>
-                                    <div className="author-info">
-                                        <div className="date-published">Date
-                                            Published: {new Date(articleData.createdAt).toLocaleDateString()}</div>
-                                        <div className="author">Written by: <Link to="/about" className="name">Sophie
-                                            Clark</Link></div>
+                                    <div className="article-info-wrapper">
+                                        <div className="category">
+                                            <Link to={{
+                                                pathname: URLS.transform(URLS.ROUTES.category, {
+                                                    category: this.props.preview ?
+                                                        articleData.category || 'Default Category' :
+                                                        articleData.category
+                                                })
+                                            }}>
+                                                {articleData.category}
+                                            </Link>
+                                        </div>
+                                        <div className="time-to-read">{
+                                            this.props.preview ? this.getTimeInMin(articleData.body) : articleData.timeToReadInMin
+                                        } min read
+                                        </div>
+                                        <div className="title">
+                                            {articleData.title}
+                                        </div>
+                                        <div className="author-info">
+                                            <div className="date-published">Date
+                                                Published: {new Date(articleData.createdAt).toLocaleDateString()}</div>
+                                            <div className="author">Written by: <Link to="/about" className="name">Sophie
+                                                Clark</Link></div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div className="main-image">
@@ -94,7 +97,7 @@ class ArticleContent extends Component {
                                 </div>
                             </div>
                             <div className="lower-article">
-                                <div className="article-main">
+                                <div className={classNames('article-main', {'no-suggested-articles': empty(this.props.suggestedArticles)})}>
                                     {
                                         !empty(this.props.suggestedArticles) ?
                                             <div className="suggested">

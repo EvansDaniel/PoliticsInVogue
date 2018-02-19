@@ -8,9 +8,6 @@ const SubscriberSchema = new Schema({
         index: {unique: true},
         trim: true
     },
-    lastEmail: Date,
-    // TODO: look up enums in mongoose
-    emailFrequency: Number
 }, {
     timestamps: true
 });

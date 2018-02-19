@@ -4,6 +4,7 @@ import ArticleCards from "../../components/ArticleCards/ArticleCards";
 import ArticleCarousel from "../../components/ArticleCarousel/ArticleCarousel";
 import Loading from "../../components/Loading/Loading";
 import empty from 'is-empty';
+import errorUtils from '../../utils/error-utils';
 const API = require('../../shared/api-v1');
 
 
@@ -18,25 +19,37 @@ class Home extends Component {
     }
 
     componentDidMount() {
+        API.asynchronousSafeFetch([this.getPlacedArticles()], (function () {
+            this.setState({loading: false});
+        }).bind(this));
+    }
+
+    getPlacedArticles() {
         const self = this;
-        API.getPlacedArticles({
-            success: function (response) {
-                if (response.status === 200) {
+        return {
+            options: {
+                success: function (response) {
+                    if (response.status === 200) {
+                        self.setState({
+                            placedArticles: response.data,
+                            loading: false,
+                        });
+                    }
+                },
+                error: function () {
                     self.setState({
-                        placedArticles: response.data,
-                        loading: false,
+                        error: errorUtils.buildRenderError(true, null,
+                            'There was an error while loading home page articles')
                     });
                 }
             },
-            error: function () {
-                // TODO:
-            }
-        });
+            apiFunc: API.getPlacedArticles
+        }
     }
 
     render() {
         return (
-            <div className="Home">
+            errorUtils.renderIfError(this.state.error) || <div className="Home">
                 <div className="awesome-banner"></div>
                 {this.state.loading ? <Loading/> :
                     <div>

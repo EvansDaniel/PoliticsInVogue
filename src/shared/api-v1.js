@@ -47,6 +47,7 @@ let post = (url, options) => {
 
 let get = function (url, options) {
     options = options || {};
+    const isProd = process.env.NODE_ENV === 'production';
     axios({
         url: url,
         method: 'GET',
@@ -55,13 +56,19 @@ let get = function (url, options) {
         },
         params: options.queryParams || {},
     }).then(response => {
-        console.log('success', url, response);
+        if(!isProd) {
+            console.log('success', url, response);
+        }
         options.success && options.success(response)
     }).catch(error => {
         if (error.response) {
-            console.log(`${url} request failed`, error);
+            if(!isProd) {
+                console.log(`${url} request failed`, error);
+            }
         } else {
-            console.log(`successful request but error while calling success function`, error);
+            if(!isProd) {
+                console.log(`successful request but error while calling success function`, error);
+            }
         }
         options.error && options.error(error);
     });
@@ -69,9 +76,8 @@ let get = function (url, options) {
 
 module.exports = {
 
-    // utility function for safely loading multiple fetchables
     /**
-     *
+     * utility function for safely loading multiple fetchables
      * @param fetchables an array of functions that take a function to be called when the API call returns
      * @param onLoaded
      */
@@ -83,30 +89,26 @@ module.exports = {
             if(!_.isArray(fetchables)) {
                 fetchables = [fetchables];
             }
-            let amount = fetchables.length;
+            let numFetchablesLeft = fetchables.length;
             fetchables.forEach(function (fetchable, i) {
                 const oldSuccess = fetchable.options.success.bind({});
                 fetchable.apiFunc(_.merge(fetchable.options, {
                     success: function (response) {
-                        --amount;
+                        --numFetchablesLeft;
                         oldSuccess(response);
                     }
                 }));
             });
+            // Poll every second to determine if we have fetched everything
             let interval = setInterval(function () {
-                if (!amount) {
+                if (!numFetchablesLeft) {
                     onLoaded();
-                    console.log('safe asynchronous load', onLoaded);
+                    console.log('Safe asynchronous load complete');
                     clearInterval(interval);
                 }
-            });
-            // This will stop polling for loaded data in 20 seconds
-            // at this point (or sooner) we should tell the user there was an issue
-            /*setTimeout(function () {
-                clearInterval(interval);
-            }, 20000);*/
+            }, 500);
         } else {
-            console.error('Fetchables is empty!');
+            console.error('No fetchables provided');
         }
     },
 

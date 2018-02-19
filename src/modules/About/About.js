@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import API from '../../shared/api-v1';
 import errorUtils from '../../utils/error-utils';
 import Loading from '../../components/Loading/Loading';
-import renderUtils from '../../utils/render-utils';
+
 import './About.less'
 import BodyHtml from "../../components/BodyHtml/BodyHtml";
 
@@ -38,7 +38,7 @@ class About extends Component {
     render() {
         return (
             this.state.loading ? <Loading/> :
-                renderUtils.renderIfError(this.state.error) ||
+                errorUtils.renderIfError(this.state.error) ||
                 <div className="About">
                     <div className="text-wrapper">
                         <div className="photograph-wrapper">

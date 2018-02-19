@@ -1,10 +1,17 @@
 const URLS = require('../../../src/shared/urls'),
     passport = require('passport'),
-    PassportConfig = require('../../config/passport');
+    PassportConfig = require('../../config/passport'),
+    constants = require('../../../src/shared/constants');
 
 const signUpIfNotSignedUp = function(User) {
-    const email = process.env.AUTHOR_EMAIL,
+    let email = process.env.AUTHOR_EMAIL,
         pass = process.env.AUTHOR_PASSWORD;
+    // change to dev email/pass if development
+    if(process.env.isDev) {
+        email = constants.DEV_EMAIL;
+        pass = constants.DEV_PASSWORD;
+    }
+
     const newUser = new User({
         email: email,
         password: pass

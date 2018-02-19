@@ -30,7 +30,6 @@ process.env.isProd = process.env.NODE_ENV === 'production';
 process.env.isTest = process.env.NODE_ENV === 'test';
 
 // configuration ===============================================================
-// TODO: check for prod. Connect to prodUrl
 const dbUrl = `mongodb://${process.env.DB_HOST}/${process.env.DB_NAME}`;
 mongoose.connect(dbUrl,
     {useMongoClient: true}

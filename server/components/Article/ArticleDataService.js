@@ -5,20 +5,6 @@ const constants = require('../../../src/shared/constants');
 const editorUtils = require('../../../src/shared/utils/editor-utils');
 
 const ArticleDataService = function (Article) {
-    const minimumArticleFields = ['_id', 'title', 'createdAt', 'updatedAt',
-        'placement', 'excerpt', 'articleSlug', 'showcaseImage'];
-
-    // article is a plain object with all data attributes
-    const _buildMinimumArticle = function (article) {
-        const minArticle = {};
-        for (let field in article) {
-            if (article.hasOwnProperty(field) && (minimumArticleFields.indexOf(field) > -1)) {
-                minArticle[field] = article[field];
-            }
-        }
-        return minArticle;
-    };
-
     // converts jsonEditorState (stored state of article.body) to excerpt from html body
     const parseText = function (articleBody) {
         const articleBodyHtml = editorUtils.jsonToHTML(articleBody),
@@ -92,7 +78,7 @@ const ArticleDataService = function (Article) {
             // if we are requesting a specific article (via articleSlug/_id
             // and user requested suggested articles
             if((queryObj.hasOwnProperty('_id') || queryObj.hasOwnProperty('articleSlug'))
-                && queryObj.suggestedArticles) {
+                && queryObj.suggestedArticles && article) {
                 getSuggestedArticles({
                     category: article.category,
                     exclude: article._id
@@ -323,7 +309,6 @@ const ArticleDataService = function (Article) {
         },
 
         _postFindArticleModification: _postFindArticleModification,
-        _buildMinimumArticle: _buildMinimumArticle
     }
 };
 

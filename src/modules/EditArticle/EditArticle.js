@@ -13,7 +13,7 @@ import ArticleContent from "../../components/ArticleContent/ArticleContent";
 import validators from '../../utils/validators';
 import PopUpModal from '../../components/PopUpModal/PopUpModal';
 import '../../css/pretty-checkbox.css';
-import renderUtils from '../../utils/render-utils';
+
 import errorUtils from '../../utils/error-utils';
 const URLS = require('../../shared/urls');
 const editorUtils = require('../../shared/utils/editor-utils');
@@ -265,7 +265,7 @@ class EditArticle extends Component {
     render() {
         const self = this;
         return (
-            renderUtils.renderIfError(this.state.error) || <div className="EditArticle">
+            errorUtils.renderIfError(this.state.error) || <div className="EditArticle">
                 {
                     this.state.loading ? <Loading/> :
                         <div>

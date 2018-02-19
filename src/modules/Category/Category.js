@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import "./Category.less";
 import AlternatingArticleBlock from "../../components/AlternatingArticleBlock/AlternatingArticleBlock";
 import errorUtils from '../../utils/error-utils';
-import renderUtils from '../../utils/render-utils';
+
 import API from '../../shared/api-v1';
 import Loading from '../../components/Loading/Loading';
 
@@ -46,7 +46,7 @@ class Category extends Component {
 
     render() {
         return (
-            renderUtils.renderIfError(this.state.error) ||
+            errorUtils.renderIfError(this.state.error) ||
             <div className="Category">
                 {
                     this.state.loading ? <Loading/> : <div>

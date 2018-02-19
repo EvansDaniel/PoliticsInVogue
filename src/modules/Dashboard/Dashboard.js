@@ -4,7 +4,7 @@ import _ from 'lodash';
 import empty from 'is-empty';
 import API from '../../shared/api-v1';
 import URLS from '../../shared/urls';
-import renderUtils from '../../utils/render-utils';
+
 import errorUtils from '../../utils/error-utils';
 import ArticleBlock from "../../components/ArticleBlock/ArticleBlock";
 import Loading from '../../components/Loading/Loading';
@@ -145,7 +145,7 @@ class Dashboard extends Component {
         const self = this;
         return (
             this.state.loading ? <Loading/> :
-                renderUtils.renderIfError(this.state.error) ||
+                errorUtils.renderIfError(this.state.error) ||
                 <div className="Dashboard">
                     <div className="about-info">
                         <div className="image-and-create-article">

@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import './Login.less'
 const API = require('../../shared/api-v1');
 const URLS = require('../../shared/urls');
+const constants = require('../../shared/constants');
 
 class Login extends Component {
     constructor(props) {
@@ -16,12 +17,21 @@ class Login extends Component {
     signIn(event) {
         const locationState = this.props.location.state;
         const self = this;
-        API.login(function (response) {
-            self.props.history.push((locationState && locationState.redirect) || URLS.ROUTES.home);
-        }, {
-            email: 'clarksl0@sewanee.edu',
-            password: 'password'
-        });
+        if (process.env.NODE_ENV === 'development') {
+            API.login(function (response) {
+                self.props.history.push((locationState && locationState.redirect) || URLS.ROUTES.home);
+            }, {
+                email: constants.DEV_EMAIL,
+                password: constants.DEV_PASSWORD,
+            });
+        } else {
+            API.login(function (response) {
+                self.props.history.push((locationState && locationState.redirect) || URLS.ROUTES.home);
+            }, {
+                email: this.state.email,
+                password: this.state.password
+            });
+        }
     }
 
     render() {

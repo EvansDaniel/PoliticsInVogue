@@ -34,8 +34,8 @@ class NavBar extends Component {
                 <div className="inner-content">
                     <li><Link to="/">Home</Link></li>
                     <li><Link to="/about">About</Link></li>
-                    <li>
-                        <Link to="/">Categories</Link>
+                    <li className="categories">
+                        <span>Categories</span>
                         <i className="fa fa-caret-down"></i>
                         <SubMenu categories={this.state.categories}/>
                     </li>
@@ -75,7 +75,8 @@ const SubMenu = (props) => {
         }
     });
     return (
-        <ul>
+        // Only show if there are categories
+        categories.length ? <ul>
             {categories.map((category, i) =>
                 <Link key={i} to={`/category/${category.href}`}>
                     <li>
@@ -83,7 +84,7 @@ const SubMenu = (props) => {
                     </li>
                 </Link>)
             }
-        </ul>
+        </ul> : null
     )
 };
 

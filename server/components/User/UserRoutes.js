@@ -1,5 +1,6 @@
 const routeUtils = require('../../utils/route-utils');
 const constants = require('../../../src/shared/constants');
+const cookieUtils = require('../../utils/cookie-utils');
 const HttpError = require('http-error');
 const uuidv4 = require('uuid/v4');
 const _ = require('lodash');
@@ -11,10 +12,9 @@ const UserRoutes = function (UserDataService) {
         routeUtils.debuggingHelper(req, res, next, function (req, res, next) {
             console.log('Building cached auth cookie');
             res.cookie(constants.CACHED_AUTH_COOKIE,
-                uuidv4(), {
-                    domain: constants.HOST_DOMAIN,
+                uuidv4(), cookieUtils.getCookieOptions({
                     maxAge: constants.SESSION_COOKIE_TIME
-                });
+                }));
             const user = req.user.toObject();
             delete user.password;
             res.json(user);

@@ -4,7 +4,7 @@ import ArticleContent from "../../components/ArticleContent/ArticleContent";
 import Loading from '../../components/Loading/Loading';
 import {Helmet} from 'react-helmet';
 import CONSTANTS from '../../shared/constants';
-import renderUtils from '../../utils/render-utils';
+
 import errorUtils from '../../utils/error-utils';
 const API = require('../../shared/api-v1');
 
@@ -56,7 +56,7 @@ class Article extends Component {
         if (prevProps.match.params.articleSlug !== this.props.match.params.articleSlug) {
             API.asynchronousSafeFetch([this.getArticle()], (function () {
                 this.setState({loading: false})
-            })).bind(this);
+            }).bind(this));
         }
     }
 
@@ -72,7 +72,7 @@ class Article extends Component {
         const articleData = this.state.articleData;
         if (this.state.error) {
             // add link to redirect home
-            return renderUtils.renderIfError(this.state.error, true);
+            return errorUtils.renderIfError(this.state.error, true);
         }
         console.log(this.state.loading, this.state.error);
         return (

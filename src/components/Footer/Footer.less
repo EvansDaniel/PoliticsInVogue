@@ -10,6 +10,7 @@
 .Footer {
   // Cause footer to stick to bottom
   flex-shrink: 0;
+  letter-spacing: .04em;
 
   .footer-container {
     height: auto;
@@ -61,7 +62,7 @@
       }
 
       .column {
-        font-family: Crimson Text, serif;
+        font-family: @primaryFont2;
         text-align: center;
         padding-right: 3%;
         padding-left: 3%;
@@ -112,12 +113,10 @@
               outline: none;
               padding: 0;
               text-indent: 5%;
-              font-family: Crimson Text, serif;
               font-size: @emLarge + @emSmall*2;
 
               &::placeholder {
                 text-indent: 5%;
-                font-family: Crimson Text, serif;
               }
             }
 
@@ -125,6 +124,13 @@
               border: none;
               color: @black;
               cursor: pointer;
+              background-color: white;
+
+              // Firefox adds a hover background-color of black
+              // want to keep it white
+              &:hover {
+                background-color: white;
+              }
             }
           }
         }

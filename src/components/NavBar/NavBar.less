@@ -40,6 +40,15 @@
         margin: 0;
       }
 
+      // Remove cursor: pointer property for category drop down
+      // b/c it doesn't make sense to user
+      &.categories {
+        cursor: inherit;
+        &:hover {
+          color: @favoriteColor;
+        }
+      }
+
       & > a {
         height: @navBarHeight;
 

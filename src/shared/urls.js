@@ -71,6 +71,8 @@ for (let url in URLS.API) {
 }
 
 // TODO: setup logging in prod
-console.log(JSON.stringify(URLS, null, 2));
+if(process.env.NODE_ENV === 'development') {
+    console.log(JSON.stringify(URLS, null, 2));
+}
 
 module.exports = URLS;
