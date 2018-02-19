@@ -69,9 +69,9 @@ class ArticleContent extends Component {
                                         <div className="category">
                                             <Link to={{
                                                 pathname: URLS.transform(URLS.ROUTES.category, {
-                                                    category: this.props.preview ?
-                                                        articleData.category || 'Default Category' :
-                                                        articleData.category
+                                                    categorySlug: this.props.preview ?
+                                                        (articleData.categorySlug || 'Default Category') :
+                                                        articleData.categorySlug
                                                 })
                                             }}>
                                                 {articleData.category}

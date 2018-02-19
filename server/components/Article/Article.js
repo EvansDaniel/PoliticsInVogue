@@ -138,9 +138,10 @@ const getArticleSlug = function (cb, title, Article) {
 };
 
 (function setUpUniqueSlugs(ArticleSchema) {
-    /*ArticleSchema.statics.defaultSlug = function (title) {
+    ArticleSchema.statics.defaultSlug = function (title) {
         return defaultSlug(title);
-    };*/
+    };
+
     ArticleSchema.methods.getArticleSlug = function(cb) {
         return getArticleSlug(cb, this.title, this.model('Article'));
     };
@@ -154,10 +155,7 @@ const getArticleSlug = function (cb, title, Article) {
 
         if (!article.isModified('category')) return next();
 
-        article.getCategorySlug(function (slug) {
-            article.categorySlug = slug;
-            return next();
-        });
+        article.categorySlug = defaultSlug(article.category);
     });
 
 

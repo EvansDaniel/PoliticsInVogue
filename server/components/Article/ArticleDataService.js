@@ -303,18 +303,19 @@ const ArticleDataService = function (Article) {
                             return cb(err, articleData, raw);
                         });
                 };
-                Article.getCategorySlug(function (categorySlug) {
-                    articleData.categorySlug = categorySlug;
-                    updateFunc(articleData);
-                }, articleData.category, Article);
+
+                console.log('here0')
+                // if a category is provided, normalize it
+                if(articleData.category) {
+                    articleData.categorySlug = Article.defaultSlug(articleData.category);
+                }
+
+                console.log('here1')
 
                 if (articleData.title) {
                     Article.getArticleSlug(function (slug) {
                         articleData.articleSlug = slug;
-                        if(articleData.category) {
-                        } else {
-                            updateFunc(articleData);
-                        }
+                        updateFunc(articleData);
                     }, articleData.title, Article);
                 } else {
                     updateFunc(articleData);

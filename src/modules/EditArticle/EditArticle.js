@@ -364,9 +364,9 @@ class EditArticle extends Component {
                                                             <option value=""></option> : null
                                                     }
                                                     {
-                                                        this.state.allCategories.map((category) => {
+                                                        this.state.allCategories.map((categoryData) => {
                                                             return (
-                                                                <option value={category}>{category}</option>
+                                                                <option value={categoryData.category}>{categoryData.category}</option>
                                                             );
                                                         })
                                                     }
