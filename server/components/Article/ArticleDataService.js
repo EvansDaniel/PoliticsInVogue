@@ -304,13 +304,10 @@ const ArticleDataService = function (Article) {
                         });
                 };
 
-                console.log('here0')
                 // if a category is provided, normalize it
                 if(articleData.category) {
                     articleData.categorySlug = Article.defaultSlug(articleData.category);
                 }
-
-                console.log('here1')
 
                 if (articleData.title) {
                     Article.getArticleSlug(function (slug) {

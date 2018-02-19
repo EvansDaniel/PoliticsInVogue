@@ -75,8 +75,8 @@ ArticleSchema.statics.timeToReadInMin = function (text) {
         || 1;
 };
 
-const defaultSlug = function (title) {
-    return title.trim()
+const defaultSlug = function (stringToNormalize) {
+    return stringToNormalize.trim()
     // replace all non-alphanumeric characters
     // that isn't space
         .replace(/[^a-zA-Z\d\s]/g, '')
@@ -125,12 +125,6 @@ const getUniqueValueForField = function (err, collection, cb, field, fieldToComp
     }
 };
 
-const getCategorySlug = function (cb, category) {
-    Article.find({}, function (err, articles) {
-        getUniqueValueForField(err, articles, cb, category, 'categorySlug');
-    });
-};
-
 const getArticleSlug = function (cb, title, Article) {
     Article.find({}, function (err, articles) {
         getUniqueValueForField(err, articles, cb, title, 'articleSlug');
@@ -138,55 +132,39 @@ const getArticleSlug = function (cb, title, Article) {
 };
 
 (function setUpUniqueSlugs(ArticleSchema) {
-    ArticleSchema.statics.defaultSlug = function (title) {
-        return defaultSlug(title);
+    ArticleSchema.statics.defaultSlug = function (stringToNormalize) {
+        return defaultSlug(stringToNormalize);
     };
 
-    ArticleSchema.methods.getArticleSlug = function(cb) {
+    ArticleSchema.methods.getArticleSlug = function (cb) {
         return getArticleSlug(cb, this.title, this.model('Article'));
     };
 
-    ArticleSchema.methods.getCategorySlug = function(cb) {
-        return getArticleSlug(cb, this.category, this.model('Article'));
+    ArticleSchema.statics.getArticleSlug = function (cb, title, Article) {
+        return getArticleSlug(cb, title, Article);
     };
 
     ArticleSchema.pre('save', function (next) {
         const article = this;
 
-        if (!article.isModified('category')) return next();
-
-        article.categorySlug = defaultSlug(article.category);
-    });
-
-
-    ArticleSchema.statics.getCategorySlug = function(cb, category, Article) {
-        if(!category) {
-            return false;
+        // Add default slug for category
+        if (article.isModified('category')) {
+            article.categorySlug = defaultSlug(article.category);
         }
-        return getCategorySlug(cb, category, Article);
-    };
 
-
-    ArticleSchema.statics.getArticleSlug = function(cb, title, Article) {
-        return getCategorySlug(cb, title, Article);
-    };
-
-
-    ArticleSchema.pre('save', function (next) {
-        const article = this;
-
-        if (!article.isModified('title')) return next();
-
-        article.getArticleSlug(function (slug) {
-            article.articleSlug = slug;
-            return next();
-        });
+        // Add unique article slug for article title
+        if (!article.isModified('title')) {
+            article.getArticleSlug(function (slug) {
+                article.articleSlug = slug;
+                return next();
+            });
+        }
     });
 })(ArticleSchema);
 
 const Article = mongoose.model('Article', ArticleSchema);
 
-if(process.env.NODE_ENV !== 'test') {
+if (process.env.NODE_ENV !== 'test') {
     module.exports = {
         Article: Article
     };
