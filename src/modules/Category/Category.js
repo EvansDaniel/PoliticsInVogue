@@ -16,19 +16,41 @@ class Category extends Component {
     }
 
     componentDidMount() {
+        this.loadData();
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (!prevProps || !prevState) {
+            return false;
+        }
+
+        if (prevProps.match.params.category !== this.props.match.params.category) {
+            this.loadData();
+        }
+    }
+
+    loadData() {
         API.asynchronousSafeFetch([this.getArticlesFromCategory()], (function () {
-            this.setState({loading: false});
+            this.setState({loading: false})
         }).bind(this));
     }
 
     getArticlesFromCategory() {
         const self = this;
+        console.log(this.props.match.params.category);
         return {
             options: {
                 success: (response) => {
                     self.setState({
                         articles: response.data,
                     });
+                    // There are no articles in the given category
+                    if(!response.data.length) {
+                        self.setState({
+                            error: errorUtils.buildRenderError(true, null,
+                                'Sorry there are no articles in that category')
+                        })
+                    }
                 },
                 error: (error) => {
                     self.setState({
@@ -36,7 +58,7 @@ class Category extends Component {
                             'There was an error fetching articles in this category')
                     });
                 },
-                data: {
+                params: {
                     category: this.props.match.params.category
                 }
             },

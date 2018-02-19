@@ -23,7 +23,7 @@ const renderIfError = (error) => {
         // and it will overwrite error.message
         if(error.res) {
             if(error.res.status === 404) {
-                msg = 'It looks like the resource you were searching for doesn\'t exist'
+                msg = 'It looks like the resource you were searching for doesn\'t exist.'
             }
         }
         return (

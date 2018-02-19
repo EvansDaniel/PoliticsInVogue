@@ -37,9 +37,9 @@ class Article extends Component {
                         suggestedArticles: res.data.suggestedArticles
                     });
                 },
-                error: function (res) {
+                error: function (error) {
                     self.setState({
-                        error: errorUtils.buildRenderError(true, res)
+                        error: errorUtils.buildRenderError(true, error.response)
                     });
                 },
                 params: queryParams
@@ -62,7 +62,6 @@ class Article extends Component {
 
     componentDidMount() {
         API.asynchronousSafeFetch([this.getArticle()], (function () {
-            console.log('here i am');
             this.setState({loading: false});
         }).bind(this));
     }
