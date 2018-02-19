@@ -8,10 +8,23 @@ class Login extends Component {
     constructor(props) {
         super(props);
         this.signIn = this.signIn.bind(this);
+
+        this.state = {
+            email: '',
+            password: '',
+        };
+
+        this.onInputChange = this.onInputChange.bind(this);
     }
 
-    componentDidMount() {
+    onInputChange(event) {
+        const target = event.target,
+            value = target.type === 'checkbox' ? target.checked : target.value,
+            name = event.target.name;
 
+        this.setState({
+            [name]: value
+        });
     }
 
     signIn(event) {
@@ -21,8 +34,8 @@ class Login extends Component {
             API.login(function (response) {
                 self.props.history.push((locationState && locationState.redirect) || URLS.ROUTES.home);
             }, {
-                email: constants.DEV_EMAIL,
-                password: constants.DEV_PASSWORD,
+                email: this.state.email,
+                password: this.state.password,
             });
         } else {
             API.login(function (response) {
@@ -45,8 +58,10 @@ class Login extends Component {
                         </div>
                     </div>
                     <div id="auth-fields">
-                        <input type="email" placeholder="Email" icon="email-icon"/>
-                        <input type="password" placeholder="Password" icon="email-icon"/>
+                        <input type="email" placeholder="Email" name="email" value={this.state.email}
+                               onChange={this.onInputChange} icon="email-icon"/>
+                        <input type="password" placeholder="Password" name="password" value={this.state.password}
+                               onChange={this.onInputChange} icon="email-icon"/>
                         <button onClick={this.signIn}>Sign In</button>
                     </div>
                 </div>

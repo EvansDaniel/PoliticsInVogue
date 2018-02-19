@@ -144,108 +144,110 @@ class Dashboard extends Component {
 
     render() {
         const self = this;
-        if(this.state.error) {
-            return errorUtils.renderIfError(this.state.error)
-        }
         return (
             errorUtils.renderIfError(this.state.error) ||
-            this.state.loading ? <Loading/> :
-                <div className="Dashboard">
-                    <div className="about-info">
-                        <div className="image-and-create-article">
-                            <div className="image">
-                                {this.state.me.photograph ?
-                                    <img src={this.state.me.photograph} alt=""/>
-                                    : <div>Add a photograph of you below :) </div>
-                                }
+            <div className="Dashboard">
+                {
+                    this.state.loading ? <Loading/> :
+                        <div>
+                            <div className="about-info">
+                                <div className="image-and-create-article">
+                                    <div className="image">
+                                        {this.state.me.photograph ?
+                                            <img src={this.state.me.photograph} alt=""/>
+                                            : <div>Add a photograph of you below :) </div>
+                                        }
+                                    </div>
+                                    <div>{this.state.info.photograph}</div>
+                                    <div className="create-article-container">
+                                        <button className="create-article" onClick={this.createNewArticle}>Write a New
+                                            Article
+                                        </button>
+                                        <ButtonInput onDone={this.setImageLink}
+                                                     classRoot="edit-img-link"
+                                                     title="Edit Image"
+                                                     defaultInputVal={this.state.me.photograph}
+                                        />
+                                    </div>
+                                </div>
+                                {/*
+                                 If we are not showing the bio text, then we are editing the biography. Add extra margin-left
+                                 So that the black + sign is in view
+                                 */}
+                                <div
+                                    className={classNames('bio-and-editor', {'margin-fix-bio-editor': !this.state.showBioText})}>
+                                    <div className="bio">
+                                        <div className="header">What You've Written About You</div>
+                                        <div className="bio-editor-text-wrapper">
+                                            <ButtonInput onDone={this.setBiography}
+                                                         component={Editor}
+                                                         classRoot="edit-bio"
+                                                         title="Edit Bio"
+                                                         onEditClicked={function () {
+                                                             self.setState({showBioText: false});
+                                                         }}
+                                                /* biography should be a valid editorStateJSON */
+                                                         defaultInputVal={editorUtils.getEditorStateFromJSON(this.state.me.biography)}
+                                            />
+                                            {
+                                                this.state.showBioText ?
+                                                    <ShowMore>
+                                                        <div className="bio-text">
+                                                            {!editorUtils.editorStateIsEmpty(this.state.me.biography) ?
+                                                                <BodyHtml body={this.state.me.biography}/>
+                                                                : "Write about yourself here, and it will show up in the About page"}
+                                                        </div>
+                                                    </ShowMore> : null
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div>{this.state.info.photograph}</div>
-                            <div className="create-article-container">
-                                <button className="create-article" onClick={this.createNewArticle}>Write a New Article
-                                </button>
-                                <ButtonInput onDone={this.setImageLink}
-                                             classRoot="edit-img-link"
-                                             title="Edit Image"
-                                             defaultInputVal={this.state.me.photograph}
-                                />
-                            </div>
-                        </div>
-                        {/*
-                         If we are not showing the bio text, then we are editing the biography. Add extra margin-left
-                         So that the black + sign is in view
-                         */}
-                        <div
-                            className={classNames('bio-and-editor', {'margin-fix-bio-editor': !this.state.showBioText})}>
-                            <div className="bio">
-                                <div className="header">What You've Written About You</div>
-                                <div className="bio-editor-text-wrapper">
-                                    <ButtonInput onDone={this.setBiography}
-                                                 component={Editor}
-                                                 classRoot="edit-bio"
-                                                 title="Edit Bio"
-                                                 onEditClicked={function () {
-                                                     self.setState({showBioText: false});
-                                                 }}
-                                        /* biography should be a valid editorStateJSON */
-                                                 defaultInputVal={editorUtils.getEditorStateFromJSON(this.state.me.biography)}
+                            <div className="articles">
+                                <div className="articles-row drafts">
+                                    <DashboardArticleBlock
+                                        title="Your Drafts"
+                                        onClick={function (event, article) {
+                                            self.props.history.push(URLS.transform(URLS.ROUTES.editArticle, {...article}))
+                                        }}
+                                        articles={this.state.dashboardArticles.drafts}
                                     />
+                                </div>
+
+                                <div className="articles-row hidden">
+                                    {/*<DashboardArticleBlock
+                                     title="Your Hidden Articles"
+                                     articles={this.state.dashboardArticles.hidden}
+                                     />*/}
+                                </div>
+
+                                <div className="articles-by-category">
+                                    {!empty(this.state.dashboardArticles.categories) ?
+                                        <div className="articles-by-category-title">Articles By Category</div> : null}
                                     {
-                                        this.state.showBioText ?
-                                            <ShowMore>
-                                                <div className="bio-text">
-                                                    {!editorUtils.editorStateIsEmpty(this.state.me.biography) ?
-                                                        <BodyHtml body={this.state.me.biography}/>
-                                                        : "Write about yourself here, and it will show up in the About page"}
-                                                </div>
-                                            </ShowMore> : null
+                                        /* TODO: when # articles <= 4, don't use slider */
+                                        /* TODO: make this ArticleBlock and the drafts into a single component that behave same */
+                                        this.state.dashboardArticles.categories ?
+                                            Object.keys(this.state.dashboardArticles.categories).map(function (category, index) {
+                                                return (
+                                                    <div key={index} className="articles-row category">
+                                                        <DashboardArticleBlock
+                                                            title={category}
+                                                            onClick={function (event, article) {
+                                                                self.props.history.push(URLS.transform(URLS.ROUTES.editArticle, {...article}))
+                                                            }}
+                                                            articles={self.state.dashboardArticles.categories[category]}
+                                                        />
+                                                    </div>
+                                                )
+                                            })
+                                            : null
                                     }
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div className="articles">
-                        <div className="articles-row drafts">
-                            <DashboardArticleBlock
-                                title="Your Drafts"
-                                onClick={function (event, article) {
-                                    self.props.history.push(URLS.transform(URLS.ROUTES.editArticle, {...article}))
-                                }}
-                                articles={this.state.dashboardArticles.drafts}
-                            />
-                        </div>
-
-                        <div className="articles-row hidden">
-                            {/*<DashboardArticleBlock
-                             title="Your Hidden Articles"
-                             articles={this.state.dashboardArticles.hidden}
-                             />*/}
-                        </div>
-
-                        <div className="articles-by-category">
-                            {!empty(this.state.dashboardArticles.categories) ?
-                                <div className="articles-by-category-title">Articles By Category</div> : null}
-                            {
-                                /* TODO: when # articles <= 4, don't use slider */
-                                /* TODO: make this ArticleBlock and the drafts into a single component that behave same */
-                                this.state.dashboardArticles.categories ?
-                                    Object.keys(this.state.dashboardArticles.categories).map(function (category, index) {
-                                        return (
-                                            <div key={index} className="articles-row category">
-                                                <DashboardArticleBlock
-                                                    title={category}
-                                                    onClick={function (event, article) {
-                                                        self.props.history.push(URLS.transform(URLS.ROUTES.editArticle, {...article}))
-                                                    }}
-                                                    articles={self.state.dashboardArticles.categories[category]}
-                                                />
-                                            </div>
-                                        )
-                                    })
-                                    : null
-                            }
-                        </div>
-                    </div>
-                </div>
+                }
+            </div>
         );
     }
 }
