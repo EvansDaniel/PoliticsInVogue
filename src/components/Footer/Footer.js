@@ -16,7 +16,7 @@ class Footer extends Component {
                                 </div>
                             </div>
                             <div className="list">
-                                <div>Created by Daniel Evans</div>
+                                <div><a href="https://www.linkedin.com/in/danielevans11/">Created by Daniel Evans</a></div>
                                 <div>
                                     Icons by <a href="https://www.flaticon.com/authors/rami-mcmin">Dave G</a>, <a
                                     href="https://www.flaticon.com/authors/linh-pham">Linh P</a>, <a

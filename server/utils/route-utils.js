@@ -1,13 +1,12 @@
+const HttpError = require('http-error');
+
 module.exports = (function () {
     return {
         isAuthenticated: function (req, res, next) {
-            return next();
-            /*if (req.isAuthenticated()) {
+            if (req.isAuthenticated()) {
                 return next();
             }
-            return res.json({
-                authenticated: false
-            });*/
+            return next(new HttpError.Unauthorized('You are not authorized to see this page. You are probably not signed in.'));
         },
 
         // TODO: possibly conditionally use debugging helper depending on dev or prod env

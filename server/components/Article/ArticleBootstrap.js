@@ -20,6 +20,7 @@ const ArticleBootstrap = function (app) {
     );
 
     app.get(URLS.API.dashboardArticles,
+        routeUtils.isAuthenticated,
         ArticleRoutes.getDraftsAndCategoriesHandle
     );
 

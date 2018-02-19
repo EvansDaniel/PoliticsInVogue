@@ -10,6 +10,7 @@ const UserDataService = function (User) {
         },
 
         update: function (userData, cb) {
+            console.log(userData);
             // TODO: check if _id is present
             User.update({ _id: userData._id }, userData,
                 function (err, raw) {

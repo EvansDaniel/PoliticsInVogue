@@ -52,9 +52,10 @@ class Dashboard extends Component {
                         dashboardArticles: response.data,
                     });
                 },
-                error: () => {
+                error: (error) => {
+                    console.log(error.response);
                     self.setState({
-                        error: errorUtils.buildRenderError(true, null,
+                        error: errorUtils.buildRenderError(true, error.response,
                             'There was an error fetching your articles')
                     });
                 },
@@ -143,9 +144,12 @@ class Dashboard extends Component {
 
     render() {
         const self = this;
+        if(this.state.error) {
+            return errorUtils.renderIfError(this.state.error)
+        }
         return (
+            errorUtils.renderIfError(this.state.error) ||
             this.state.loading ? <Loading/> :
-                errorUtils.renderIfError(this.state.error) ||
                 <div className="Dashboard">
                     <div className="about-info">
                         <div className="image-and-create-article">
@@ -212,9 +216,9 @@ class Dashboard extends Component {
 
                         <div className="articles-row hidden">
                             {/*<DashboardArticleBlock
-                                title="Your Hidden Articles"
-                                articles={this.state.dashboardArticles.hidden}
-                            />*/}
+                             title="Your Hidden Articles"
+                             articles={this.state.dashboardArticles.hidden}
+                             />*/}
                         </div>
 
                         <div className="articles-by-category">
