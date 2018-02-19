@@ -70,6 +70,7 @@ const ArticleDataService = function (Article) {
                 findFunc = Article.find.bind(Article);
             }
             else if (queryObj.hasOwnProperty('categorySlug')) {
+                console.log('blah blah blah');
                 filter.categorySlug = queryObj.categorySlug;
                 findFunc = Article.find.bind(Article);
             }
@@ -78,6 +79,7 @@ const ArticleDataService = function (Article) {
                 findFunc = Article.findOne.bind(Article);
             }
 
+            console.log(filter);
             findFunc(filter, function (err, article) {
                 article = _postFindArticleModification(article);
                 // if we are requesting a specific article (via articleSlug/_id
@@ -223,12 +225,14 @@ const ArticleDataService = function (Article) {
                     }
                     if (articles) {
                         const categories = articles.reduce(function (accumulator, article) {
-                            const cat = article.category;
-                            accumulator[cat] = cat;
+                            accumulator[article.categorySlug] = {
+                                category: article.category,
+                                categorySlug: article.categorySlug,
+                            }
                             return accumulator;
                         }, {});
 
-                        return cb(err, Object.keys(categories));
+                        return cb(err, Object.values(categories));
                     }
 
                     return cb(err, []);
@@ -299,10 +303,18 @@ const ArticleDataService = function (Article) {
                             return cb(err, articleData, raw);
                         });
                 };
+                Article.getCategorySlug(function (categorySlug) {
+                    articleData.categorySlug = categorySlug;
+                    updateFunc(articleData);
+                }, articleData.category, Article);
+
                 if (articleData.title) {
                     Article.getArticleSlug(function (slug) {
                         articleData.articleSlug = slug;
-                        updateFunc(articleData);
+                        if(articleData.category) {
+                        } else {
+                            updateFunc(articleData);
+                        }
                     }, articleData.title, Article);
                 } else {
                     updateFunc(articleData);

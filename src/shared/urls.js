@@ -24,7 +24,7 @@ let URLS = {
         dashboard: '/dashboard',
         about: '/about',
         article: '/articles/:year/:month/:articleSlug',
-        category: '/category/:category',
+        category: '/category/:categorySlug',
         login: '/auth/login'
     }
 };
@@ -49,7 +49,7 @@ URLS.transform = function (url, params) {
             const urlParam = pathPart.substring(1, pathPart.length);
             // if not passed params has correct property and truthy value
             if (!params.hasOwnProperty(urlParam) || empty(params[urlParam])) {
-                throw new Error(`Invalid parameters for ${url}. ${urlParam} is required.` +
+                throw new Error(`Invalid parameters for ${url}. ${urlParam} is a required key.` +
                     `\nGot ${JSON.stringify(params, null, 2)}`
                 );
             } else {

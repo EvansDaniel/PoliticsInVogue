@@ -24,11 +24,13 @@ class Category extends Component {
             return false;
         }
 
-        if (prevProps.match.params.category !== this.props.match.params.category) {
+        // Category slugs changed, so load new articles for the new category
+        if (prevProps.match.params.categorySlug !== this.props.match.params.categorySlug) {
             this.loadData();
         }
     }
 
+    // Loads articles for the given category
     loadData() {
         API.asynchronousSafeFetch([this.getArticlesFromCategory()], (function () {
             this.setState({loading: false})
@@ -37,7 +39,6 @@ class Category extends Component {
 
     getArticlesFromCategory() {
         const self = this;
-        console.log(this.props.match.params.category);
         return {
             options: {
                 success: (response) => {
@@ -59,7 +60,7 @@ class Category extends Component {
                     });
                 },
                 params: {
-                    category: this.props.match.params.category
+                    categorySlug: this.props.match.params.categorySlug
                 }
             },
             apiFunc: API.getArticle

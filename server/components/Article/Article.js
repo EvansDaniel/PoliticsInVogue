@@ -85,22 +85,22 @@ const defaultSlug = function (title) {
         .toLowerCase();
 };
 
-const getArticleSlugCb = function (err, articles, cb, title, Article) {
-    const defaultSlug = Article.defaultSlug(title);
+const getUniqueValueForField = function (err, collection, cb, field, fieldToCompare) {
+    const defaultOriginalSlug = defaultSlug(field);
     let maxAtLeast = false;
-    if (!articles) {
-        return cb(defaultSlug);
+    if (!collection) {
+        return cb(defaultOriginalSlug);
     } else {
-        const articleSlugEndings = articles.reduce((result, article) => {
-            const slug = article.articleSlug;
-            if (slug && slug.startsWith(defaultSlug)) {
+        const articleSlugEndings = collection.reduce((result, document) => {
+            const slug = document[fieldToCompare];
+            if (slug && slug.startsWith(defaultOriginalSlug)) {
                 maxAtLeast = 1;
-                // Get all chars after defaultSlug
+                // Get all chars after defaultOriginalSlug
                 try {
                     // This still guarantees uniqueness if somehow we don't have an integer at the end of the slug
-                    // title because we will be appending an integer
+                    // because we will be appending an integer
                     const afterChars = slug.substring(
-                        slug.indexOf(defaultSlug) + defaultSlug.length, slug.length);
+                        slug.indexOf(defaultOriginalSlug) + defaultOriginalSlug.length, slug.length);
                     if (afterChars) {
                         result.push(parseInt(afterChars));
                     }
@@ -114,35 +114,65 @@ const getArticleSlugCb = function (err, articles, cb, title, Article) {
         // + 1 slug ending
         if (articleSlugEndings.length) {
             const ending = (Math.max.apply(Math, articleSlugEndings) + 1);
-            return cb(defaultSlug + ending);
+            return cb(defaultOriginalSlug + ending);
         }
         // didn't find an articleSlugs with the same prefix so we are okay to use this one
         // as the prefix
         // maxAtLeast will be truthy if we found a slug that startsWith the given title's slug
         // This was we can add a 1 to it since it isn't actually unique
-        return cb(defaultSlug + (maxAtLeast ? 1 : ''))
+        return cb(defaultOriginalSlug + (maxAtLeast ? 1 : ''))
 
     }
 };
 
-const getArticleSlug = function (cb, title, Article) {
+const getCategorySlug = function (cb, category) {
     Article.find({}, function (err, articles) {
-        getArticleSlugCb(err, articles, cb, title, Article)
+        getUniqueValueForField(err, articles, cb, category, 'categorySlug');
     });
 };
 
-(function setUpUniqueArticleSlug(ArticleSchema) {
-    ArticleSchema.statics.defaultSlug = function (title) {
-        return defaultSlug(title);
-    };
+const getArticleSlug = function (cb, title, Article) {
+    Article.find({}, function (err, articles) {
+        getUniqueValueForField(err, articles, cb, title, 'articleSlug');
+    });
+};
 
+(function setUpUniqueSlugs(ArticleSchema) {
+    /*ArticleSchema.statics.defaultSlug = function (title) {
+        return defaultSlug(title);
+    };*/
     ArticleSchema.methods.getArticleSlug = function(cb) {
         return getArticleSlug(cb, this.title, this.model('Article'));
     };
 
-    ArticleSchema.statics.getArticleSlug = function(cb, title, Article) {
-        return getArticleSlug(cb, title, Article);
+    ArticleSchema.methods.getCategorySlug = function(cb) {
+        return getArticleSlug(cb, this.category, this.model('Article'));
     };
+
+    ArticleSchema.pre('save', function (next) {
+        const article = this;
+
+        if (!article.isModified('category')) return next();
+
+        article.getCategorySlug(function (slug) {
+            article.categorySlug = slug;
+            return next();
+        });
+    });
+
+
+    ArticleSchema.statics.getCategorySlug = function(cb, category, Article) {
+        if(!category) {
+            return false;
+        }
+        return getCategorySlug(cb, category, Article);
+    };
+
+
+    ArticleSchema.statics.getArticleSlug = function(cb, title, Article) {
+        return getCategorySlug(cb, title, Article);
+    };
+
 
     ArticleSchema.pre('save', function (next) {
         const article = this;
@@ -167,7 +197,7 @@ if(process.env.NODE_ENV !== 'test') {
         Article: Article,
         defaultSlug: defaultSlug,
         getArticleSlug: getArticleSlug,
-        getArticleSlugCb: getArticleSlugCb,
+        getUniqueValueForField: getUniqueValueForField,
         ArticleSchema: ArticleSchema
     }
 }

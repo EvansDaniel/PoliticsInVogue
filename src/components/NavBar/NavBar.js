@@ -3,6 +3,7 @@ import {Link} from "react-router-dom";
 import './NavBar.less';
 import Auth from '../../services/auth';
 import API from '../../shared/api-v1';
+import URLS from '../../shared/urls';
 import SocialShare from "../SocialShare/SocialShare";
 
 // TODO: add hamburger menu with transitions like leetcode.com
@@ -60,27 +61,13 @@ class NavBar extends Component {
 }
 
 const SubMenu = (props) => {
-    let categories = props.categories.map(function (category) {
-        // TODO: slug will be provided
-        const href = category
-        // replace all non-alphanumeric characters
-        // that isn't space
-            .replace(/[^a-zA-Z\d\s:]/g, '')
-            // replace space with "-"
-            .replace(new RegExp(" ", 'g'), '-')
-            .toLowerCase();
-        return {
-            href: href,
-            name: category
-        }
-    });
     return (
         // Only show if there are categories
-        categories.length ? <ul>
-            {categories.map((category, i) =>
-                <Link key={i} to={`/category/${category.href}`}>
+        props.categories.length ? <ul>
+            {props.categories.map((categoryData, i) =>
+                <Link key={i} to={URLS.transform(URLS.ROUTES.category, {categorySlug: categoryData.categorySlug})}>
                     <li>
-                        {category.name}
+                        {categoryData.category}
                     </li>
                 </Link>)
             }
