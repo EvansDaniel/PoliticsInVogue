@@ -7,7 +7,7 @@ const signUpIfNotSignedUp = function(User) {
     let email = process.env.AUTHOR_EMAIL,
         pass = process.env.AUTHOR_PASSWORD;
     // change to dev email/pass if development
-    if(process.env.isDev) {
+    if(process.env.NODE_ENV === 'development') {
         email = constants.DEV_EMAIL;
         pass = constants.DEV_PASSWORD;
     }

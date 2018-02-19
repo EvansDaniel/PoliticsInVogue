@@ -35,6 +35,9 @@ mongoose.connect(dbUrl,
     {useMongoClient: true}
 );
 
+// Adding own promise library, mpromise is deprecated
+mongoose.Promise = require('bluebird');
+
 const store = new MongoDBStore({
     uri: dbUrl,
     collection: 'sessions'

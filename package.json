@@ -78,7 +78,7 @@
     "upload:static": "npm run build && aws s3 sync build/ s3://politicsinvogue.com --delete",
     "upload:server": "ssh -i ~/.ssh/evansdaniel2000_personal_server.pem ubuntu@ec2-34-238-254-185.compute-1.amazonaws.com 'source ~/.bashrc && source ~/.nvm/nvm.sh && cd PoliticsInVogue.com/server && rm -rf package-lock.json && git pull && npm install; echo \"Success! You can start the server now\"'",
     "copy:config": "cd server/scripts && node ./upload_env_file.js",
-    "build:upload": "./node_modules/.bin/concurrently 'npm run upload:static' 'npm run upload:server' 'npm run copy:config'"
+    "fullDeploy": "./node_modules/.bin/concurrently 'npm run upload:static' 'npm run upload:server' 'npm run copy:config'"
   },
   "devDependencies": {
     "flow-bin": "^0.62.0",
