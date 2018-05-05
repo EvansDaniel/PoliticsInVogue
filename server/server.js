@@ -58,7 +58,8 @@ app.use(session({
         httpOnly: true,
     },
     name: process.env.SESSION_COOKIE_ID,
-    store: process.env.isProd ? store : null,
+    store: process.env.NODE_ENV === 'production' ? store : null,
+
     // Boilerplate options, see:
     // * https://www.npmjs.com/package/express-session#resave
     // * https://www.npmjs.com/package/express-session#saveuninitialized
