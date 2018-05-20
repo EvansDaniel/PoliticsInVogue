@@ -1,3 +1,4 @@
+import cookies from 'js-cookie';
 const constants = require('../shared/constants');
 
 let instance = null;
@@ -14,9 +15,10 @@ class Auth {
         return document.cookie.indexOf(constants.CACHED_AUTH_COOKIE) > -1;
     }
 
-    expireCachedAuthToken() {
-        return
+    expireAuthToken() {
+        cookies.remove(constants.CACHED_AUTH_COOKIE);
     }
+
 }
 
-module.exports = Auth;
+export default Auth;

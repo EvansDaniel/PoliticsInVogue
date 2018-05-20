@@ -32,10 +32,9 @@ class Error extends Component {
                 msg = 'It looks like the resource you were searching for doesn\'t exist.'
             }
             if(error.res.status === 401) {
-                // Expire the cached auth token b/c we are not longer signed in server-side
+                // Expire the cached auth token b/c we are not longer signed in server-si
                 cookies.remove(constants.CACHED_AUTH_COOKIE);
                 msg = 'You cannot view this page because you are not signed in. Redirecting you to login...';
-                // TODO: decide whether or not to keep the setTimeout and message stuff
                 setTimeout((function () {
                     this.setState({redirect: URLS.ROUTES.login});
                 }).bind(this), 0);

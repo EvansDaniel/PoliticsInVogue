@@ -13,7 +13,7 @@ module.exports = function (app) {
     // TODO: do I need a catch all route here?
     // Error handler
     app.use(function(err, req, res, next){
-        console.log('err', JSON.stringify(err, null, 2));
+        console.log('error handler', JSON.stringify(err, null, 2));
         if(err instanceof mongoose.Error.ValidationError) {
             const messages = [];
             for(let field in err.errors) {
@@ -27,7 +27,7 @@ module.exports = function (app) {
             });
         }
 
-        return res.status(err.code && err.code >= 100 && err.code
+        return res.status((err.code >= 100 && err.code)
             || 500).json({ error: err });
     });
 };

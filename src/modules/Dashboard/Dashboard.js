@@ -36,8 +36,6 @@ class Dashboard extends Component {
     }
 
     componentDidMount() {
-        // TODO: race condition, me might not be loaded until
-        // after dashboard articles are loaded, me might be undefined
         API.asynchronousSafeFetch([this.loadDashboardArticles(), this.loadMe()], (function () {
             this.setState({loading: false});
         }).bind(this));
@@ -129,7 +127,7 @@ class Dashboard extends Component {
                     })
                 });
             },
-            // TODO: set up redirects to login
+            // TODO: set up redirects to login?
             error: () => function () {
                 self.setState({
                     error: errorUtils.buildRenderError(true, null,

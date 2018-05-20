@@ -207,6 +207,7 @@ class EditArticle extends Component {
 
     getArticleData() {
         const self = this;
+        console.log('getArticleData');
         return {
             options: {
                 success: function (response) {
@@ -246,6 +247,10 @@ class EditArticle extends Component {
                 }
             }
         }
+    }
+
+    componentWillMount() {
+
     }
 
     componentDidMount() {
