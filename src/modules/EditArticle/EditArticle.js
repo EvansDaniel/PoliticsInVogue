@@ -207,21 +207,20 @@ class EditArticle extends Component {
 
     getArticleData() {
         const self = this;
-        // make ajax call to get data
         return {
             options: {
                 success: function (response) {
-                    // TODO: make this better
-                    if (response.status === 200) {
-                        self.setState({
-                            articleData: response.data,
-                            editorState: editorUtils.getEditorStateFromJSON(response.data.body)
-                        });
-                    }
+                    console.log('getting data for edit article ');
+                    self.setState({
+                        articleData: response.data,
+                        editorState: editorUtils.getEditorStateFromJSON(response.data.body)
+                    });
                 },
                 error: function (error) {
+                    console.log('here i am with an error');
                     self.setState({
-                        error: errorUtils.buildRenderError(true, error.response, 'There was an error loading article related data')
+                        error: errorUtils.buildRenderError(true, error.response,
+                            'There was an error loading article related data')
                     });
                 },
                 params: {
@@ -268,7 +267,7 @@ class EditArticle extends Component {
             errorUtils.renderIfError(this.state.error) || <div className="EditArticle">
                 {
                     this.state.loading ? <Loading/> :
-                        <div>
+                        <div className="outer-container">
                             <div id="modal"></div>
                             <PopUpModal
                                 contentLabel="Final Details"
@@ -355,10 +354,10 @@ class EditArticle extends Component {
                                                 >
                                                     {
                                                         /* Add an empty option so that it doesn't look like
-                                                        the category has been selected when it hasn't. This happens
-                                                        because when category is falsey it falls back to showing
-                                                        the first option but it isn't actually selected. This empty
-                                                        option must stay as FIRST option
+                                                         the category has been selected when it hasn't. This happens
+                                                         because when category is falsey it falls back to showing
+                                                         the first option but it isn't actually selected. This empty
+                                                         option must stay as FIRST option
                                                          */
                                                         this.state.articleData.category === undefined ?
                                                             <option value=""></option> : null
@@ -366,7 +365,8 @@ class EditArticle extends Component {
                                                     {
                                                         this.state.allCategories.map((categoryData) => {
                                                             return (
-                                                                <option value={categoryData.category}>{categoryData.category}</option>
+                                                                <option
+                                                                    value={categoryData.category}>{categoryData.category}</option>
                                                             );
                                                         })
                                                     }
@@ -394,12 +394,12 @@ class EditArticle extends Component {
                                         <img src={publishIcon} alt=""/>
                                         <span>Publish article</span>
                                     </button>
-                                    <div className="saving-actions">
-                                        {this.state.savingAction}
-                                    </div>
-                                    <div className="error-msg">
-                                        {this.state.errorMsg}
-                                    </div>
+                                </div>
+                                <div className="saving-actions">
+                                    {this.state.savingAction}
+                                </div>
+                                <div className="error-msg">
+                                    {this.state.errorMsg}
                                 </div>
                                 {
                                     !this.state.showPreview ?

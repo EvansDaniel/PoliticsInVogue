@@ -6,6 +6,8 @@ import errorIcon from "../../../src/img/error.jpg";
 import URLS from '../../shared/urls';
 import {Link, Redirect} from 'react-router-dom';
 import {withRouter} from 'react-router-dom';
+import cookies from 'js-cookie';
+import constants from '../../shared/constants';
 
 // Handles server errors (404, 400, 401, 500, etc)
 class Error extends Component {
@@ -30,10 +32,13 @@ class Error extends Component {
                 msg = 'It looks like the resource you were searching for doesn\'t exist.'
             }
             if(error.res.status === 401) {
+                // Expire the cached auth token b/c we are not longer signed in server-side
+                cookies.remove(constants.CACHED_AUTH_COOKIE);
                 msg = 'You cannot view this page because you are not signed in. Redirecting you to login...';
+                // TODO: decide whether or not to keep the setTimeout and message stuff
                 setTimeout((function () {
                     this.setState({redirect: URLS.ROUTES.login});
-                }).bind(this), 4000);
+                }).bind(this), 0);
             }
         }
         if(this.state.redirect) {

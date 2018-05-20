@@ -129,6 +129,7 @@ class Dashboard extends Component {
                     })
                 });
             },
+            // TODO: set up redirects to login
             error: () => function () {
                 self.setState({
                     error: errorUtils.buildRenderError(true, null,

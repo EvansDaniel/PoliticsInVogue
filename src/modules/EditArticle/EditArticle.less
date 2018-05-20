@@ -9,93 +9,99 @@
   padding: @medium @medium 0 @medium;
   width: 100%;
 
-  .edit-article-container {
-    max-width: 500px;
-    text-align: center;
-    color: @realBlack;
+  .outer-container {
+    // So that the errorMsg/savingAction text does not cause resizing of the controls
+    min-width: 500px;
 
-    .title-input, .showcase-image-input {
-      .input-control();
-    }
+    .edit-article-container {
+      // TODO: find something better here
+      max-width: 500px;
+      text-align: center;
+      color: @realBlack;
 
-    .showcase-image-wrapper {
-      .showcase-image-input {
-        font-size: 12px;
-      }
-
-      .image-preview {
-        height: 50*@pixel;
-        float: right;
-      }
-    }
-
-    .category-control {
-      .flex();
-      justify-content: center;
-      margin-bottom: @medium;
-      div {
-        text-align: center;
-        width: auto;
-
-        .category-select-label {
-          display: block;
-        }
-
-        .category-select {
-          .default-select();
-        }
-      }
-
-      .category-input {
+      .title-input, .showcase-image-input {
         .input-control();
       }
 
-      button {
-        .default-button();
-        color: @realBlack;
-        height: auto;
-        margin-left: @small;
-      }
-    }
-
-    .editor-controls {
-      margin-bottom: @medium;
-      @media @smartphones {
-        text-align: center;
-      }
-
-      & > button {
-        .default-button();
-
-        img {
-          height: 18px;
-          margin: @xxsmall;
+      .showcase-image-wrapper {
+        .showcase-image-input {
+          font-size: 12px;
         }
 
-        span {
-          position: relative;
-          top: @xxsmall;
+        .image-preview {
+          height: 50*@pixel;
+          float: right;
         }
       }
 
-      .saving-actions {
-        display: inline-block;
-        vertical-align: bottom;
+      .category-control {
+        .flex();
+        justify-content: center;
+        margin-bottom: @medium;
+        div {
+          text-align: center;
+          width: auto;
+
+          .category-select-label {
+            display: block;
+          }
+
+          .category-select {
+            .default-select();
+          }
+        }
+
+        .category-input {
+          .input-control();
+        }
+
+        button {
+          .default-button();
+          color: @realBlack;
+          height: auto;
+          margin-left: @small;
+        }
+      }
+
+      .editor-controls {
+        margin-bottom: @medium;
         @media @smartphones {
-          margin-top: @xsmall;
+          text-align: center;
+        }
+
+        & > button {
+          .default-button();
+
+          img {
+            height: 18px;
+            margin: @xxsmall;
+          }
+
+          span {
+            position: relative;
+            top: @xxsmall;
+          }
+        }
+
+        .saving-actions {
+          display: inline-block;
+          vertical-align: bottom;
+          @media @smartphones {
+            margin-top: @xsmall;
+          }
         }
       }
-    }
 
-    .editing {
-      width: 100%;
-      text-align: left;
-    }
+      .editing {
+        width: 100%;
+        text-align: left;
+      }
 
-    .preview {
-      width: 100%;
-      background-color: white;
-      color: black;
+      .preview {
+        width: 100%;
+        background-color: white;
+        color: black;
+      }
     }
   }
 }

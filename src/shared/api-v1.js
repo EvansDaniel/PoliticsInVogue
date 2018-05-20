@@ -27,7 +27,8 @@ let post = (url, options) => {
     const data = {
         data: options.data || options
     };
-
+    console.log('options', options);
+    console.log('data', data);
     axios({
         url: url,
         method: 'POST',
@@ -92,6 +93,7 @@ module.exports = {
             let numFetchablesLeft = fetchables.length;
             fetchables.forEach(function (fetchable, i) {
                 const oldSuccess = fetchable.options.success.bind({});
+                // replace old success function via merge
                 fetchable.apiFunc(_.merge(fetchable.options, {
                     success: function (response) {
                         --numFetchablesLeft;
@@ -202,20 +204,23 @@ module.exports = {
         });
     },
 
-    login: function (callback: (response: {}) => void, options: { email: string, password: string }) {
+    login: function (options) {
+        // Since all other post requests require data in the form:
+        // data = {data: {...data fields...}} and passport requires just {email: ..., password: ...}
+        // we will do the full axios request rather than call post()
         axios({
             url: URLS.APP.login,
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            withCredentials: true,
-            data: JSON.stringify(options)
-        }).then((response) => {
+            data: JSON.stringify(options.data)
+        }).then(response => {
             console.log(response);
-            callback(response.data)
+            options.success && options.success(response.data)
         }).catch(error => {
             console.log('request failed', error);
+            options.error && options.error(error);
         });
     }
 };

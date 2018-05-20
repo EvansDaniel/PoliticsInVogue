@@ -7,6 +7,7 @@ const _ = require('lodash');
 
 const UserRoutes = function (UserDataService) {
 
+    // TODO: need a logout feature?
     const postLogin = function (req, res, next) {
         // we successfully authenticated so cache a cookie and send back user info
         routeUtils.debuggingHelper(req, res, next, function (req, res, next) {

@@ -60,6 +60,7 @@ const ArticleRoutes = function (ArticleDataService) {
     };
 
     const getEditArticleHandle = function (req, res, next) {
+        console.log('get edit article handle');
         routeUtils.debuggingHelper(req, res, next, function (req, res, next) {
             ArticleDataService.getArticle(req.query, function (err, article) {
                 if(err) {
