@@ -1,41 +1,49 @@
 import React, {Component} from "react";
 import "./SocialShare.less";
-import fbIcon from "../../../src/img/facebook-app-symbol.svg";
-import pinIcon from "../../../src/img/pinterest.svg";
-import linkedinIcon from "../../../src/img/linkedin-logo.svg";
-import twitterIcon from "../../../src/img/twitter.svg";
-import emailIcon from "../../../src/img/email.svg";
+import bluePinterestIcon from "../../../src/img/pinterest.svg";
+import whitePinterestIcon from "../../../src/img/pinterest-white.svg";
+import blueFbIcon from "../../../src/img/facebook-app-symbol.svg";
+import whiteFbIcon from "../../../src/img/facebook-white.svg";
+import blueLinkedinIcon from "../../../src/img/linkedin-logo.svg";
+import whiteLinkedinIcon from "../../../src/img/linkedin-white.svg";
+import blueEmailIcon from "../../../src/img/email.svg";
+import whiteEmailIcon from "../../../src/img/email-white.svg";
+import blueTwitterIcon from "../../../src/img/twitter.svg";
+import whiteTwitterIcon from "../../../src/img/twitter-white.svg";
+
 import PropTypes from "prop-types";
 import queryString from "query-string";
 const CONSTANTS = require('../../shared/constants');
 
 class SocialShare extends Component {
-    constructor(props: {}) {
+    constructor(props) {
         super(props);
         this.twitterShare = this.twitterShare.bind(this);
         this.linkedinShare = this.linkedinShare.bind(this);
+        let icons = props.icons;
+        icons = icons || {};
         this.socialMedias = {
             'pinterest': {
-                icon: pinIcon,
+                icon: icons.pinterest === 'white' ? whitePinterestIcon : bluePinterestIcon,
                 shareFunc: this.pinterestShare,
                 fontAwesomeHTML: <i className="fa fa-pinterest" aria-hidden="true" onClick={this.pinterestShare}></i>
             },
             'email': {
-                icon: emailIcon,
+                icon: icons.email === 'white' ? whiteEmailIcon : blueEmailIcon,
                 shareFunc: () => {return false;},
             },
             'facebook': {
-                icon: fbIcon,
+                icon: icons.facebook === 'white' ? whiteFbIcon : blueFbIcon,
                 shareFunc: this.facebookShare,
                 fontAwesomeHTML: <i className="fa fa-facebook" aria-hidden="true" onClick={this.facebookShare}></i>
             },
             'twitter': {
-                icon: twitterIcon,
+                icon: icons.twitter === 'white' ? whiteTwitterIcon : blueTwitterIcon,
                 shareFunc: this.twitterShare,
                 fontAwesomeHTML: <i className="fa fa-twitter" aria-hidden="true" onClick={this.twitterShare}></i>
             },
             'linkedin': {
-                icon: linkedinIcon,
+                icon: icons.linkedin === 'white' ? whiteLinkedinIcon : blueLinkedinIcon,
                 shareFunc: this.linkedinShare,
             },
         };

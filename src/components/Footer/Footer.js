@@ -5,8 +5,8 @@ import SocialShare from "../SocialShare/SocialShare";
 class Footer extends Component {
     render() {
         return (
-            <footer className="Footer" ref={(footer) => this.footer = footer}>
-                <div className="push-down-div" ref={(pushDownDiv) => this.pushDownDiv = pushDownDiv}></div>
+            <footer className="Footer">
+                <div className="push-down-div"></div>
                 <div className="footer-container">
                     <div className="site-link-row">
                         <div className="column">
@@ -16,7 +16,7 @@ class Footer extends Component {
                                 </div>
                             </div>
                             <div className="list">
-                                <div><a href="https://www.linkedin.com/in/danielevans11/">Created by Daniel Evans</a></div>
+                                <div><a href="https://www.linkedin.com/in/danielevans11/">Developed by Daniel Evans</a></div>
                                 <div>
                                     Icons by <a href="https://www.flaticon.com/authors/rami-mcmin">Dave G</a>, <a
                                     href="https://www.flaticon.com/authors/linh-pham">Linh P</a>, <a
@@ -70,7 +70,12 @@ const SocialMediaList = (props) => {
                     {Array.from(new Array(socialMedia.length), (val, index) => index).map((index) => {
                         key++;
                         return (
-                            <SocialShare type={socialMedia[index]} key={key} transitionType='float'/>
+                            <SocialShare icons={{
+                                pinterest: 'white', facebook: 'white',
+                                email: 'white', twitter: 'white', linkedin: 'white'
+                            }} type={socialMedia[index]}
+                                         key={key}
+                                         transitionType='float'/>
                         )
                     })}
                 </div>

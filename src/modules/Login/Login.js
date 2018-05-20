@@ -87,7 +87,7 @@ class Login extends Component {
                                    onChange={this.onInputChange} icon="email-icon"/>
                             <input type="password" placeholder="Password" name="password" value={this.state.password}
                                    onChange={this.onInputChange} icon="email-icon"/>
-                            <button type="submit">Sign In</button>
+                            <button type="submit" disabled={true}>Sign In</button>
                         </div>
                     </form>
                 </div>
