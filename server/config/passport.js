@@ -21,7 +21,7 @@ const PassportConfig = function(User) {
                 }
                 console.log('here3')
                 user.comparePassword(password, function (err, isMatch) {
-                    console.log('here5')
+                    console.log('here5');
                     if (err) throw err;
                     if (isMatch) {
                         console.log('here6');

@@ -203,6 +203,7 @@ module.exports = {
         axios({
             url: URLS.APP.login,
             method: 'POST',
+            withCredentials: true,
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -211,7 +212,7 @@ module.exports = {
             console.log(response);
             options.success && options.success(response.data)
         }).catch(error => {
-            console.log('request failed', error);
+            console.log('request failed', error.response);
             options.error && options.error(error);
         });
     }

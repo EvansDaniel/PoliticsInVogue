@@ -75,7 +75,7 @@ class SocialShare extends Component {
         const baseShareUrl = 'https://www.linkedin.com/shareArticle';
         const queryParams = {
             url: window.encodeURI(window.location.href),
-            title: `${(articleData && articleData.title + ' by Sophie Clark') || 'FashionInVogue'}`,
+            title: `${(articleData && articleData.title + ' by Sophie Clark') || 'Politics In Vogue'}`,
             // summary: 'my description', TODO: include this maybe?
             mini: true,
             source: window.encodeURI(window.location.hostname)
