@@ -15,6 +15,8 @@ import PopUpModal from '../../components/PopUpModal/PopUpModal';
 import '../../css/pretty-checkbox.css';
 
 import errorUtils from '../../utils/error-utils';
+
+import Auth from '../../services/auth';
 const URLS = require('../../shared/urls');
 const editorUtils = require('../../shared/utils/editor-utils');
 
@@ -30,6 +32,8 @@ class EditArticle extends Component {
 
         this.getArticleData = this.getArticleData.bind(this);
         this.getAllCategories = this.getAllCategories.bind(this);
+
+        this.auth = new Auth();
 
         this.SAVING_ACTIONS = {
             changesSaved: 'All changes saved as draft',
@@ -127,7 +131,12 @@ class EditArticle extends Component {
                 waitAfterSave(self.SAVING_ACTIONS.changesSaved);
             },
             error: (error) => {
-                waitAfterSave(self.SAVING_ACTIONS.errorSaving);
+                // TODO: Possibly remove if/else?
+                if(error.response.status === 401) {
+                    waitAfterSave('Error saving changes: ' + this.auth.notSignedInMsg);
+                } else {
+                    waitAfterSave(self.SAVING_ACTIONS.errorSaving);
+                }
             },
             // Since we have made an edit to the article, we always want to
             // save the article as a draft until it is published or republished
@@ -207,21 +216,18 @@ class EditArticle extends Component {
 
     getArticleData() {
         const self = this;
-        console.log('getArticleData');
         return {
             options: {
                 success: function (response) {
-                    console.log('getting data for edit article ');
                     self.setState({
                         articleData: response.data,
                         editorState: editorUtils.getEditorStateFromJSON(response.data.body)
                     });
                 },
                 error: function (error) {
-                    console.log('here i am with an error');
                     self.setState({
                         error: errorUtils.buildRenderError(true, error.response,
-                            'There was an error loading article related data')
+                            'There was an error loading this article\'s data. It might not exist.')
                     });
                 },
                 params: {
@@ -249,20 +255,26 @@ class EditArticle extends Component {
         }
     }
 
-    componentWillMount() {
-
-    }
-
     componentDidMount() {
         if (!this.state.loading) {
             this.titleInput.focus();
         }
 
         if (this.props.match.params._id) {
-            // TODO: go back to dashboard if there is no article with this _id
-            API.asynchronousSafeFetch([this.getArticleData(), this.getAllCategories()], (function () {
-                this.setState({loading: false});
-            }).bind(this));
+            const self = this;
+            // Need to check if we can view this page (signed in or not)
+            API.checkAuthenticated({
+                success: function (response) {
+                    if(response.data.authenticated === true) {
+                        API.asynchronousSafeFetch([self.getArticleData(), self.getAllCategories()], (function () {
+                            self.setState({loading: false});
+                        }).bind(this));
+                    } else {
+                        self.setState({error: {val: true, notAuthenticated: true}});
+                    }
+                },
+                error: () => {},
+            });
         }
     }
 

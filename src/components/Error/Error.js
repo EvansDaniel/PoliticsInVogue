@@ -6,13 +6,14 @@ import errorIcon from "../../../src/img/error.jpg";
 import URLS from '../../shared/urls';
 import {Link, Redirect} from 'react-router-dom';
 import {withRouter} from 'react-router-dom';
-import cookies from 'js-cookie';
-import constants from '../../shared/constants';
+import Auth from '../../services/auth';
 
 // Handles server errors (404, 400, 401, 500, etc)
 class Error extends Component {
     constructor(props) {
         super(props);
+
+        this.auth = new Auth();
 
         this.state = {
             showModal: true,
@@ -21,23 +22,36 @@ class Error extends Component {
         }
     }
 
+    handleNotAuthorized() {
+        this.auth.expireAuthToken();
+        //msg = 'You cannot view this page because you are not signed in. Redirecting you to login...';
+        this.setState({redirect: URLS.ROUTES.login});
+    }
+
     render() {
         const self = this;
         const error = this.props.error;
         let msg = error.message || 'There was an error. Please try again later';
         // when res is provided, we check that status code to send a default message to user
         // and it will overwrite error.message
+
+        // Handle other not authorized errors not stemming from AJAX calls directly
+        if(error.notAuthenticated) {
+            this.handleNotAuthorized();
+        }
+
+        // Handle errors that directly come from AJAX calls
         if(error.res) {
             if(error.res.status === 404) {
                 msg = 'It looks like the resource you were searching for doesn\'t exist.'
             }
             if(error.res.status === 401) {
                 // Expire the cached auth token b/c we are not longer signed in server-si
-                cookies.remove(constants.CACHED_AUTH_COOKIE);
-                msg = 'You cannot view this page because you are not signed in. Redirecting you to login...';
-                setTimeout((function () {
+                this.handleNotAuthorized();
+                //msg = 'You cannot view this page because you are not signed in. Redirecting you to login...';
+                /*setTimeout((function () {
                     this.setState({redirect: URLS.ROUTES.login});
-                }).bind(this), 0);
+                }).bind(this), 0);*/
             }
         }
         if(this.state.redirect) {

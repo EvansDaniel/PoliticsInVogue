@@ -8,6 +8,9 @@ class Auth {
         if(!instance){
             instance = this;
         }
+
+        instance.notSignedInMsg = 'You are not signed in.';
+
         return instance;
     }
 

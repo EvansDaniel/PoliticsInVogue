@@ -192,16 +192,8 @@ module.exports = {
         });
     },
 
-    checkAuthenticated: function (callback: (response: {}) => void, options: {}) {
-        axios({
-            url: URLS.APP.checkAuthenticated,
-            method: 'GET',
-        }).then(response => {
-            console.log(response);
-            callback(response.data)
-        }).catch(error => {
-            console.log('request failed', error);
-        });
+    checkAuthenticated: function (options) {
+        get(URLS.APP.checkAuthenticated, options)
     },
 
     login: function (options) {

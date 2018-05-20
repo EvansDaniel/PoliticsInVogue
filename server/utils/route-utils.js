@@ -8,6 +8,7 @@ module.exports = (function () {
                 console.log('i am authenticated :)');
                 return next();
             }
+            console.log('NOT AUTHENTICATED');
             return next(new HttpError.Unauthorized('You are not authorized to see this page. You are probably not signed in.'));
         },
 
