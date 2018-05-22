@@ -47,15 +47,17 @@ store.on('error', function (error) {
     throw error;
 });
 
+app.use(cookieParser());
 
 app.use(session({
     secret: process.env.EXPRESS_SESSION_SECRET,
     cookie: {
         maxAge: CONSTANTS.SESSION_COOKIE_TIME,
         httpOnly: true,
-        domain: process.env.NODE_ENV === 'production' ? constants.HOST_DOMAIN : '',
+        // Do not add the domain here, it wil cause express session to add the Set-Cookie
+        // header on EVERY request
     },
-    name: process.env.SESSION_COOKIE_ID,
+    name: 'session_cookie_id',//process.env.SESSION_COOKIE_ID,
     store: process.env.NODE_ENV === 'production' ? store : null,
 
     // Boilerplate options, see:
@@ -75,7 +77,6 @@ app.use(bodyParser.json({type: 'application/vnd.api+json'}));
 
 app.use(morgan('dev'));
 
-app.use(cookieParser());
 app.use(methodOverride('X-HTTP-Method-Override'));
 
 const CORS_ORIGINS_ALLOWED = [
@@ -98,6 +99,13 @@ app.use(cors({
     // Some old browsers choke on 204
     optionsSuccessStatus: 200,
 }));
+
+// debugging code
+app.use(function (req, res, next) {
+    console.log('session id', req.session.id);
+    console.log('cookies sent from client', req.cookies);
+    return next();
+});
 
 // Bootstrap the app VERY LAST
 require('./bootstrap.js')(app);

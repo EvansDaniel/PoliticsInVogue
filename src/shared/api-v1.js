@@ -32,6 +32,7 @@ let post = (url, options) => {
     axios({
         url: url,
         method: 'POST',
+        withCredentials: true,
         headers: {
             'Content-Type': 'application/json'
         },
@@ -52,6 +53,7 @@ let get = function (url, options) {
     axios({
         url: url,
         method: 'GET',
+        withCredentials: true,
         headers: {
             'Content-Type': 'application/json'
         },
