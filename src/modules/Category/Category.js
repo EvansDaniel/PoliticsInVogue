@@ -16,7 +16,7 @@ class Category extends Component {
     }
 
     componentDidMount() {
-        this.loadData();
+        this.loadCategories();
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -26,12 +26,12 @@ class Category extends Component {
 
         // Category slugs changed, so load new articles for the new category
         if (prevProps.match.params.categorySlug !== this.props.match.params.categorySlug) {
-            this.loadData();
+            this.loadCategories();
         }
     }
 
     // Loads articles for the given category
-    loadData() {
+    loadCategories() {
         API.asynchronousSafeFetch([this.getArticlesFromCategory()], (function () {
             this.setState({loading: false})
         }).bind(this));
