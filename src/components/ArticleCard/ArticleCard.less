@@ -5,7 +5,7 @@
 
 .ArticleCard {
   .bottom-transition(@time: @transitionTime);
-  background: url(https://3.bp.blogspot.com/-payJOzdVdME/WjD1Nyg5znI/AAAAAAAAXTE/FZ3My_xkbtc1u5DsX8u3nFm8TDAA6UY_ACLcBGAs/s1600/cindy%2Bkimberly3.jpg) no-repeat center;
+  background: no-repeat center;
   background-size: cover;
   background-position: 50% !important;
   height: 250px;
@@ -33,6 +33,14 @@
       opacity: 0;
       transition-property: opacity,background-color;
       transition-duration: @transitionTime;
+
+      // TODO: detect what device the user is on and include CSS that will work best for their device
+      // This is currently hear because mobile device users have no means by which
+      // to know the title of the article on the home page
+      @media @smartphones {
+        background-color: @whiteOut;
+        opacity: 1;
+      }
 
       & > div {
         display: table;
