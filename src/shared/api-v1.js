@@ -196,6 +196,10 @@ module.exports = {
         }, component)
     },
 
+    createSubscriber: function (options) {
+        post(URLS.APP.createSubscriber, options);
+    },
+
     getSuggestedArticles: function (options) {
         get(URLS.APP.suggestedArticles, {
             success: options.success,

@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const ArticleBootstrap = require('./components/Article/ArticleBootstrap');
 const UserBootstrap = require('./components/User/UserBootstrap');
+const SubscriberBootstrap = require('./components/Subscriber/SubscriberBootstrap');
 
 module.exports = function (app) {
     // TODO: iterate through dirs in components and
@@ -9,6 +10,7 @@ module.exports = function (app) {
     // it manually
     ArticleBootstrap(app);
     UserBootstrap(app);
+    SubscriberBootstrap(app);
 
     // TODO: do I need a catch all route here?
     // Error handler

@@ -8,6 +8,8 @@ const SubscriberBootstrap = function (app) {
     const SubscriberRoutes = require('./SubscriberRoutes')(SubscriberDataService);
 
     // define app.get/post routes here
+    app.post(URLS.API.createSubscriber,
+        SubscriberRoutes.postCreateSubscriberHandle)
 };
 
 module.exports = SubscriberBootstrap;

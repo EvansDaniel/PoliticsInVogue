@@ -4,7 +4,6 @@ const SubscriberDataService = function (Subscriber) {
     return {
         // TODO: if someone subscribes, save a cookie in browser to track what they like to read
         create: function (subscriberData, cb) {
-            // TODO: look up validation stuff for mongoose
             const newSubscriber = new Subscriber(subscriberData);
             console.log(subscriberData);
             newSubscriber.save(cb);

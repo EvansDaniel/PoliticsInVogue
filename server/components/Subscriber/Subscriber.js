@@ -5,7 +5,7 @@ const SubscriberSchema = new Schema({
     email: {
         type: String,
         require: true,
-        index: {unique: true},
+        //index: {unique: true},
         trim: true
     },
 }, {

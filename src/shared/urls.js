@@ -14,6 +14,7 @@ let URLS = {
         dashboardArticles: 'articles/dashboard',
         articlePlacement: 'article/placement',
         categories: 'articles/categories',
+        createSubscriber: 'subscribers/create',
         login: 'login',
         checkAuthenticated: 'checkAuthenticated'
     },

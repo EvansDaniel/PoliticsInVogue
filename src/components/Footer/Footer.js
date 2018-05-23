@@ -1,8 +1,47 @@
 import React, {Component} from "react";
 import "./Footer.less";
 import SocialShare from "../SocialShare/SocialShare";
+import API from '../../shared/api-v1';
 
 class Footer extends Component {
+
+    constructor(props) {
+        super(props);
+
+        this.onInputChange = this.onInputChange.bind(this);
+        this.createSubscriber = this.createSubscriber.bind(this);
+
+        this.state = {
+            subscriberEmail: '',
+        };
+    }
+
+    createSubscriber(event) {
+        event.preventDefault();
+        const self = this;
+        API.createSubscriber({
+            success: function (response) {
+                // TODO: show a thank you popup and stuff
+                // since it's now been recorded, reset input
+                self.setState({subscriberEmail: ''});
+            },
+            error: () => {},
+            data: {
+                email: this.state.subscriberEmail
+            }
+        });
+    }
+
+    onInputChange(event) {
+        const target = event.target,
+            value = target.type === 'checkbox' ? target.checked : target.value,
+            name = event.target.name;
+
+        this.setState({
+            [name]: value
+        });
+    }
+
     render() {
         return (
             <footer className="Footer">
@@ -32,11 +71,13 @@ class Footer extends Component {
                                 </div>
                             </div>
                             <div className="list">
-                                <div className="footer-input">
-                                    <input type="text"
-                                           placeholder="Your Email Address Here"/>
-                                    <button>Subscribe</button>
-                                </div>
+                                <form className="footer-input" onSubmit={this.createSubscriber.bind(this)}>
+                                    <input type="email"
+                                           name="subscriberEmail"
+                                           placeholder="Your Email Address Here"
+                                           value={this.state.subscriberEmail} onChange={this.onInputChange}/>
+                                    <button type="submit">Subscribe</button>
+                                </form>
                             </div>
                         </div>
                         <div className="column social-media">
