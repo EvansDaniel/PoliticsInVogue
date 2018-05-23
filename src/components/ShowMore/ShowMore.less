@@ -7,20 +7,15 @@
   line-height: 1.25em;
 
   &.show {
-    height: 100%;
+    height: auto;
   }
 
   &.hide {
     height: 100px;
-    :after {
-      content: "...";
-    }
   }
 
   .show-text {
     cursor: pointer;
-    &:after {
-      content: "";
-    }
+    text-decoration: underline;
   }
 }
