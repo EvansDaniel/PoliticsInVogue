@@ -70,7 +70,6 @@ const ArticleDataService = function (Article) {
                 findFunc = Article.find.bind(Article);
             }
             else if (queryObj.hasOwnProperty('categorySlug')) {
-                console.log('blah blah blah');
                 filter.categorySlug = queryObj.categorySlug;
                 findFunc = Article.find.bind(Article);
             }
@@ -79,7 +78,6 @@ const ArticleDataService = function (Article) {
                 findFunc = Article.findOne.bind(Article);
             }
 
-            console.log(filter);
             findFunc(filter, function (err, article) {
                 article = _postFindArticleModification(article);
                 // if we are requesting a specific article (via articleSlug/_id
@@ -275,7 +273,6 @@ const ArticleDataService = function (Article) {
                         placedArticles[article.placement].push(modifiedArticle);
                     });
 
-                    console.log(placedArticles);
                     return cb(false, placedArticles);
                 });
             },
@@ -284,7 +281,6 @@ const ArticleDataService = function (Article) {
                 const newArticle = new Article(articleData);
                 // Create new Article slug from title
                 newArticle.save(function (err, savedArticle, rowsAffected) {
-                    console.log('in save');
                     return cb(err, savedArticle, rowsAffected);
                 });
             },

@@ -159,6 +159,8 @@ const getArticleSlug = function (cb, title, Article) {
                 return next();
             });
         }
+
+        return next();
     });
 })(ArticleSchema);
 
