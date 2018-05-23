@@ -30,7 +30,7 @@ class SocialShare extends Component {
             },
             'email': {
                 icon: icons.email === 'white' ? whiteEmailIcon : blueEmailIcon,
-                shareFunc: () => {return false;},
+                shareFunc: () => {window.location.href = 'mailto:'},
             },
             'facebook': {
                 icon: icons.facebook === 'white' ? whiteFbIcon : blueFbIcon,
