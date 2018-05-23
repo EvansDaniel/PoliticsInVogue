@@ -49,7 +49,7 @@ class EditArticle extends Component {
         };
 
         this.CATEGORY_ACTIONS = {
-            existingCategory: 'or add to existing category',
+            existingCategory: 'or add to an existing category',
             newCategory: 'or add to new category'
         };
         this.onEditorChange = this.onEditorChange.bind(this);

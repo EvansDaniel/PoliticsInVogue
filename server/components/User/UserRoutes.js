@@ -22,6 +22,20 @@ const UserRoutes = function (UserDataService) {
         });
     };
 
+    const postLogout = function (req, res, next) {
+        // we successfully authenticated so cache a cookie and send back user info
+        routeUtils.debuggingHelper(req, res, next, function (req, res, next) {
+            console.log('Building cached auth cookie');
+            res.cookie(constants.CACHED_AUTH_COOKIE,
+                uuidv4(), cookieUtils.getCookieOptions({
+                    maxAge: constants.SESSION_COOKIE_TIME
+                }));
+            const user = req.user.toObject();
+            delete user.password;
+            res.json(user);
+        });
+    };
+
     const getCheckAuthenticated = function (req, res, next) {
         return res.json({
             authenticated: !!req.isAuthenticated && req.isAuthenticated()
@@ -47,6 +61,7 @@ const UserRoutes = function (UserDataService) {
         getMeHandle: getMeHandle,
         postEditMeHandle: postEditMeHandle,
         postLogin: postLogin,
+        postLogout: postLogout,
         getCheckAuthenticated: getCheckAuthenticated
     };
 };

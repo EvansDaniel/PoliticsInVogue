@@ -34,7 +34,10 @@
 
         // Hook for ButtonInput
         .edit-img-link {
-          .edit-button, .done-button {
+          .edit-button {
+            .default-button(@transition: true);
+          }
+          .done-button {
             .default-button();
           }
         }
@@ -129,8 +132,8 @@
   color: white;
   font-weight: bold;
   display: inline-flex;
-  height: 25px;
   border: none;
+  padding: 5px;
   outline: none;
   .border-radius(@radius: 2px);
   margin-right: @medium;

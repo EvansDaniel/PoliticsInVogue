@@ -34,6 +34,12 @@
   box-shadow: 0 3px 4px rgba(0, 0, 0, 0.1);
 }
 
+.ellipsis() {
+  &:after {
+    content: "...";
+  }
+}
+
 .add-quotes(@ending: "") {
   @rightQuote: "\201D";
   @leftQuote: "\201C";
