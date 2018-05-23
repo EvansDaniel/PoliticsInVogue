@@ -19,7 +19,7 @@ class ArticleBlock extends Component {
             slidesToShow: 5,
             slidesToScroll: 4,
             arrows: true,
-            nextArrow: <Arrow right={true}/>,
+            nextArrow: <Arrow right={1 /* we use 1 as a truth value instead of true b/c React complains about using boolean value*/}/>,
             prevArrow: <Arrow/>,
         };
         settings = _.merge(settings, this.props.settings);
@@ -121,8 +121,8 @@ ArticleBlock.proptypes = {
 const Arrow = (props) => {
     const {className, style, ...other} = props;
     const margin = props.right ? {
-        'margin-left': '10px'
-    } : {'margin-right': '10px'};
+        'marginLeft': '10px'
+    } : {'marginRight': '10px'};
     return (
         <button {...other} style={_.merge({
             border: '0px',

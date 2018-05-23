@@ -85,6 +85,11 @@ const defaultSlug = function (stringToNormalize) {
         .toLowerCase();
 };
 
+// The fields are kept unique by placing a number on the end of the each
+// value that is duplicated. For instance, if one article has a title "my title"
+// it will have an article slug "my-title". If another article is named "my title"
+// it will have an article slug "my-title1" to be kept unique and to be able to look
+// up the articles by words (the slug).
 const getUniqueValueForField = function (err, collection, cb, field, fieldToCompare) {
     const defaultOriginalSlug = defaultSlug(field);
     let maxAtLeast = false;
@@ -125,9 +130,19 @@ const getUniqueValueForField = function (err, collection, cb, field, fieldToComp
     }
 };
 
-const getArticleSlug = function (cb, title, Article) {
-    Article.find({}, function (err, articles) {
-        getUniqueValueForField(err, articles, cb, title, 'articleSlug');
+const getArticleSlug = function (cb, articleData, Article) {
+    Article.findOne({_id: articleData._id}, function (err, article) {
+        // The article title has not changed so we don't need to find
+        // a new unique article slug
+        if(articleData.title === article.title) {
+            // return same slug
+            return cb(article.articleSlug);
+        } else {
+            // find a unique article slug
+            Article.find({}, function (err, articles) {
+                getUniqueValueForField(err, articles, cb, articleData.title, 'articleSlug');
+            });
+        }
     });
 };
 
@@ -137,11 +152,11 @@ const getArticleSlug = function (cb, title, Article) {
     };
 
     ArticleSchema.methods.getArticleSlug = function (cb) {
-        return getArticleSlug(cb, this.title, this.model('Article'));
+        return getArticleSlug(cb, {title: this.title}, this.model('Article'));
     };
 
-    ArticleSchema.statics.getArticleSlug = function (cb, title, Article) {
-        return getArticleSlug(cb, title, Article);
+    ArticleSchema.statics.getArticleSlug = function (cb, articleData, Article) {
+        return getArticleSlug(cb, articleData, Article);
     };
 
     ArticleSchema.pre('save', function (next) {

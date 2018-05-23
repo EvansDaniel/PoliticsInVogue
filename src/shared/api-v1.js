@@ -1,4 +1,5 @@
 // @flow
+const errorUtils = require('../utils/error-utils');
 const URLS = require('./urls');
 const axios = require('axios');
 const CONSTANTS = require('./constants'),
@@ -21,14 +22,15 @@ for (let key in URLS.API) {
     }
 }
 
-let post = (url, options) => {
+let post = (url, options, component) => {
     options = options || {};
     // server expects data this way for all post requests
     const data = {
         data: options.data || options
     };
-    console.log('options', options);
-    console.log('data', data);
+
+    const isProd = process.env.NODE_ENV === 'production';
+
     axios({
         url: url,
         method: 'POST',
@@ -38,11 +40,21 @@ let post = (url, options) => {
         },
         data: JSON.stringify(data)
     }).then(response => {
-        console.log(url, response);
+        if(!isProd) {
+            console.log(url, response);
+        }
         options.success && options.success(response)
     }).catch(error => {
-        console.log(`${url} request failed`, 'response err', error,
-            'response err', error.response);
+        if(!isProd) {
+            console.log(`${url} request failed`, 'response err', error,
+                'response err', error.response);
+
+        }
+        if(error.response.status === 401) {
+            // TODO: default needed here because of import stuff??
+            component && component.setState
+                && component.setState({error: errorUtils.default.buildRenderError(true, error.response)});
+        }
         options.error && options.error(error);
     });
 };
@@ -59,17 +71,15 @@ let get = function (url, options) {
         },
         params: options.queryParams || {},
     }).then(response => {
-        if(!isProd) {
+        if (!isProd) {
             console.log('success', url, response);
         }
         options.success && options.success(response)
     }).catch(error => {
-        if (error.response) {
-            if(!isProd) {
+        if (!isProd) {
+            if (error.response) {
                 console.log(`${url} request failed`, error);
-            }
-        } else {
-            if(!isProd) {
+            } else {
                 console.log(`successful request but error while calling success function`, error);
             }
         }
@@ -86,10 +96,10 @@ module.exports = {
      */
     asynchronousSafeFetch(fetchables, onLoaded) {
         if (fetchables) {
-            if(!_.isFunction(onLoaded)) {
+            if (!_.isFunction(onLoaded)) {
                 throw new Error('onLoaded is required and must be a function')
             }
-            if(!_.isArray(fetchables)) {
+            if (!_.isArray(fetchables)) {
                 fetchables = [fetchables];
             }
             let numFetchablesLeft = fetchables.length;
@@ -126,13 +136,13 @@ module.exports = {
         });
     },
 
-    updateMe: function (options) {
+    updateMe: function (options, component) {
         options = options || {};
         post(URLS.APP.editMe, {
             success: options.success,
             error: options.error,
             data: options.data
-        });
+        }, component);
     },
 
     getMe: function (options) {
@@ -169,21 +179,21 @@ module.exports = {
         });
     },
 
-    createArticle: function (options: {}) {
+    createArticle: function (options: {}, component) {
         let createArticleUrl = URLS.APP.createArticle;
         post(createArticleUrl, {
             success: options.success,
             error: options.error,
             data: options.data
-        })
+        }, component);
     },
 
-    editArticle: function (options) {
+    editArticle: function (options, component) {
         post(URLS.APP.editArticle, {
             success: options.success,
             error: options.error,
             data: options.data
-        })
+        }, component)
     },
 
     getSuggestedArticles: function (options) {

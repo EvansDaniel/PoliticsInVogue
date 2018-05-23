@@ -3,14 +3,14 @@ import React from 'react';
 
 /**
  *
- * @param val true if there is an error
+ * @param hasError true if there is an error
  * @param res the response from the server, possibly null
  * @param message the message to the user for Error popup
  * @returns {{val: boolean, res: *, message: string}}
  */
-const buildRenderError = (val, res, message) => {
+const buildRenderError = (hasError, res, message) => {
     return {
-        val: val,
+        hasError: hasError,
         res: res,
         message: message
     }
@@ -18,7 +18,7 @@ const buildRenderError = (val, res, message) => {
 
 // res is the result, i.e. the error, it used to be the response
 const renderIfError = (error) => {
-    if(error && error.val) {
+    if(error && error.hasError) {
         return (
             <Error error={error} goBackLink={true}/>
         );

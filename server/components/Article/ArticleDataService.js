@@ -226,13 +226,14 @@ const ArticleDataService = function (Article) {
                             accumulator[article.categorySlug] = {
                                 category: article.category,
                                 categorySlug: article.categorySlug,
-                            }
+                            };
                             return accumulator;
                         }, {});
 
                         return cb(err, Object.values(categories));
                     }
 
+                    // No categories
                     return cb(err, []);
                 });
             },
@@ -309,7 +310,7 @@ const ArticleDataService = function (Article) {
                     Article.getArticleSlug(function (slug) {
                         articleData.articleSlug = slug;
                         updateFunc(articleData);
-                    }, articleData.title, Article);
+                    }, articleData, Article);
                 } else {
                     updateFunc(articleData);
                 }

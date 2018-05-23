@@ -1,6 +1,7 @@
 const URLS = require('../../../src/shared/urls'),
     passport = require('passport'),
     PassportConfig = require('../../config/passport'),
+    routeUtils = require('../../utils/route-utils'),
     constants = require('../../../src/shared/constants');
 
 const signUpIfNotSignedUp = function(User) {
@@ -53,6 +54,7 @@ const UserBootstrap = function (app) {
     );
 
     app.post(URLS.API.editMe,
+        routeUtils.isAuthenticated,
         UserRoutes.postEditMeHandle
     );
 };

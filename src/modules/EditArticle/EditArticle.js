@@ -131,17 +131,12 @@ class EditArticle extends Component {
                 waitAfterSave(self.SAVING_ACTIONS.changesSaved);
             },
             error: (error) => {
-                // TODO: Possibly remove if/else?
-                if(error.response.status === 401) {
-                    waitAfterSave('Error saving changes: ' + this.auth.notSignedInMsg);
-                } else {
-                    waitAfterSave(self.SAVING_ACTIONS.errorSaving);
-                }
+                waitAfterSave(self.SAVING_ACTIONS.errorSaving);
             },
             // Since we have made an edit to the article, we always want to
             // save the article as a draft until it is published or republished
             data: articleData
-        });
+        }, self);
     }
 
     changeArticleData(articleData) {
@@ -383,7 +378,8 @@ class EditArticle extends Component {
                                                         this.state.allCategories.map((categoryData) => {
                                                             return (
                                                                 <option
-                                                                    value={categoryData.category}>{categoryData.category}</option>
+                                                                    value={categoryData.category}
+                                                                    key={categoryData.categorySlug}>{categoryData.category}</option>
                                                             );
                                                         })
                                                     }

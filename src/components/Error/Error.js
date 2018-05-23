@@ -17,15 +17,13 @@ class Error extends Component {
 
         this.state = {
             showModal: true,
-            // url to redirect to
-            redirect: false,
         }
     }
 
     handleNotAuthorized() {
+        alert('You have been logged out. To continue, please log back in.');
         this.auth.expireAuthToken();
-        //msg = 'You cannot view this page because you are not signed in. Redirecting you to login...';
-        this.setState({redirect: URLS.ROUTES.login});
+        this.props.history.push(URLS.ROUTES.login);
     }
 
     render() {
@@ -48,17 +46,9 @@ class Error extends Component {
             if(error.res.status === 401) {
                 // Expire the cached auth token b/c we are not longer signed in server-si
                 this.handleNotAuthorized();
-                //msg = 'You cannot view this page because you are not signed in. Redirecting you to login...';
-                /*setTimeout((function () {
-                    this.setState({redirect: URLS.ROUTES.login});
-                }).bind(this), 0);*/
             }
         }
-        if(this.state.redirect) {
-            return (
-                <Redirect to={this.state.redirect}/>
-            );
-        }
+
         return (
             <div className="Error">
                 <Modal

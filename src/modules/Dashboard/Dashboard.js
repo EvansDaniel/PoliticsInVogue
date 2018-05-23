@@ -91,7 +91,7 @@ class Dashboard extends Component {
                 });
             },
             data: updatedMe
-        })
+        }, self)
     }
 
     // validates url and calls updateMeInfo to set photograph on client and server side
@@ -126,19 +126,12 @@ class Dashboard extends Component {
                         _id: data._id
                     })
                 });
-            },
-            // TODO: set up redirects to login?
-            error: () => function () {
-                self.setState({
-                    error: errorUtils.buildRenderError(true, null,
-                        'There was an error while setting up your new article')
-                });
-            }, // TODO:
+            }, // 401 redirect handled in api-v1
             data: {
                 title: 'Untitled',
                 draft: true,
             }
-        });
+        }, self);
     }
 
     render() {
