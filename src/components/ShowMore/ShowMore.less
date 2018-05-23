@@ -3,19 +3,24 @@
 
 .ShowMore {
   // This is changed by .truncate
+  overflow: hidden;
+  line-height: 1.25em;
 
   &.show {
-    height: auto;
+    height: 100%;
   }
 
   &.hide {
-    font-size: inherit !important;
-    line-height: inherit !important;
-    .truncate(@fontSize: 1em, @lineHeight: 1em, @linesToShow: 3);
-    height: auto;
+    height: 100px;
+    :after {
+      content: "...";
+    }
   }
 
   .show-text {
     cursor: pointer;
+    &:after {
+      content: "";
+    }
   }
 }
