@@ -5,7 +5,7 @@ const _ = require('lodash');
 
 
 function checkImageUrl(url) {
-    return validUrl.is_uri(url) && url.match(/\.(jpeg|jpg|gif|png)$/);
+    return validUrl.is_uri(url);
 }
 
 const validData = {
