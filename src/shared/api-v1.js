@@ -231,5 +231,9 @@ module.exports = {
             console.log('request failed', error.response);
             options.error && options.error(error);
         });
+    },
+
+    logout: function (options) {
+        post(URLS.APP.logout, options);
     }
 };

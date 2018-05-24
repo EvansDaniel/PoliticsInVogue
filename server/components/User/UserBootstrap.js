@@ -5,6 +5,7 @@ const URLS = require('../../../src/shared/urls'),
     constants = require('../../../src/shared/constants');
 
 const signUpIfNotSignedUp = function(User) {
+    console.log('in signUpIfNotSignedUp');
     let email = process.env.AUTHOR_EMAIL,
         pass = process.env.AUTHOR_PASSWORD;
     // change to dev email/pass if development
@@ -19,6 +20,7 @@ const signUpIfNotSignedUp = function(User) {
 
     });
 
+    console.log('email', email, 'pass', pass);
     User.findOne({email: email}, function (err, user) {
         // TODO: what happens on err?
         if (err) throw err;
@@ -43,6 +45,10 @@ const UserBootstrap = function (app) {
     app.post(URLS.API.login,
         passport.authenticate('local'),
         UserRoutes.postLogin
+    );
+
+    app.post(URLS.API.logout,
+        UserRoutes.postLogout
     );
 
     app.get(URLS.API.checkAuthenticated,

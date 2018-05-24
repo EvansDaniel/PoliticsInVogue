@@ -15,6 +15,7 @@ import {MegadraftEditor} from 'megadraft-denistsuman';
 import ButtonInput from "../../components/ButtonInput/ButtonInput";
 import BodyHtml from "../../components/BodyHtml/BodyHtml";
 import ShowMore from "../../components/ShowMore/ShowMore";
+import Auth from '../../services/auth';
 const editorUtils = require('../../shared/utils/editor-utils');
 
 class Dashboard extends Component {
@@ -23,6 +24,10 @@ class Dashboard extends Component {
         this.createNewArticle = this.createNewArticle.bind(this);
         this.setImageLink = this.setImageLink.bind(this);
         this.setBiography = this.setBiography.bind(this);
+        this.logout = this.logout.bind(this);
+
+        this.auth = new Auth();
+
         this.state = {
             error: {
                 val: false
@@ -134,6 +139,19 @@ class Dashboard extends Component {
         }, self);
     }
 
+    logout() {
+        this.auth.expireAuthToken();
+        const self = this;
+        API.logout({
+            success: function (response) {
+                self.props.history.push(URLS.ROUTES.home);
+            },
+            error: function () {
+                // todo: inform user that it failed
+            }
+        });
+    }
+
     render() {
         const self = this;
         return (
@@ -160,6 +178,9 @@ class Dashboard extends Component {
                                                      title="Edit Image"
                                                      defaultInputVal={this.state.me.photograph}
                                         />
+                                        <button className="logout" onClick={this.logout}>
+                                            Logout
+                                        </button>
                                     </div>
                                 </div>
                                 {/*

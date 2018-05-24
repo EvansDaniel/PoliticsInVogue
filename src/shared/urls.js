@@ -16,6 +16,7 @@ let URLS = {
         categories: 'articles/categories',
         createSubscriber: 'subscribers/create',
         login: 'login',
+        logout: 'logout',
         checkAuthenticated: 'checkAuthenticated'
     },
 
