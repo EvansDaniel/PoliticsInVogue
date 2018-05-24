@@ -44,14 +44,14 @@ class NavBar extends Component {
                         loggedIn ? <li><Link to="/dashboard">Dashboard</Link></li> : null
                     }
                     <li>
-                        <a className="icon" href="mailto:clarksl0@sewanee.edu">
-                            <i className="fa fa-envelope-o" aria-hidden="true"></i>
-                        </a>
                         <a className="icon">
                             <SocialShare type="twitter" fontAwesome={true}/>
                         </a>
                         <a className="icon">
                             <SocialShare type="facebook" fontAwesome={true}/>
+                        </a>
+                        <a className="icon" href="mailto:clarksl0@sewanee.edu">
+                            <i className="fa fa-envelope-o" aria-hidden="true"></i>
                         </a>
                     </li>
                 </div>
