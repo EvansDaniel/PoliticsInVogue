@@ -95,8 +95,7 @@ const ArticleRoutes = function (ArticleDataService) {
                 if(err) {
                     return next(err);
                 }
-                // TODO: should I explicitly send status of OK or something?
-                return res.json({});
+                return res.json({action: 'success'});
             });
         });
     };

@@ -36,7 +36,7 @@ const signUpIfNotSignedUp = function(User) {
 const UserBootstrap = function (app) {
     const User = require('./User');
     const UserDataService = require('./UserDataService')(User);
-    const UserRoutes = require('./UserRoutes')(UserDataService);
+    const UserRoutes = require('./UserRoutes')(UserDataService, User);
 
     signUpIfNotSignedUp(User);
     PassportConfig(User);

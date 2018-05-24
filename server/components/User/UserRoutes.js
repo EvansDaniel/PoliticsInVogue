@@ -5,7 +5,7 @@ const HttpError = require('http-error');
 const uuidv4 = require('uuid/v4');
 const _ = require('lodash');
 
-const UserRoutes = function (UserDataService) {
+const UserRoutes = function (UserDataService, User) {
 
     // TODO: need a logout feature?
     const postLogin = function (req, res, next) {
@@ -26,7 +26,7 @@ const UserRoutes = function (UserDataService) {
         // we successfully authenticated so cache a cookie and send back user info
         routeUtils.debuggingHelper(req, res, next, function (req, res, next) {
             req.logout();
-            return res.json({});
+            return res.json({action: 'success'});
         });
     };
 
@@ -37,7 +37,22 @@ const UserRoutes = function (UserDataService) {
     };
 
     const getMeHandle = function (req, res, next) {
-        return res.json(req.user);
+        // either I am logged in
+        // TODO: if there is ever a change, and for some reason more people sign in
+        // we will have to find that particular user to show or list them rather than show the signed in user
+        const email = process.env.NODE_ENV === 'production' ? process.env.AUTHOR_EMAIL : constants.DEV_EMAIL;
+        User.findOne({
+            email: email,
+        }, function (err, user) {
+            if(err) {
+                return next(err);
+            }
+            if(user && user.toObject) {
+                user = user.toObject();
+                delete user.password;
+            }
+            return res.json(user);
+        });
     };
 
     const postEditMeHandle = function (req, res, next) {
