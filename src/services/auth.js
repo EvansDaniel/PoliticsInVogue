@@ -19,7 +19,9 @@ class Auth {
     }
 
     expireAuthToken() {
-        cookies.remove(constants.CACHED_AUTH_COOKIE);
+        // Need the domain of the cookie in order for cookie-js to find it
+        const domain = process.env.NODE_ENV === 'production' ? constants.HOST_DOMAIN : '';
+        cookies.remove(constants.CACHED_AUTH_COOKIE, {domain: domain});
     }
 
 }
