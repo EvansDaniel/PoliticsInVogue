@@ -12,6 +12,7 @@ const eslintFormatter = require('react-dev-utils/eslintFormatter');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const paths = require('./paths');
 const getClientEnvironment = require('./env');
+const CompressionPlugin = require('compression-webpack-plugin');
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // It requires a trailing slash, or the file assets will get an incorrect path.
@@ -327,6 +328,15 @@ module.exports = {
                 ascii_only: true,
             },
             sourceMap: shouldUseSourceMap,
+        }),
+        new webpack.optimize.DedupePlugin(), // dedupe similar code 
+        new webpack.optimize.AggressiveMergingPlugin(), // Merge chunks 
+        new CompressionPlugin({   
+            asset: "[path][query]",
+            algorithm: "gzip",
+            test: /\.js.gz$/,
+            threshold: 10240,
+            minRatio: 0.8
         }),
         // Note: this won't work without ExtractTextPlugin.extract(..) in `loaders`.
         new ExtractTextPlugin({

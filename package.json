@@ -82,9 +82,11 @@
     "fullDeploy": "./node_modules/.bin/concurrently 'npm run upload:static' 'npm run upload:server' 'npm run copy:config'"
   },
   "devDependencies": {
+    "compression-webpack-plugin": "^1.1.11",
     "flow-bin": "^0.62.0",
     "less": "^2.7.3",
-    "less-loader": "^4.0.5"
+    "less-loader": "^4.0.5",
+    "webpack-visualizer-plugin": "^0.1.11"
   },
   "jest": {
     "collectCoverageFrom": [
