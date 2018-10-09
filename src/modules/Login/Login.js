@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import './Login.less'
 const API = require('../../shared/api-v1');
 const URLS = require('../../shared/urls');
-const constants = require('../../shared/constants');
 
 class Login extends Component {
     constructor(props) {

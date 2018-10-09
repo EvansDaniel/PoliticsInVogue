@@ -113,7 +113,7 @@ module.exports = {
                     }
                 }));
             });
-            // Poll every second to determine if we have fetched everything
+            // Poll every half second to determine if we have fetched everything
             let interval = setInterval(function () {
                 if (!numFetchablesLeft) {
                     onLoaded();

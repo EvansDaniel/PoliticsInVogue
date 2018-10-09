@@ -77,7 +77,6 @@ class Article extends Component {
         return (
             <div className="Article">
                 <Helmet>
-                    <title>{CONSTANTS.APP_NAME} | TITLE</title>
                     <meta property="og:image" content={articleData && articleData.showcaseImage}/>
                 </Helmet>
                 {

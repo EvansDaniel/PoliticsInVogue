@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Modal from '../PopUpModal/PopUpModal';
 import errorIcon from "../../../src/img/error.jpg";
 import URLS from '../../shared/urls';
-import {Link, Redirect} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import {withRouter} from 'react-router-dom';
 import Auth from '../../services/auth';
 
