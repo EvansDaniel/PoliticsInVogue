@@ -4,8 +4,8 @@ import ArticleContent from "../../components/ArticleContent/ArticleContent";
 import Loading from '../../components/Loading/Loading';
 import {Helmet} from 'react-helmet';
 import CONSTANTS from '../../shared/constants';
-
 import errorUtils from '../../utils/error-utils';
+
 const API = require('../../shared/api-v1');
 
 class Article extends Component {

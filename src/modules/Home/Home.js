@@ -7,7 +7,6 @@ import empty from 'is-empty';
 import errorUtils from '../../utils/error-utils';
 const API = require('../../shared/api-v1');
 
-
 class Home extends Component {
 
     constructor(props) {
